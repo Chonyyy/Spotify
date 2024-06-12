@@ -1,0 +1,511 @@
+20:15:58 - __main__ - INFO - node_addr: 172.18.0.3:8001
+20:15:58 - __main__ - INFO - Http serving comenced
+20:15:58 - __main__.stab - INFO - Stabilizing:
+20:15:58 - __main__.stab - INFO - Current succesor is 172.18.0.3
+20:15:58 - __main__.stab - INFO - Current predecesor is: 172.18.0.3
+20:15:58 - __main__ - INFO - Sending request to http://172.18.0.3:8001/get_predecessor
+20:15:58 - __main__.ff - INFO - Updating the finger table
+20:15:58 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:15:58 - __main__.cp - INFO - Checking Predecesor
+20:15:58 - __main__ - INFO - Sending request to http://172.18.0.3:8001/check_predecessor
+20:15:58 - __main__ - INFO - Sending request to http://172.18.0.2:8001/find_successor
+20:15:58 - __main__.stab - INFO - ===STABILIZING DONE===
+20:15:58 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:15:58 - __main__ - INFO - Sending request to http://172.18.0.2:8001/notify
+20:16:08 - __main__.ff - INFO - Updating the finger table
+20:16:08 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:16:08 - __main__.stab - INFO - Stabilizing:
+20:16:08 - __main__.stab - INFO - Current succesor is 172.18.0.2
+20:16:08 - __main__.stab - INFO - Current predecesor is: 172.18.0.2
+20:16:08 - __main__ - INFO - Sending request to http://172.18.0.2:8001/check_predecessor
+20:16:08 - __main__ - INFO - Sending request to http://172.18.0.2:8001/get_predecessor
+20:16:08 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:16:08 - __main__.stab - INFO - ===STABILIZING DONE===
+20:16:18 - __main__.ff - INFO - Updating the finger table
+20:16:18 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:16:18 - __main__ - INFO - Sending request to http://172.18.0.2:8001/check_predecessor
+20:16:18 - __main__.stab - INFO - Stabilizing:
+20:16:18 - __main__.stab - INFO - Current succesor is 172.18.0.2
+20:16:18 - __main__.stab - INFO - Current predecesor is: 172.18.0.2
+20:16:18 - __main__ - INFO - Sending request to http://172.18.0.2:8001/get_predecessor
+20:16:18 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:16:18 - __main__ - INFO - Sending request to http://172.18.0.4:8001/notify
+20:16:18 - __main__.stab - INFO - ===STABILIZING DONE===
+20:16:28 - __main__.ff - INFO - Updating the finger table
+20:16:28 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:16:28 - __main__ - INFO - Sending request to http://172.18.0.2:8001/check_predecessor
+20:16:28 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:16:28 - __main__.stab - INFO - Stabilizing:
+20:16:28 - __main__.stab - INFO - Current succesor is 172.18.0.4
+20:16:28 - __main__.stab - INFO - Current predecesor is: 172.18.0.2
+20:16:28 - __main__ - INFO - Sending request to http://172.18.0.4:8001/get_predecessor
+20:16:28 - __main__.stab - INFO - ===STABILIZING DONE===
+20:16:38 - __main__.ff - INFO - Updating the finger table
+20:16:38 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:16:38 - __main__ - INFO - Sending request to http://172.18.0.2:8001/check_predecessor
+20:16:38 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:16:38 - __main__.stab - INFO - Stabilizing:
+20:16:38 - __main__.stab - INFO - Current succesor is 172.18.0.4
+20:16:38 - __main__.stab - INFO - Current predecesor is: 172.18.0.2
+20:16:38 - __main__ - INFO - Sending request to http://172.18.0.4:8001/get_predecessor
+20:16:38 - __main__.stab - INFO - ===STABILIZING DONE===
+20:16:48 - __main__.ff - INFO - Updating the finger table
+20:16:48 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:16:48 - __main__ - INFO - Sending request to http://172.18.0.2:8001/check_predecessor
+20:16:48 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:16:48 - __main__.stab - INFO - Stabilizing:
+20:16:48 - __main__.stab - INFO - Current succesor is 172.18.0.4
+20:16:48 - __main__.stab - INFO - Current predecesor is: 172.18.0.2
+20:16:48 - __main__ - INFO - Sending request to http://172.18.0.4:8001/get_predecessor
+20:16:48 - __main__.stab - INFO - ===STABILIZING DONE===
+20:16:58 - __main__.ff - INFO - Updating the finger table
+20:16:58 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:16:58 - __main__ - INFO - Sending request to http://172.18.0.2:8001/check_predecessor
+20:16:58 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:16:58 - __main__.stab - INFO - Stabilizing:
+20:16:58 - __main__.stab - INFO - Current succesor is 172.18.0.4
+20:16:58 - __main__.stab - INFO - Current predecesor is: 172.18.0.2
+20:16:58 - __main__ - INFO - Sending request to http://172.18.0.4:8001/get_predecessor
+20:16:59 - __main__.stab - INFO - ===STABILIZING DONE===
+20:17:08 - __main__.ff - INFO - Updating the finger table
+20:17:08 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:17:08 - __main__ - INFO - Sending request to http://172.18.0.2:8001/check_predecessor
+20:17:08 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:17:09 - __main__.stab - INFO - Stabilizing:
+20:17:09 - __main__.stab - INFO - Current succesor is 172.18.0.4
+20:17:09 - __main__.stab - INFO - Current predecesor is: 172.18.0.2
+20:17:09 - __main__ - INFO - Sending request to http://172.18.0.4:8001/get_predecessor
+20:17:09 - __main__.stab - INFO - ===STABILIZING DONE===
+20:17:18 - __main__.ff - INFO - Updating the finger table
+20:17:18 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:17:18 - __main__ - INFO - Sending request to http://172.18.0.2:8001/check_predecessor
+20:17:19 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:17:19 - __main__.stab - INFO - Stabilizing:
+20:17:19 - __main__.stab - INFO - Current succesor is 172.18.0.4
+20:17:19 - __main__.stab - INFO - Current predecesor is: 172.18.0.2
+20:17:19 - __main__ - INFO - Sending request to http://172.18.0.4:8001/get_predecessor
+20:17:19 - __main__.stab - INFO - ===STABILIZING DONE===
+20:17:28 - __main__.ff - INFO - Updating the finger table
+20:17:28 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:17:29 - __main__ - INFO - Sending request to http://172.18.0.5:8001/check_predecessor
+20:17:29 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:17:29 - __main__.stab - INFO - Stabilizing:
+20:17:29 - __main__.stab - INFO - Current succesor is 172.18.0.4
+20:17:29 - __main__.stab - INFO - Current predecesor is: 172.18.0.5
+20:17:29 - __main__ - INFO - Sending request to http://172.18.0.4:8001/get_predecessor
+20:17:29 - __main__.stab - INFO - ===STABILIZING DONE===
+20:17:38 - __main__.ff - INFO - Updating the finger table
+20:17:38 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:17:39 - __main__ - INFO - Sending request to http://172.18.0.5:8001/check_predecessor
+20:17:39 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:17:39 - __main__.stab - INFO - Stabilizing:
+20:17:39 - __main__.stab - INFO - Current succesor is 172.18.0.4
+20:17:39 - __main__.stab - INFO - Current predecesor is: 172.18.0.5
+20:17:39 - __main__ - INFO - Sending request to http://172.18.0.4:8001/get_predecessor
+20:17:39 - __main__.stab - INFO - ===STABILIZING DONE===
+20:17:48 - __main__.ff - INFO - Updating the finger table
+20:17:48 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:17:49 - __main__ - INFO - Sending request to http://172.18.0.6:8001/check_predecessor
+20:17:49 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:17:49 - __main__.stab - INFO - Stabilizing:
+20:17:49 - __main__.stab - INFO - Current succesor is 172.18.0.4
+20:17:49 - __main__.stab - INFO - Current predecesor is: 172.18.0.6
+20:17:49 - __main__ - INFO - Sending request to http://172.18.0.4:8001/get_predecessor
+20:17:49 - __main__.stab - INFO - ===STABILIZING DONE===
+20:17:58 - __main__.ff - INFO - Updating the finger table
+20:17:58 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:17:59 - __main__ - INFO - Sending request to http://172.18.0.6:8001/check_predecessor
+20:17:59 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:17:59 - __main__.stab - INFO - Stabilizing:
+20:17:59 - __main__.stab - INFO - Current succesor is 172.18.0.4
+20:17:59 - __main__.stab - INFO - Current predecesor is: 172.18.0.6
+20:17:59 - __main__ - INFO - Sending request to http://172.18.0.4:8001/get_predecessor
+20:17:59 - __main__.stab - INFO - ===STABILIZING DONE===
+20:18:08 - __main__.ff - INFO - Updating the finger table
+20:18:08 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:18:09 - __main__ - INFO - Sending request to http://172.18.0.6:8001/check_predecessor
+20:18:09 - __main__.stab - INFO - Stabilizing:
+20:18:09 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:18:09 - __main__.stab - INFO - Current succesor is 172.18.0.4
+20:18:09 - __main__.stab - INFO - Current predecesor is: 172.18.0.6
+20:18:09 - __main__ - INFO - Sending request to http://172.18.0.4:8001/get_predecessor
+20:18:09 - __main__.stab - INFO - ===STABILIZING DONE===
+20:18:18 - __main__.ff - INFO - Updating the finger table
+20:18:18 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:18:19 - __main__ - INFO - Sending request to http://172.18.0.6:8001/check_predecessor
+20:18:19 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:18:19 - __main__.stab - INFO - Stabilizing:
+20:18:19 - __main__.stab - INFO - Current succesor is 172.18.0.4
+20:18:19 - __main__.stab - INFO - Current predecesor is: 172.18.0.6
+20:18:19 - __main__ - INFO - Sending request to http://172.18.0.4:8001/get_predecessor
+20:18:19 - __main__.stab - INFO - ===STABILIZING DONE===
+20:18:28 - __main__.ff - INFO - Updating the finger table
+20:18:28 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:18:29 - __main__ - INFO - Sending request to http://172.18.0.6:8001/check_predecessor
+20:18:29 - __main__.stab - INFO - Stabilizing:
+20:18:29 - __main__.stab - INFO - Current succesor is 172.18.0.4
+20:18:29 - __main__.stab - INFO - Current predecesor is: 172.18.0.6
+20:18:29 - __main__ - INFO - Sending request to http://172.18.0.4:8001/get_predecessor
+20:18:29 - __main__.stab - INFO - ===STABILIZING DONE===
+20:18:29 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:18:38 - __main__.ff - INFO - Updating the finger table
+20:18:38 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:18:39 - __main__ - INFO - Sending request to http://172.18.0.6:8001/check_predecessor
+20:18:39 - __main__.stab - INFO - Stabilizing:
+20:18:39 - __main__.stab - INFO - Current succesor is 172.18.0.4
+20:18:39 - __main__.stab - INFO - Current predecesor is: 172.18.0.6
+20:18:39 - __main__ - INFO - Sending request to http://172.18.0.4:8001/get_predecessor
+20:18:39 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:18:39 - __main__.stab - INFO - ===STABILIZING DONE===
+20:18:48 - __main__.ff - INFO - Updating the finger table
+20:18:48 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:18:49 - __main__.stab - INFO - Stabilizing:
+20:18:49 - __main__ - INFO - Sending request to http://172.18.0.6:8001/check_predecessor
+20:18:49 - __main__.stab - INFO - Current succesor is 172.18.0.4
+20:18:49 - __main__.stab - INFO - Current predecesor is: 172.18.0.6
+20:18:49 - __main__ - INFO - Sending request to http://172.18.0.4:8001/get_predecessor
+20:18:49 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:18:49 - __main__.stab - INFO - ===STABILIZING DONE===
+20:18:58 - __main__.ff - INFO - Updating the finger table
+20:18:58 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:18:59 - __main__.stab - INFO - Stabilizing:
+20:18:59 - __main__.stab - INFO - Current succesor is 172.18.0.4
+20:18:59 - __main__.stab - INFO - Current predecesor is: 172.18.0.6
+20:18:59 - __main__ - INFO - Sending request to http://172.18.0.4:8001/get_predecessor
+20:18:59 - __main__ - INFO - Sending request to http://172.18.0.6:8001/check_predecessor
+20:18:59 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:18:59 - __main__.stab - INFO - ===STABILIZING DONE===
+20:19:08 - __main__.ff - INFO - Updating the finger table
+20:19:08 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:19:09 - __main__ - INFO - Sending request to http://172.18.0.6:8001/check_predecessor
+20:19:09 - __main__.stab - INFO - Stabilizing:
+20:19:10 - __main__.stab - INFO - Current succesor is 172.18.0.4
+20:19:10 - __main__.stab - INFO - Current predecesor is: 172.18.0.6
+20:19:10 - __main__ - INFO - Sending request to http://172.18.0.4:8001/get_predecessor
+20:19:10 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:19:10 - __main__.stab - INFO - ===STABILIZING DONE===
+20:19:18 - __main__.ff - INFO - Updating the finger table
+20:19:18 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:19:20 - __main__ - INFO - Sending request to http://172.18.0.6:8001/check_predecessor
+20:19:20 - __main__.stab - INFO - Stabilizing:
+20:19:20 - __main__.stab - INFO - Current succesor is 172.18.0.4
+20:19:20 - __main__.stab - INFO - Current predecesor is: 172.18.0.6
+20:19:20 - __main__ - INFO - Sending request to http://172.18.0.4:8001/get_predecessor
+20:19:20 - __main__.stab - INFO - ===STABILIZING DONE===
+20:19:20 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:19:28 - __main__.ff - INFO - Updating the finger table
+20:19:28 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:19:30 - __main__ - INFO - Sending request to http://172.18.0.6:8001/check_predecessor
+20:19:30 - __main__.stab - INFO - Stabilizing:
+20:19:30 - __main__.stab - INFO - Current succesor is 172.18.0.4
+20:19:30 - __main__.stab - INFO - Current predecesor is: 172.18.0.6
+20:19:30 - __main__ - INFO - Sending request to http://172.18.0.4:8001/get_predecessor
+20:19:30 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:19:30 - __main__.stab - INFO - ===STABILIZING DONE===
+20:19:38 - __main__.ff - INFO - Updating the finger table
+20:19:38 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:19:40 - __main__ - INFO - Sending request to http://172.18.0.6:8001/check_predecessor
+20:19:40 - __main__.stab - INFO - Stabilizing:
+20:19:40 - __main__.stab - INFO - Current succesor is 172.18.0.4
+20:19:40 - __main__.stab - INFO - Current predecesor is: 172.18.0.6
+20:19:40 - __main__ - INFO - Sending request to http://172.18.0.4:8001/get_predecessor
+20:19:40 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:19:40 - __main__.stab - INFO - ===STABILIZING DONE===
+20:19:48 - __main__.ff - INFO - Updating the finger table
+20:19:48 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:19:50 - __main__ - INFO - Sending request to http://172.18.0.6:8001/check_predecessor
+20:19:50 - __main__.stab - INFO - Stabilizing:
+20:19:50 - __main__.stab - INFO - Current succesor is 172.18.0.4
+20:19:50 - __main__.stab - INFO - Current predecesor is: 172.18.0.6
+20:19:50 - __main__ - INFO - Sending request to http://172.18.0.4:8001/get_predecessor
+20:19:50 - __main__.stab - INFO - ===STABILIZING DONE===
+20:19:50 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:19:58 - __main__.ff - INFO - Updating the finger table
+20:19:58 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:20:00 - __main__ - INFO - Sending request to http://172.18.0.6:8001/check_predecessor
+20:20:00 - __main__.stab - INFO - Stabilizing:
+20:20:00 - __main__.stab - INFO - Current succesor is 172.18.0.4
+20:20:00 - __main__.stab - INFO - Current predecesor is: 172.18.0.6
+20:20:00 - __main__ - INFO - Sending request to http://172.18.0.4:8001/get_predecessor
+20:20:00 - __main__.stab - INFO - ===STABILIZING DONE===
+20:20:00 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:20:09 - __main__.ff - INFO - Updating the finger table
+20:20:09 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:20:10 - __main__.stab - INFO - Stabilizing:
+20:20:10 - __main__.stab - INFO - Current succesor is 172.18.0.4
+20:20:10 - __main__.stab - INFO - Current predecesor is: 172.18.0.6
+20:20:10 - __main__ - INFO - Sending request to http://172.18.0.4:8001/get_predecessor
+20:20:10 - __main__.stab - INFO - ===STABILIZING DONE===
+20:20:10 - __main__ - INFO - Sending request to http://172.18.0.6:8001/check_predecessor
+20:20:10 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:20:19 - __main__.ff - INFO - Updating the finger table
+20:20:19 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:20:20 - __main__.stab - INFO - Stabilizing:
+20:20:20 - __main__.stab - INFO - Current succesor is 172.18.0.4
+20:20:20 - __main__.stab - INFO - Current predecesor is: 172.18.0.6
+20:20:20 - __main__ - INFO - Sending request to http://172.18.0.4:8001/get_predecessor
+20:20:20 - __main__.stab - INFO - ===STABILIZING DONE===
+20:20:20 - __main__ - INFO - Sending request to http://172.18.0.6:8001/check_predecessor
+20:20:20 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:20:29 - __main__.ff - INFO - Updating the finger table
+20:20:29 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:20:30 - __main__.stab - INFO - Stabilizing:
+20:20:30 - __main__.stab - INFO - Current succesor is 172.18.0.4
+20:20:30 - __main__.stab - INFO - Current predecesor is: 172.18.0.6
+20:20:30 - __main__ - INFO - Sending request to http://172.18.0.4:8001/get_predecessor
+20:20:30 - __main__.stab - INFO - ===STABILIZING DONE===
+20:20:30 - __main__ - INFO - Sending request to http://172.18.0.6:8001/check_predecessor
+20:20:30 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:20:39 - __main__.ff - INFO - Updating the finger table
+20:20:39 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:20:40 - __main__.stab - INFO - Stabilizing:
+20:20:40 - __main__.stab - INFO - Current succesor is 172.18.0.4
+20:20:40 - __main__.stab - INFO - Current predecesor is: 172.18.0.6
+20:20:40 - __main__ - INFO - Sending request to http://172.18.0.4:8001/get_predecessor
+20:20:40 - __main__.stab - INFO - ===STABILIZING DONE===
+20:20:40 - __main__ - INFO - Sending request to http://172.18.0.6:8001/check_predecessor
+20:20:40 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:20:49 - __main__.ff - INFO - Updating the finger table
+20:20:49 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:20:50 - __main__.stab - INFO - Stabilizing:
+20:20:50 - __main__.stab - INFO - Current succesor is 172.18.0.4
+20:20:50 - __main__.stab - INFO - Current predecesor is: 172.18.0.6
+20:20:50 - __main__ - INFO - Sending request to http://172.18.0.4:8001/get_predecessor
+20:20:50 - __main__.stab - INFO - ===STABILIZING DONE===
+20:20:50 - __main__ - INFO - Sending request to http://172.18.0.6:8001/check_predecessor
+20:20:50 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:20:59 - __main__.ff - INFO - Updating the finger table
+20:20:59 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:21:00 - __main__.stab - INFO - Stabilizing:
+20:21:00 - __main__.stab - INFO - Current succesor is 172.18.0.4
+20:21:00 - __main__.stab - INFO - Current predecesor is: 172.18.0.6
+20:21:00 - __main__ - INFO - Sending request to http://172.18.0.4:8001/get_predecessor
+20:21:00 - __main__.stab - INFO - ===STABILIZING DONE===
+20:21:00 - __main__ - INFO - Sending request to http://172.18.0.6:8001/check_predecessor
+20:21:00 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:21:09 - __main__.ff - INFO - Updating the finger table
+20:21:09 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:21:10 - __main__.stab - INFO - Stabilizing:
+20:21:10 - __main__.stab - INFO - Current succesor is 172.18.0.4
+20:21:10 - __main__.stab - INFO - Current predecesor is: 172.18.0.6
+20:21:10 - __main__ - INFO - Sending request to http://172.18.0.4:8001/get_predecessor
+20:21:10 - __main__.stab - INFO - ===STABILIZING DONE===
+20:21:10 - __main__ - INFO - Sending request to http://172.18.0.6:8001/check_predecessor
+20:21:10 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:21:19 - __main__.ff - INFO - Updating the finger table
+20:21:19 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:21:20 - __main__.stab - INFO - Stabilizing:
+20:21:20 - __main__.stab - INFO - Current succesor is 172.18.0.4
+20:21:20 - __main__.stab - INFO - Current predecesor is: 172.18.0.6
+20:21:20 - __main__ - INFO - Sending request to http://172.18.0.4:8001/get_predecessor
+20:21:20 - __main__.stab - INFO - ===STABILIZING DONE===
+20:21:20 - __main__ - INFO - Sending request to http://172.18.0.6:8001/check_predecessor
+20:21:21 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:21:29 - __main__.ff - INFO - Updating the finger table
+20:21:29 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:21:30 - __main__.stab - INFO - Stabilizing:
+20:21:30 - __main__.stab - INFO - Current succesor is 172.18.0.4
+20:21:30 - __main__.stab - INFO - Current predecesor is: 172.18.0.6
+20:21:30 - __main__ - INFO - Sending request to http://172.18.0.4:8001/get_predecessor
+20:21:30 - __main__.stab - INFO - ===STABILIZING DONE===
+20:21:31 - __main__ - INFO - Sending request to http://172.18.0.6:8001/check_predecessor
+20:21:31 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:21:39 - __main__.ff - INFO - Updating the finger table
+20:21:39 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:21:40 - __main__.stab - INFO - Stabilizing:
+20:21:40 - __main__.stab - INFO - Current succesor is 172.18.0.4
+20:21:40 - __main__.stab - INFO - Current predecesor is: 172.18.0.6
+20:21:40 - __main__ - INFO - Sending request to http://172.18.0.4:8001/get_predecessor
+20:21:40 - __main__.stab - INFO - ===STABILIZING DONE===
+20:21:41 - __main__ - INFO - Sending request to http://172.18.0.6:8001/check_predecessor
+20:21:41 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:21:49 - __main__.ff - INFO - Updating the finger table
+20:21:49 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:21:50 - __main__.stab - INFO - Stabilizing:
+20:21:50 - __main__.stab - INFO - Current succesor is 172.18.0.4
+20:21:50 - __main__.stab - INFO - Current predecesor is: 172.18.0.6
+20:21:50 - __main__ - INFO - Sending request to http://172.18.0.4:8001/get_predecessor
+20:21:50 - __main__.stab - INFO - ===STABILIZING DONE===
+20:21:51 - __main__ - INFO - Sending request to http://172.18.0.6:8001/check_predecessor
+20:21:51 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:21:59 - __main__.ff - INFO - Updating the finger table
+20:21:59 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:22:00 - __main__.stab - INFO - Stabilizing:
+20:22:00 - __main__.stab - INFO - Current succesor is 172.18.0.4
+20:22:00 - __main__.stab - INFO - Current predecesor is: 172.18.0.6
+20:22:00 - __main__ - INFO - Sending request to http://172.18.0.4:8001/get_predecessor
+20:22:00 - __main__.stab - INFO - ===STABILIZING DONE===
+20:22:01 - __main__ - INFO - Sending request to http://172.18.0.6:8001/check_predecessor
+20:22:01 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:22:09 - __main__.ff - INFO - Updating the finger table
+20:22:09 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:22:10 - __main__.stab - INFO - Stabilizing:
+20:22:10 - __main__.stab - INFO - Current succesor is 172.18.0.3
+20:22:11 - __main__.stab - INFO - Current predecesor is: 172.18.0.6
+20:22:11 - __main__ - INFO - Sending request to http://172.18.0.3:8001/get_predecessor
+20:22:11 - __main__ - INFO - Sending request to http://172.18.0.6:8001/notify
+20:22:11 - __main__.stab - INFO - ===STABILIZING DONE===
+20:22:11 - __main__ - INFO - Sending request to http://172.18.0.6:8001/check_predecessor
+20:22:11 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:22:19 - __main__.ff - INFO - Updating the finger table
+20:22:19 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:22:21 - __main__.stab - INFO - Stabilizing:
+20:22:21 - __main__.stab - INFO - Current succesor is 172.18.0.6
+20:22:21 - __main__.stab - INFO - Current predecesor is: 172.18.0.6
+20:22:21 - __main__ - INFO - Sending request to http://172.18.0.6:8001/get_predecessor
+20:22:21 - __main__ - INFO - Sending request to http://172.18.0.5:8001/notify
+20:22:21 - __main__.stab - INFO - ===STABILIZING DONE===
+20:22:21 - __main__ - INFO - Sending request to http://172.18.0.6:8001/check_predecessor
+20:22:21 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:22:29 - __main__.ff - INFO - Updating the finger table
+20:22:29 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:22:31 - __main__.stab - INFO - Stabilizing:
+20:22:31 - __main__.stab - INFO - Current succesor is 172.18.0.5
+20:22:31 - __main__.stab - INFO - Current predecesor is: 172.18.0.6
+20:22:31 - __main__ - INFO - Sending request to http://172.18.0.5:8001/get_predecessor
+20:22:31 - __main__ - INFO - Sending request to http://172.18.0.2:8001/notify
+20:22:31 - __main__.stab - INFO - ===STABILIZING DONE===
+20:22:31 - __main__ - INFO - Sending request to http://172.18.0.6:8001/check_predecessor
+20:22:31 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:22:39 - __main__.ff - INFO - Updating the finger table
+20:22:39 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:22:41 - __main__.stab - INFO - Stabilizing:
+20:22:41 - __main__.stab - INFO - Current succesor is 172.18.0.2
+20:22:41 - __main__.stab - INFO - Current predecesor is: 172.18.0.6
+20:22:41 - __main__ - INFO - Sending request to http://172.18.0.2:8001/get_predecessor
+20:22:41 - __main__.stab - INFO - ===STABILIZING DONE===
+20:22:41 - __main__ - INFO - Sending request to http://172.18.0.6:8001/check_predecessor
+20:22:41 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:22:49 - __main__.ff - INFO - Updating the finger table
+20:22:49 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:22:51 - __main__.stab - INFO - Stabilizing:
+20:22:51 - __main__.stab - INFO - Current succesor is 172.18.0.2
+20:22:51 - __main__.stab - INFO - Current predecesor is: 172.18.0.6
+20:22:51 - __main__ - INFO - Sending request to http://172.18.0.2:8001/get_predecessor
+20:22:51 - __main__.stab - INFO - ===STABILIZING DONE===
+20:22:51 - __main__ - INFO - Sending request to http://172.18.0.6:8001/check_predecessor
+20:22:51 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:22:59 - __main__.ff - INFO - Updating the finger table
+20:22:59 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:23:01 - __main__.stab - INFO - Stabilizing:
+20:23:01 - __main__.stab - INFO - Current succesor is 172.18.0.2
+20:23:01 - __main__.stab - INFO - Current predecesor is: 172.18.0.6
+20:23:01 - __main__ - INFO - Sending request to http://172.18.0.2:8001/get_predecessor
+20:23:01 - __main__.stab - INFO - ===STABILIZING DONE===
+20:23:01 - __main__ - INFO - Sending request to http://172.18.0.6:8001/check_predecessor
+20:23:01 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:23:09 - __main__.ff - INFO - Updating the finger table
+20:23:09 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:23:11 - __main__.stab - INFO - Stabilizing:
+20:23:11 - __main__.stab - INFO - Current succesor is 172.18.0.2
+20:23:11 - __main__.stab - INFO - Current predecesor is: 172.18.0.6
+20:23:11 - __main__ - INFO - Sending request to http://172.18.0.2:8001/get_predecessor
+20:23:11 - __main__.stab - INFO - ===STABILIZING DONE===
+20:23:11 - __main__ - INFO - Sending request to http://172.18.0.6:8001/check_predecessor
+20:23:11 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:23:19 - __main__.ff - INFO - Updating the finger table
+20:23:19 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:23:21 - __main__.stab - INFO - Stabilizing:
+20:23:21 - __main__.stab - INFO - Current succesor is 172.18.0.2
+20:23:21 - __main__.stab - INFO - Current predecesor is: 172.18.0.6
+20:23:21 - __main__ - INFO - Sending request to http://172.18.0.2:8001/get_predecessor
+20:23:21 - __main__.stab - INFO - ===STABILIZING DONE===
+20:23:21 - __main__ - INFO - Sending request to http://172.18.0.6:8001/check_predecessor
+20:23:21 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:23:29 - __main__.ff - INFO - Updating the finger table
+20:23:29 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:23:31 - __main__.stab - INFO - Stabilizing:
+20:23:31 - __main__.stab - INFO - Current succesor is 172.18.0.2
+20:23:31 - __main__.stab - INFO - Current predecesor is: 172.18.0.6
+20:23:31 - __main__ - INFO - Sending request to http://172.18.0.2:8001/get_predecessor
+20:23:31 - __main__.stab - INFO - ===STABILIZING DONE===
+20:23:31 - __main__ - INFO - Sending request to http://172.18.0.6:8001/check_predecessor
+20:23:31 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:23:39 - __main__.ff - INFO - Updating the finger table
+20:23:39 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:23:41 - __main__.stab - INFO - Stabilizing:
+20:23:41 - __main__.stab - INFO - Current succesor is 172.18.0.2
+20:23:41 - __main__.stab - INFO - Current predecesor is: 172.18.0.6
+20:23:41 - __main__ - INFO - Sending request to http://172.18.0.2:8001/get_predecessor
+20:23:41 - __main__.stab - INFO - ===STABILIZING DONE===
+20:23:42 - __main__ - INFO - Sending request to http://172.18.0.6:8001/check_predecessor
+20:23:42 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:23:49 - __main__.ff - INFO - Updating the finger table
+20:23:49 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:23:51 - __main__.stab - INFO - Stabilizing:
+20:23:51 - __main__.stab - INFO - Current succesor is 172.18.0.2
+20:23:51 - __main__.stab - INFO - Current predecesor is None
+20:23:51 - __main__ - INFO - Sending request to http://172.18.0.2:8001/get_predecessor
+20:23:51 - __main__.stab - INFO - ===STABILIZING DONE===
+20:23:52 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:23:59 - __main__.ff - INFO - Updating the finger table
+20:23:59 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:24:01 - __main__.stab - INFO - Stabilizing:
+20:24:01 - __main__.stab - INFO - Current succesor is 172.18.0.2
+20:24:01 - __main__.stab - INFO - Current predecesor is: 172.18.0.5
+20:24:01 - __main__ - INFO - Sending request to http://172.18.0.2:8001/get_predecessor
+20:24:01 - __main__.stab - INFO - ===STABILIZING DONE===
+20:24:02 - __main__ - INFO - Sending request to http://172.18.0.5:8001/check_predecessor
+20:24:02 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:24:09 - __main__.ff - INFO - Updating the finger table
+20:24:09 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:24:11 - __main__.stab - INFO - Stabilizing:
+20:24:11 - __main__.stab - INFO - Current succesor is 172.18.0.2
+20:24:11 - __main__.stab - INFO - Current predecesor is: 172.18.0.5
+20:24:11 - __main__ - INFO - Sending request to http://172.18.0.2:8001/get_predecessor
+20:24:11 - __main__.stab - INFO - ===STABILIZING DONE===
+20:24:12 - __main__ - INFO - Sending request to http://172.18.0.5:8001/check_predecessor
+20:24:12 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:24:19 - __main__.ff - INFO - Updating the finger table
+20:24:19 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:24:21 - __main__.stab - INFO - Stabilizing:
+20:24:21 - __main__.stab - INFO - Current succesor is 172.18.0.2
+20:24:21 - __main__.stab - INFO - Current predecesor is: 172.18.0.5
+20:24:21 - __main__ - INFO - Sending request to http://172.18.0.2:8001/get_predecessor
+20:24:21 - __main__.stab - INFO - ===STABILIZING DONE===
+20:24:22 - __main__ - INFO - Sending request to http://172.18.0.5:8001/check_predecessor
+20:24:22 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:24:29 - __main__.ff - INFO - Updating the finger table
+20:24:29 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:24:31 - __main__.stab - INFO - Stabilizing:
+20:24:31 - __main__.stab - INFO - Current succesor is 172.18.0.2
+20:24:31 - __main__.stab - INFO - Current predecesor is: 172.18.0.5
+20:24:31 - __main__ - INFO - Sending request to http://172.18.0.2:8001/get_predecessor
+20:24:31 - __main__.stab - INFO - ===STABILIZING DONE===
+20:24:32 - __main__ - INFO - Sending request to http://172.18.0.5:8001/check_predecessor
+20:24:32 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:24:39 - __main__.ff - INFO - Updating the finger table
+20:24:39 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:24:41 - __main__.stab - INFO - Stabilizing:
+20:24:41 - __main__.stab - INFO - Current succesor is 172.18.0.2
+20:24:41 - __main__.stab - INFO - Current predecesor is: 172.18.0.5
+20:24:41 - __main__ - INFO - Sending request to http://172.18.0.2:8001/get_predecessor
+20:24:41 - __main__.stab - INFO - ===STABILIZING DONE===
+20:24:42 - __main__ - INFO - Sending request to http://172.18.0.5:8001/check_predecessor
+20:24:42 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:24:49 - __main__.ff - INFO - Updating the finger table
+20:24:49 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:24:51 - __main__.stab - INFO - Stabilizing:
+20:24:51 - __main__.stab - INFO - Current succesor is 172.18.0.2
+20:24:51 - __main__.stab - INFO - Current predecesor is: 172.18.0.5
+20:24:51 - __main__ - INFO - Sending request to http://172.18.0.2:8001/get_predecessor
+20:24:52 - __main__.stab - INFO - ===STABILIZING DONE===
+20:24:52 - __main__ - INFO - Sending request to http://172.18.0.5:8001/check_predecessor
+20:24:52 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:24:59 - __main__.ff - INFO - Updating the finger table
+20:24:59 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:25:02 - __main__.stab - INFO - Stabilizing:
+20:25:02 - __main__.stab - INFO - Current succesor is 172.18.0.2
+20:25:02 - __main__.stab - INFO - Current predecesor is: 172.18.0.5
+20:25:02 - __main__ - INFO - Sending request to http://172.18.0.2:8001/get_predecessor
+20:25:02 - __main__.stab - INFO - ===STABILIZING DONE===
+20:25:02 - __main__ - INFO - Sending request to http://172.18.0.5:8001/check_predecessor
+20:25:02 - __main__.cp - INFO - ===Predecesor Checking Done===
+20:25:09 - __main__.ff - INFO - Updating the finger table
+20:25:09 - __main__.ff - INFO - ===Finger Table Updating Done===
+20:25:12 - __main__.stab - INFO - Stabilizing:
+20:25:12 - __main__.stab - INFO - Current succesor is 172.18.0.2
+20:25:12 - __main__.stab - INFO - Current predecesor is: 172.18.0.5
+20:25:12 - __main__ - INFO - Sending request to http://172.18.0.2:8001/get_predecessor
+20:25:12 - __main__.stab - INFO - ===STABILIZING DONE===
+20:25:12 - __main__ - INFO - Sending request to http://172.18.0.5:8001/check_predecessor
