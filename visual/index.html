@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Spotify</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <h1 class="sidebar__title">My Spotify</h1>
+            <div class="search-container">
+                <input type="text" class="search" placeholder="Search for songs...">
+            </div>
+            <audio id="audio-player" controls></audio>
+        </aside>
+        <main class="main">
+            <div class="main__content">
+                <section id="featured" class="section">
+                    <h2 class="section__title">Featured</h2>
+                    <div class="section__content">
+                        <div class="featured-item" data-audio="audio/featured1.mp3">
+                            <img src="musica.jpg" alt="Featured 1">
+                            <h3>Featured Item 1</h3>
+                            <p>Description of Featured Item 1</p>
+                        </div>
+                        <div class="featured-item" data-audio="audio/featured2.mp3">
+                            <img src="musica.jpg" alt="Featured 2">
+                            <h3>Featured Item 2</h3>
+                            <p>Description of Featured Item 2</p>
+                        </div>
+                        <!-- Puedes agregar más elementos destacados aquí -->
+                    </div>
+                </section>
+                <section id="popular" class="section">
+                    <h2 class="section__title">Popular</h2>
+                    <div class="section__content">
+                        <div class="popular-item" data-audio="audio/WhatsUp.mp3">
+                            <img src="musica.jpg" alt="WhatsUp">
+                            <h3>WhatsUp</h3>
+                        </div>
+                        <div class="popular-item" data-audio="audio/popular2.mp3">
+                            <img src="musica.jpg" alt="Popular 2">
+                            <h3>Popular Item 2</h3>
+                        </div>
+                        <!-- Puedes agregar más elementos populares aquí -->
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+    <footer class="footer">
+        <p class="footer__copyright">&copy; 2024 My Spotify Clone</p>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
