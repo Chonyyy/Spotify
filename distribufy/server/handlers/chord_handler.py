@@ -34,12 +34,19 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):#TODO: review this class
         logger_rh.debug(f'Handling the following request \n{post_data}')
         
         response = None
-        
+
         if self.path == '/register':
             username = post_data['username']
             password = post_data['password']
             user = User(username, password)
-            self.server.node.store_user(user)
+            self.server.node.store_user(user) #FIXME: This is calling to the node succesor and storing data in it independently it the succesor should store it or not
+            response = {"status": "success"}
+
+        elif self.path == '/store_user':
+            username = post_data['username']
+            password = post_data['password']
+            user = User(username, password)
+            self.server.node.data[getShaRepr(username)] = user.to_dict()#FIXME: call to a node function
             response = {"status": "success"}
         
         if self.path == '/find_successor':
@@ -85,7 +92,11 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):#TODO: review this class
             
         elif self.path == '/list_users':
             response = self.server.node.list_users()
+        
+        if self.path == '/debug/finger_table':
+            self.server.node._print_finger_table()
 
+        #FIXME: returns status 200 even if an error is found
         self.send_response(200)
         self.send_header("Content-type", "application/json")
         self.end_headers()
@@ -101,6 +112,10 @@ class ChordNodeReference:
         self.id = getShaRepr(ip) if not id else id
         self.ip = ip
         self.port = port
+
+    def send_store_user(self, user: User):
+        data = {'username': user.username, 'password': user.password}
+        self._send_request('/store_user', data)
 
     def _send_request(self, path: str, data: dict) -> dict:
         try:
@@ -155,6 +170,14 @@ class ChordNodeReference:
 
     def __repr__(self) -> str:
         return str(self)
+
+    def send_store_user(self, user: User):
+        data = {'username': user.username, 'password': user.password}
+        self._send_request('/store_user', data)
+
+    def send_get_user(self, username: str) -> dict:
+        response = self._send_request('/get_user', {'username': username})
+        return response
      
 class ChordNode:
     def __init__(self, ip: str, port: int = 8001, m: int = 160):
@@ -183,15 +206,32 @@ class ChordNode:
         threading.Thread(target=self.stabilize, daemon=True).start()  # Start stabilize thread
         threading.Thread(target=self.fix_fingers, daemon=True).start()  # Start fix fingers thread
         threading.Thread(target=self.check_predecessor, daemon=True).start()  # Start check predecessor thread
-        
+
     def store_user(self, user: User):
         user_key = getShaRepr(user.username)
-        self.data[user_key] = user.to_dict()
-        logger.info(f'User {user.username} stored at node {self.ip}')
-    
+        logger.debug(f'storing user: {user_key}')
+        target_node = self.find_succ(user_key)
+        if target_node.id == self.id:
+            self.data[user_key] = user.to_dict()
+            logger.info(f'User {user.username} stored at node {self.ip}')
+        else:
+            target_node.send_store_user(user)
+
     def get_user(self, username: str) -> dict:
         user_key = getShaRepr(username)
-        return self.data.get(user_key, None)
+        target_node = self.find_succ(user_key)
+        if target_node.id == self.id:
+            return self.data.get(user_key, None)#FIXME
+        else:
+            return target_node.send_get_user(username)#FIXME
+
+    def list_users(self) -> dict:
+        all_users = self.data.values()
+        return {"users": list(all_users)}
+
+    def send_get_user(self, username: str) -> dict:
+        response = self.ref._send_request('/get_user', {'username': username})#FIXME
+        return response
 
     def list_users(self) -> dict:
         return {"users": list(self.data.values())}
@@ -285,3 +325,31 @@ class ChordNode:
                 self.pred = None
             logger_cp.info('===Predecesor Checking Done===')
             time.sleep(10)
+            
+    def _print_finger_table(self):
+        logger.debug("Finger table for node {}:{}".format(self.ip, self.port))
+        intervals = []
+
+        # Generate intervals
+        for i in range(self.m):
+            start = (self.id + 2**i) % 2**self.m
+            end = (self.id + 2**(i + 1)) % 2**self.m
+            manager_node = self.finger[i]
+            intervals.append((start, end, manager_node.ip, manager_node.port))
+
+        # Merge intervals
+        merged_intervals = []
+        current_start, current_end, current_ip, current_port = intervals[0]
+
+        for start, end, ip, port in intervals[1:]:
+            if ip == current_ip and port == current_port:
+                current_end = end
+            else:
+                merged_intervals.append((current_start, current_end, current_ip, current_port))
+                current_start, current_end, current_ip, current_port = start, end, ip, port
+
+        merged_intervals.append((current_start, current_end, current_ip, current_port))
+
+        # Print merged intervals
+        for start, end, ip, port in merged_intervals:
+            logger.debug(f"{start}-{end}-{ip}:{port}")

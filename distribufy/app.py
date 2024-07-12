@@ -19,7 +19,7 @@ if __name__ == "__main__":
         datefmt= date_format,
         filemode= 'w')
     
-    logger.setLevel(logging.INFO)
+    logger.setLevel(logging.DEBUG)
 
     discovered_ip = None
     multicast_thread = threading.Thread(target=send_multicast, daemon=True)

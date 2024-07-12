@@ -1,0 +1,19 @@
+//Register a new user
+Invoke-WebRequest -Uri http://localhost:8001/register -Method POST -Body '{"username": "user1", "password": "password123"}' -ContentType "application/json"
+
+//Getting an specific user
+Invoke-WebRequest -Uri http://localhost:8001/get_user?user=user1 -Method GET -ContentType "application/json"
+
+//Getting all Users
+Invoke-WebRequest -Uri http://localhost:8001/list_users -Method GET -ContentType "application/json"
+
+//Printing the Finger table
+Invoke-WebRequest -Uri http://localhost:8001/debug/finger_table -Method GET -ContentType "application/json"
+
+//From Ubuntu use CURL
+
+//Running a container instance
+//exposing port -p 8001:8001 
+docker run -it --rm --name first_container -p 8001:8001 -v .\:/app distribufy
+docker run -it --rm --name second_container -p 8002:8001 -v .\:/app distribufy
+docker run -it --rm --name third_container -p 8003:8001 -v .\:/app distribufy
