@@ -1,7 +1,9 @@
 import socket
 import sys
 import logging
+import threading
 from server.server import start_server
+from server.utils.multicast import send_multicast, receive_multicast
 
 logger = logging.getLogger(__name__)
 
@@ -19,8 +21,17 @@ if __name__ == "__main__":
     
     logger.setLevel(logging.INFO)
 
+    discovered_ip = None
+    multicast_thread = threading.Thread(target=send_multicast, daemon=True)
+    multicast_thread.start()
+
     if len(sys.argv) >= 2:
         other_ip = sys.argv[1]
         start_server(ip, other_ip)
     else:
-        start_server(ip)
+        # Attempt to discover another node via multicast
+        discovered_ip = receive_multicast()
+        if discovered_ip:
+            start_server(ip, discovered_ip)
+        else:
+            start_server(ip)

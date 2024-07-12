@@ -5,6 +5,7 @@ import requests
 import time
 import logging
 from http.server import BaseHTTPRequestHandler, HTTPServer
+from server.handlers.user import User
 
 logger = logging.getLogger("__main__")
 logger_stab = logging.getLogger("__main__" + ".stab")
@@ -33,6 +34,14 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):#TODO: review this class
         logger_rh.debug(f'Handling the following request \n{post_data}')
         
         response = None
+        
+        if self.path == '/register':
+            username = post_data['username']
+            password = post_data['password']
+            user = User(username, password)
+            self.server.node.store_user(user)
+            response = {"status": "success"}
+        
         if self.path == '/find_successor':
             response = self.server.node.find_succ(post_data['id'])
         elif self.path == '/find_predecessor':
@@ -50,7 +59,7 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):#TODO: review this class
             pass
         elif self.path == '/closest_preceding_finger':
             response = self.server.node.closest_preceding_finger(post_data['id'])
-        
+
         self.send_response(200)
         self.send_header("Content-type", "application/json")
         self.end_headers()
@@ -59,6 +68,32 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):#TODO: review this class
             self.wfile.write(json.dumps({'id': response.id, 'ip': response.ip}).encode())
         else:
             self.wfile.write(json.dumps({'id': None, 'ip': None}).encode())
+            
+    def do_GET(self):
+        logger_rh.debug(f'Request path {self.path}')
+        response = None
+        
+        if self.path.startswith('/get_user'):
+            query = self.path.split('?')
+            if len(query) > 1:
+                username = query[1].split('=')[1]
+                response = self.server.node.get_user(username)
+            else:
+                self.send_response(400)
+                self.end_headers()
+                return
+            
+        elif self.path == '/list_users':
+            response = self.server.node.list_users()
+
+        self.send_response(200)
+        self.send_header("Content-type", "application/json")
+        self.end_headers()
+
+        if response:
+            self.wfile.write(json.dumps(response).encode())
+        else:
+            self.wfile.write(json.dumps({'status': 'error', 'message': 'User not found'}).encode())
 
 
 class ChordNodeReference:
@@ -133,6 +168,8 @@ class ChordNode:
         self.m = m # Number of bits in the hash/key space
         self.finger = [self.ref] * self.m # Finger table
         self.next = 0 # Finger table index to fix next
+        
+        self.data = {}
 
         server_address = (self.ip, self.port)
         self.httpd = HTTPServer(server_address, ChordNodeRequestHandler)
@@ -146,6 +183,18 @@ class ChordNode:
         threading.Thread(target=self.stabilize, daemon=True).start()  # Start stabilize thread
         threading.Thread(target=self.fix_fingers, daemon=True).start()  # Start fix fingers thread
         threading.Thread(target=self.check_predecessor, daemon=True).start()  # Start check predecessor thread
+        
+    def store_user(self, user: User):
+        user_key = getShaRepr(user.username)
+        self.data[user_key] = user.to_dict()
+        logger.info(f'User {user.username} stored at node {self.ip}')
+    
+    def get_user(self, username: str) -> dict:
+        user_key = getShaRepr(username)
+        return self.data.get(user_key, None)
+
+    def list_users(self) -> dict:
+        return {"users": list(self.data.values())}
 
     def _inbetween(self, k: int, start: int, end: int) -> bool:
         """Check if k is in the interval (start, end]."""

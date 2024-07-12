@@ -1,0 +1,16 @@
+03:04:37 - __main__ - INFO - Discovered node: 172.17.0.2
+03:04:37 - __main__ - INFO - Multicast discovery message sent.
+03:04:37 - __main__ - INFO - node_addr: 172.17.0.2:8001
+03:04:37 - __main__ - INFO - Http serving comenced
+03:04:37 - __main__.stab - INFO - Stabilizing:
+03:04:37 - __main__.ff - INFO - Updating the finger table
+03:04:37 - __main__.stab - INFO - Current succesor is 172.17.0.2
+03:04:37 - __main__.cp - INFO - Checking Predecesor
+03:04:37 - __main__ - INFO - Sending request to http://172.17.0.2:8001/find_successor
+03:04:37 - __main__.ff - INFO - ===Finger Table Updating Done===
+03:04:37 - __main__.stab - INFO - Current predecesor is: 172.17.0.2
+03:04:37 - __main__ - INFO - Sending request to http://172.17.0.2:8001/check_predecessor
+03:04:37 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
+03:04:37 - __main__ - INFO - Sending request to http://172.17.0.2:8001/notify
+03:04:37 - __main__.cp - INFO - ===Predecesor Checking Done===
+03:04:37 - __main__.stab - INFO - ===STABILIZING DONE===
