@@ -13,16 +13,6 @@ logger_ff = logging.getLogger("__main__" + ".ff")
 logger_cp = logging.getLogger("__main__" + ".cp")
 logger_rh = logging.getLogger("__main__" + ".rh")
 
-
-# Operation codes (for reference)
-FIND_SUCCESSOR = 1
-FIND_PREDECESSOR = 2
-GET_SUCCESSOR = 3
-GET_PREDECESSOR = 4
-NOTIFY = 5
-CHECK_PREDECESSOR = 6
-CLOSEST_PRECEDING_FINGER = 7
-
 def getShaRepr(data: str):
     return int(hashlib.sha1(data.encode()).hexdigest(), 16)
 
@@ -118,20 +108,27 @@ class ChordNodeReference:
         self._send_request('/store_user', data)
 
     def _send_request(self, path: str, data: dict) -> dict:
-        try:
-            url = f'http://{self.ip}:{self.port}{path}'
+        i = 0
+        while True:
+            i+= 1
+            try:
+                url = f'http://{self.ip}:{self.port}{path}'
 
-            logger.info(f'Sending request to {url}')
-            logger.debug(f'Payload: {data}')
+                logger.info(f'Sending request to {url}')
+                logger.debug(f'Payload: {data}')
 
-            response = (requests.post(url, json= data)).json()
-            logger.debug(f'From {url} recieved:\n{response}')
-            return response
-        except requests.ConnectionError as e:
-            raise ConnectionRefusedError(e.strerror)
-        except Exception as e:
-            logger.error(f"Error sending data: {e}")
-            return {}
+                response = (requests.post(url, json= data)).json()
+                logger.debug(f'From {url} recieved:\n{response}')
+                return response
+            except requests.ConnectionError as e:
+                logger.error(f'Connection Error in IP {self.ip}')
+                if i == 10:
+                    raise ConnectionError(f'Connection error from IP {self.ip}')
+            except Exception as e:
+                logger.error(f"Error sending data: {e}")
+                raise e
+                return {}
+            # time.sleep(5)#TODO: Uncoment this
     
     def find_successor(self, id: int) -> 'ChordNodeReference':
         response = self._send_request('/find_successor', {'id': str(id)})
@@ -262,13 +259,14 @@ class ChordNode:
 
     def join(self, node: 'ChordNodeReference'):
         """Join a Chord network using 'node' as an entry point."""
-        if node:
-            self.pred = self.ref
-            self.succ = node.find_successor(self.id)
-            self.succ.notify(self.ref)
-        else:
-            self.succ = self.ref
-            self.pred = self.ref
+        # if node:
+        self.pred = self.ref
+        self.succ = node.find_successor(self.id)
+        logger.info(f'New-Succ-join | {node.id} | node {self.id}')
+        self.succ.notify(self.ref)
+        # else:
+        #     self.succ = self.ref
+        #     self.pred = self.ref
 
     def stabilize(self):
         """Regular check for correct Chord structure."""
@@ -286,9 +284,11 @@ class ChordNode:
                 if x.id != self.id:
                     if x and self._inbetween(x.id, self.id, self.succ.id):
                         self.succ = x
+                        logger.info(f'New-Succ-Stabilize | {x.id} | node {self.id}')
                     self.succ.notify(self.ref)
             except ConnectionRefusedError as e:
                 self.succ = self.ref
+                logger.info(f'New-Succ-Stabilize | self | node {self.id}')
             except Exception as e:
                 logger_stab.error(f"Error in stabilize: {e}")
             logger_stab.info('===STABILIZING DONE===')
@@ -303,16 +303,18 @@ class ChordNode:
     def fix_fingers(self):
         """Periodically update finger table entries."""
         while True:
-            logger_ff.info('Updating the finger table')
+            logger_ff.info('Updating The Finger Table')
             try:
                 self.next += 1
                 if self.next >= self.m:
+                    logger_ff.info('Finished Finger Table Iteration')
+                    self._print_finger_table()
                     self.next = 0
                 self.finger[self.next] = self.find_succ((self.id + 2**self.next) % 2**self.m)
             except Exception as e:
                 logger_ff.error(f"Error in fix_fingers: {e}")
             logger_ff.info('===Finger Table Updating Done===')
-            time.sleep(10)
+            time.sleep(1)
 
     def check_predecessor(self):
         """Periodically check if predecessor is alive."""
@@ -327,7 +329,7 @@ class ChordNode:
             time.sleep(10)
             
     def _print_finger_table(self):
-        logger.debug("Finger table for node {}:{}".format(self.ip, self.port))
+        logger.debug("Finger table for node {}:{}|{}".format(self.ip, self.port, self.id))
         intervals = []
 
         # Generate intervals
