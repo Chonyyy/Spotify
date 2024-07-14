@@ -1,1474 +1,276 @@
-21:40:50 - __main__ - INFO - Multicast discovery message sent.
-21:41:00 - __main__ - INFO - Multicast discovery message sent.
-21:41:00 - __main__ - INFO - Discovered node: 172.17.0.2
-21:41:00 - __main__ - INFO - node_addr: 172.17.0.2:8001
-21:41:00 - __main__ - INFO - Http serving comenced
-21:41:00 - __main__.stab - INFO - Stabilizing:
-21:41:00 - __main__.stab - INFO - Current succesor is 172.17.0.2
-21:41:00 - __main__.ff - INFO - Updating The Finger Table
-21:41:00 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889216406545, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:00 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:00 - __main__ - INFO - Sending request to http://172.17.0.2:8001/find_successor
-21:41:00 - __main__ - DEBUG - Payload: {'id': '746391104433116747568177882827823675889216406543'}
-21:41:00 - __main__.stab - INFO - Current predecesor is: 172.17.0.2
-21:41:00 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
-21:41:00 - __main__ - DEBUG - Payload: {}
-21:41:00 - __main__.cp - INFO - Checking Predecesor
-21:41:00 - __main__ - INFO - Sending request to http://172.17.0.2:8001/check_predecessor
-21:41:00 - __main__ - DEBUG - Payload: {}
-21:41:00 - __main__.rh - DEBUG - Request path /get_predecessor
-21:41:00 - __main__.rh - DEBUG - Handling the following request 
+08:06:48 - __main__ - INFO - Multicast discovery message sent.
+08:06:58 - __main__ - INFO - Multicast discovery message sent.
+08:06:58 - __main__ - INFO - Discovered node: 172.17.0.2
+08:06:58 - __main__ - INFO - node_addr: 172.17.0.2:8001
+08:06:58 - __main__ - INFO - HTTP serving commenced
+08:06:58 - __main__.stab - INFO - Stabilizing:
+08:06:58 - __main__.stab - INFO - Current successor is 172.17.0.2
+08:06:58 - __main__.ff - INFO - Updating The Finger Table
+08:06:58 - __main__.cp - INFO - Checking Predecessor
+08:06:58 - __main__ - INFO - Sending request to http://172.17.0.2:8001/check_predecessor
+Payload: {}
+08:06:58 - __main__ - DEBUG - Inbetween (k = 746391104433116747568177882827823675889216406545, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
+08:06:58 - __main__.ff - INFO - ===Finger Table Updating Done===
+08:06:58 - __main__.stab - INFO - Current predecessor is: 172.17.0.2
+08:06:58 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
+Payload: {}
+08:06:58 - __main__.rh - DEBUG - Request path /check_predecessor
+08:06:58 - __main__.rh - DEBUG - Handling the following request 
 {}
-21:41:00 - __main__.rh - DEBUG - Response for get_predecesor request:
+08:06:58 - __main__ - DEBUG - From http://172.17.0.2:8001/check_predecessor received:
+{'id': None, 'ip': None}
+08:06:58 - __main__.rh - DEBUG - Request path /get_predecessor
+08:06:58 - __main__.cp - INFO - ===Predecessor Checking Done===
+08:06:58 - __main__.rh - DEBUG - Handling the following request 
+{}
+08:06:58 - __main__.rh - DEBUG - Response for get_predecessor request:
 746391104433116747568177882827823675889216406543,172.17.0.2,8001
-21:41:00 - __main__.rh - DEBUG - Request path /find_successor
-21:41:00 - __main__ - DEBUG - From http://172.17.0.2:8001/get_predecessor recieved:
+08:06:58 - __main__ - DEBUG - From http://172.17.0.2:8001/get_predecessor received:
 {'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:41:00 - __main__.rh - DEBUG - Handling the following request 
-{'id': '746391104433116747568177882827823675889216406543'}
-21:41:00 - __main__ - DEBUG - Get Predecesor Response:
+08:06:58 - __main__ - DEBUG - Get Predecessor Response:
 {'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:41:00 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889216406543, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:00 - __main__.stab - INFO - ===STABILIZING DONE===
-21:41:00 - __main__.rh - DEBUG - Request path /check_predecessor
-21:41:00 - __main__ - DEBUG - From http://172.17.0.2:8001/find_successor recieved:
+08:06:58 - __main__ - INFO - Sending request to http://172.17.0.2:8001/notify
+Payload: {'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+08:06:58 - __main__.rh - DEBUG - Request path /notify
+08:06:58 - __main__.rh - DEBUG - Handling the following request 
 {'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:41:00 - __main__.rh - DEBUG - Handling the following request 
-{}
-21:41:00 - __main__ - DEBUG - Find Successor Response:
-{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:41:00 - __main__ - INFO - New-Succ-join | 172.17.0.2 | node 746391104433116747568177882827823675889216406543
-21:41:00 - __main__ - DEBUG - From http://172.17.0.2:8001/check_predecessor recieved:
+08:06:58 - __main__ - DEBUG - From http://172.17.0.2:8001/notify received:
 {'id': None, 'ip': None}
-21:41:00 - __main__ - INFO - Sending request to http://172.17.0.2:8001/notify
-21:41:00 - __main__.cp - INFO - ===Predecesor Checking Done===
-21:41:00 - __main__ - DEBUG - Payload: {'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:41:00 - __main__.rh - DEBUG - Request path /notify
-21:41:00 - __main__.rh - DEBUG - Handling the following request 
-{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:41:00 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889216406543, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:00 - __main__ - DEBUG - From http://172.17.0.2:8001/notify recieved:
-{'id': None, 'ip': None}
-21:41:01 - __main__.ff - INFO - Updating The Finger Table
-21:41:01 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889216406547, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:01 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:02 - __main__.ff - INFO - Updating The Finger Table
-21:41:02 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889216406551, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:02 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:03 - __main__.ff - INFO - Updating The Finger Table
-21:41:03 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889216406559, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:03 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:04 - __main__.ff - INFO - Updating The Finger Table
-21:41:04 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889216406575, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:04 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:05 - __main__.ff - INFO - Updating The Finger Table
-21:41:05 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889216406607, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:05 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:06 - __main__.ff - INFO - Updating The Finger Table
-21:41:06 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889216406671, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:06 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:07 - __main__.ff - INFO - Updating The Finger Table
-21:41:07 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889216406799, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:07 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:08 - __main__.ff - INFO - Updating The Finger Table
-21:41:08 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889216407055, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:08 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:09 - __main__.ff - INFO - Updating The Finger Table
-21:41:09 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889216407567, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:09 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:10 - __main__ - INFO - Multicast discovery message sent.
-21:41:10 - __main__ - INFO - Sending request to http://172.17.0.2:8001/check_predecessor
-21:41:10 - __main__ - DEBUG - Payload: {}
-21:41:10 - __main__.stab - INFO - Stabilizing:
-21:41:10 - __main__.stab - INFO - Current succesor is 172.17.0.2
-21:41:10 - __main__.stab - INFO - Current predecesor is: 172.17.0.2
-21:41:10 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
-21:41:10 - __main__ - DEBUG - Payload: {}
-21:41:10 - __main__.rh - DEBUG - Request path /check_predecessor
-21:41:10 - __main__.rh - DEBUG - Handling the following request 
+08:06:58 - __main__.stab - INFO - ===STABILIZING DONE===
+08:07:08 - __main__ - INFO - Multicast discovery message sent.
+08:07:08 - __main__.ff - INFO - Updating The Finger Table
+08:07:08 - __main__ - DEBUG - Inbetween (k = 746391104433116747568177882827823675889216406547, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
+08:07:08 - __main__.ff - INFO - ===Finger Table Updating Done===
+08:07:08 - __main__ - INFO - Sending request to http://172.17.0.2:8001/check_predecessor
+Payload: {}
+08:07:08 - __main__.rh - DEBUG - Request path /check_predecessor
+08:07:08 - __main__.rh - DEBUG - Handling the following request 
 {}
-21:41:10 - __main__ - DEBUG - From http://172.17.0.2:8001/check_predecessor recieved:
+08:07:08 - __main__ - DEBUG - From http://172.17.0.2:8001/check_predecessor received:
 {'id': None, 'ip': None}
-21:41:10 - __main__.cp - INFO - ===Predecesor Checking Done===
-21:41:10 - __main__.rh - DEBUG - Request path /get_predecessor
-21:41:10 - __main__.rh - DEBUG - Handling the following request 
+08:07:08 - __main__.cp - INFO - ===Predecessor Checking Done===
+08:07:08 - __main__.stab - INFO - Stabilizing:
+08:07:08 - __main__.stab - INFO - Current successor is 172.17.0.2
+08:07:08 - __main__.stab - INFO - Current predecessor is: 172.17.0.2
+08:07:08 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
+Payload: {}
+08:07:08 - __main__.rh - DEBUG - Request path /get_predecessor
+08:07:08 - __main__.rh - DEBUG - Handling the following request 
 {}
-21:41:10 - __main__.rh - DEBUG - Response for get_predecesor request:
+08:07:08 - __main__.rh - DEBUG - Response for get_predecessor request:
 746391104433116747568177882827823675889216406543,172.17.0.2,8001
-21:41:10 - __main__ - DEBUG - From http://172.17.0.2:8001/get_predecessor recieved:
+08:07:08 - __main__ - DEBUG - From http://172.17.0.2:8001/get_predecessor received:
 {'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:41:10 - __main__ - DEBUG - Get Predecesor Response:
+08:07:08 - __main__ - DEBUG - Get Predecessor Response:
 {'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:41:10 - __main__.stab - INFO - ===STABILIZING DONE===
-21:41:10 - __main__.ff - INFO - Updating The Finger Table
-21:41:10 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889216408591, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:10 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:11 - __main__.ff - INFO - Updating The Finger Table
-21:41:11 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889216410639, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:11 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:12 - __main__.ff - INFO - Updating The Finger Table
-21:41:12 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889216414735, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:12 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:13 - __main__.ff - INFO - Updating The Finger Table
-21:41:13 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889216422927, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:13 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:14 - __main__.ff - INFO - Updating The Finger Table
-21:41:14 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889216439311, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:14 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:15 - __main__.ff - INFO - Updating The Finger Table
-21:41:15 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889216472079, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:15 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:16 - __main__.ff - INFO - Updating The Finger Table
-21:41:16 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889216537615, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:16 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:17 - __main__.ff - INFO - Updating The Finger Table
-21:41:17 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889216668687, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:17 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:18 - __main__.ff - INFO - Updating The Finger Table
-21:41:18 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889216930831, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:18 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:19 - __main__.ff - INFO - Updating The Finger Table
-21:41:19 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889217455119, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:19 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:20 - __main__ - INFO - Multicast discovery message sent.
-21:41:20 - __main__ - INFO - Sending request to http://172.17.0.2:8001/check_predecessor
-21:41:20 - __main__ - DEBUG - Payload: {}
-21:41:20 - __main__.rh - DEBUG - Request path /check_predecessor
-21:41:20 - __main__.rh - DEBUG - Handling the following request 
-{}
-21:41:20 - __main__.stab - INFO - Stabilizing:
-21:41:20 - __main__.stab - INFO - Current succesor is 172.17.0.2
-21:41:20 - __main__.stab - INFO - Current predecesor is: 172.17.0.2
-21:41:20 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
-21:41:20 - __main__ - DEBUG - Payload: {}
-21:41:20 - __main__ - DEBUG - From http://172.17.0.2:8001/check_predecessor recieved:
+08:07:08 - __main__ - INFO - Sending request to http://172.17.0.2:8001/notify
+Payload: {'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+08:07:08 - __main__.rh - DEBUG - Request path /notify
+08:07:08 - __main__.rh - DEBUG - Handling the following request 
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+08:07:08 - __main__ - DEBUG - From http://172.17.0.2:8001/notify received:
 {'id': None, 'ip': None}
-21:41:20 - __main__.cp - INFO - ===Predecesor Checking Done===
-21:41:20 - __main__.rh - DEBUG - Request path /get_predecessor
-21:41:20 - __main__.rh - DEBUG - Handling the following request 
+08:07:08 - __main__.stab - INFO - ===STABILIZING DONE===
+08:07:18 - __main__ - INFO - Multicast discovery message sent.
+08:07:18 - __main__.ff - INFO - Updating The Finger Table
+08:07:18 - __main__ - DEBUG - Inbetween (k = 746391104433116747568177882827823675889216406551, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
+08:07:18 - __main__.ff - INFO - ===Finger Table Updating Done===
+08:07:18 - __main__ - INFO - Sending request to http://172.17.0.2:8001/check_predecessor
+Payload: {}
+08:07:18 - __main__.rh - DEBUG - Request path /check_predecessor
+08:07:18 - __main__.rh - DEBUG - Handling the following request 
 {}
-21:41:20 - __main__.rh - DEBUG - Response for get_predecesor request:
-746391104433116747568177882827823675889216406543,172.17.0.2,8001
-21:41:20 - __main__ - DEBUG - From http://172.17.0.2:8001/get_predecessor recieved:
-{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:41:20 - __main__ - DEBUG - Get Predecesor Response:
-{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:41:20 - __main__.stab - INFO - ===STABILIZING DONE===
-21:41:20 - __main__.ff - INFO - Updating The Finger Table
-21:41:20 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889218503695, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:20 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:21 - __main__.ff - INFO - Updating The Finger Table
-21:41:21 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889220600847, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:21 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:22 - __main__.ff - INFO - Updating The Finger Table
-21:41:22 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889224795151, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:22 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:23 - __main__.ff - INFO - Updating The Finger Table
-21:41:23 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889233183759, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:23 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:24 - __main__.ff - INFO - Updating The Finger Table
-21:41:24 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889249960975, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:24 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:25 - __main__.ff - INFO - Updating The Finger Table
-21:41:25 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889283515407, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:26 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:27 - __main__.ff - INFO - Updating The Finger Table
-21:41:27 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889350624271, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:27 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:28 - __main__.ff - INFO - Updating The Finger Table
-21:41:28 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889484841999, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:28 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:29 - __main__.ff - INFO - Updating The Finger Table
-21:41:29 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889753277455, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:29 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:30 - __main__.ff - INFO - Updating The Finger Table
-21:41:30 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675890290148367, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:30 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:30 - __main__ - INFO - Multicast discovery message sent.
-21:41:30 - __main__ - INFO - Sending request to http://172.17.0.2:8001/check_predecessor
-21:41:30 - __main__ - DEBUG - Payload: {}
-21:41:30 - __main__.rh - DEBUG - Request path /check_predecessor
-21:41:30 - __main__.rh - DEBUG - Handling the following request 
-{}
-21:41:30 - __main__ - DEBUG - From http://172.17.0.2:8001/check_predecessor recieved:
+08:07:18 - __main__ - DEBUG - From http://172.17.0.2:8001/check_predecessor received:
 {'id': None, 'ip': None}
-21:41:30 - __main__.cp - INFO - ===Predecesor Checking Done===
-21:41:30 - __main__.stab - INFO - Stabilizing:
-21:41:30 - __main__.stab - INFO - Current succesor is 172.17.0.2
-21:41:30 - __main__.stab - INFO - Current predecesor is: 172.17.0.2
-21:41:30 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
-21:41:30 - __main__ - DEBUG - Payload: {}
-21:41:30 - __main__.rh - DEBUG - Request path /get_predecessor
-21:41:30 - __main__.rh - DEBUG - Handling the following request 
+08:07:18 - __main__.cp - INFO - ===Predecessor Checking Done===
+08:07:18 - __main__.stab - INFO - Stabilizing:
+08:07:18 - __main__.stab - INFO - Current successor is 172.17.0.2
+08:07:18 - __main__.stab - INFO - Current predecessor is: 172.17.0.2
+08:07:18 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
+Payload: {}
+08:07:18 - __main__.rh - DEBUG - Request path /get_predecessor
+08:07:18 - __main__.rh - DEBUG - Handling the following request 
 {}
-21:41:30 - __main__.rh - DEBUG - Response for get_predecesor request:
+08:07:18 - __main__.rh - DEBUG - Response for get_predecessor request:
 746391104433116747568177882827823675889216406543,172.17.0.2,8001
-21:41:30 - __main__ - DEBUG - From http://172.17.0.2:8001/get_predecessor recieved:
+08:07:18 - __main__ - DEBUG - From http://172.17.0.2:8001/get_predecessor received:
 {'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:41:30 - __main__ - DEBUG - Get Predecesor Response:
+08:07:18 - __main__ - DEBUG - Get Predecessor Response:
 {'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:41:30 - __main__.stab - INFO - ===STABILIZING DONE===
-21:41:31 - __main__.ff - INFO - Updating The Finger Table
-21:41:31 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675891363890191, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:31 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:32 - __main__.ff - INFO - Updating The Finger Table
-21:41:32 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675893511373839, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:32 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:33 - __main__.ff - INFO - Updating The Finger Table
-21:41:33 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675897806341135, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:33 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:34 - __main__.ff - INFO - Updating The Finger Table
-21:41:34 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675906396275727, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:34 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:35 - __main__.ff - INFO - Updating The Finger Table
-21:41:35 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675923576144911, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:35 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:36 - __main__.ff - INFO - Updating The Finger Table
-21:41:36 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675957935883279, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:36 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:37 - __main__.ff - INFO - Updating The Finger Table
-21:41:37 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823676026655360015, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:37 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:38 - __main__.ff - INFO - Updating The Finger Table
-21:41:38 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823676164094313487, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:38 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:39 - __main__.ff - INFO - Updating The Finger Table
-21:41:39 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823676438972220431, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:39 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:40 - __main__.ff - INFO - Updating The Finger Table
-21:41:40 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823676988728034319, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:40 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:40 - __main__ - INFO - Multicast discovery message sent.
-21:41:40 - __main__ - INFO - Sending request to http://172.17.0.2:8001/check_predecessor
-21:41:40 - __main__ - DEBUG - Payload: {}
-21:41:40 - __main__.rh - DEBUG - Request path /check_predecessor
-21:41:40 - __main__.rh - DEBUG - Handling the following request 
-{}
-21:41:40 - __main__ - DEBUG - From http://172.17.0.2:8001/check_predecessor recieved:
+08:07:18 - __main__ - INFO - Sending request to http://172.17.0.2:8001/notify
+Payload: {'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+08:07:18 - __main__.rh - DEBUG - Request path /notify
+08:07:18 - __main__.rh - DEBUG - Handling the following request 
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+08:07:18 - __main__ - DEBUG - From http://172.17.0.2:8001/notify received:
 {'id': None, 'ip': None}
-21:41:40 - __main__.cp - INFO - ===Predecesor Checking Done===
-21:41:40 - __main__.stab - INFO - Stabilizing:
-21:41:40 - __main__.stab - INFO - Current succesor is 172.17.0.2
-21:41:40 - __main__.stab - INFO - Current predecesor is: 172.17.0.2
-21:41:40 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
-21:41:40 - __main__ - DEBUG - Payload: {}
-21:41:40 - __main__.rh - DEBUG - Request path /get_predecessor
-21:41:40 - __main__.rh - DEBUG - Handling the following request 
+08:07:18 - __main__.stab - INFO - ===STABILIZING DONE===
+08:07:28 - __main__ - INFO - Multicast discovery message sent.
+08:07:28 - __main__.ff - INFO - Updating The Finger Table
+08:07:28 - __main__ - DEBUG - Inbetween (k = 746391104433116747568177882827823675889216406559, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
+08:07:28 - __main__.ff - INFO - ===Finger Table Updating Done===
+08:07:28 - __main__ - INFO - Sending request to http://172.17.0.2:8001/check_predecessor
+Payload: {}
+08:07:28 - __main__.rh - DEBUG - Request path /check_predecessor
+08:07:28 - __main__.rh - DEBUG - Handling the following request 
 {}
-21:41:40 - __main__.rh - DEBUG - Response for get_predecesor request:
-746391104433116747568177882827823675889216406543,172.17.0.2,8001
-21:41:40 - __main__ - DEBUG - From http://172.17.0.2:8001/get_predecessor recieved:
-{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:41:40 - __main__ - DEBUG - Get Predecesor Response:
-{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:41:40 - __main__.stab - INFO - ===STABILIZING DONE===
-21:41:41 - __main__.ff - INFO - Updating The Finger Table
-21:41:41 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823678088239662095, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:41 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:42 - __main__.ff - INFO - Updating The Finger Table
-21:41:42 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823680287262917647, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:42 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:43 - __main__.ff - INFO - Updating The Finger Table
-21:41:43 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823684685309428751, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:43 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:44 - __main__.ff - INFO - Updating The Finger Table
-21:41:44 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823693481402450959, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:44 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:45 - __main__.ff - INFO - Updating The Finger Table
-21:41:45 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823711073588495375, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:45 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:46 - __main__.ff - INFO - Updating The Finger Table
-21:41:46 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823746257960584207, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:46 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:47 - __main__.ff - INFO - Updating The Finger Table
-21:41:47 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823816626704761871, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:47 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:48 - __main__.ff - INFO - Updating The Finger Table
-21:41:48 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823957364193117199, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:48 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:49 - __main__.ff - INFO - Updating The Finger Table
-21:41:49 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827824238839169827855, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:49 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:50 - __main__ - INFO - Multicast discovery message sent.
-21:41:50 - __main__.ff - INFO - Updating The Finger Table
-21:41:50 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827824801789123249167, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:50 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:50 - __main__ - INFO - Sending request to http://172.17.0.2:8001/check_predecessor
-21:41:50 - __main__ - DEBUG - Payload: {}
-21:41:50 - __main__.rh - DEBUG - Request path /check_predecessor
-21:41:50 - __main__.rh - DEBUG - Handling the following request 
-{}
-21:41:50 - __main__ - DEBUG - From http://172.17.0.2:8001/check_predecessor recieved:
+08:07:28 - __main__ - DEBUG - From http://172.17.0.2:8001/check_predecessor received:
 {'id': None, 'ip': None}
-21:41:50 - __main__.cp - INFO - ===Predecesor Checking Done===
-21:41:50 - __main__.stab - INFO - Stabilizing:
-21:41:50 - __main__.stab - INFO - Current succesor is 172.17.0.2
-21:41:50 - __main__.stab - INFO - Current predecesor is: 172.17.0.2
-21:41:50 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
-21:41:50 - __main__ - DEBUG - Payload: {}
-21:41:51 - __main__.rh - DEBUG - Request path /get_predecessor
-21:41:51 - __main__.rh - DEBUG - Handling the following request 
+08:07:28 - __main__.cp - INFO - ===Predecessor Checking Done===
+08:07:28 - __main__.stab - INFO - Stabilizing:
+08:07:28 - __main__.stab - INFO - Current successor is 172.17.0.2
+08:07:28 - __main__.stab - INFO - Current predecessor is: 172.17.0.2
+08:07:28 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
+Payload: {}
+08:07:28 - __main__.rh - DEBUG - Request path /get_predecessor
+08:07:28 - __main__.rh - DEBUG - Handling the following request 
 {}
-21:41:51 - __main__.rh - DEBUG - Response for get_predecesor request:
+08:07:28 - __main__.rh - DEBUG - Response for get_predecessor request:
 746391104433116747568177882827823675889216406543,172.17.0.2,8001
-21:41:51 - __main__ - DEBUG - From http://172.17.0.2:8001/get_predecessor recieved:
+08:07:28 - __main__ - DEBUG - From http://172.17.0.2:8001/get_predecessor received:
 {'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:41:51 - __main__ - DEBUG - Get Predecesor Response:
+08:07:28 - __main__ - DEBUG - Get Predecessor Response:
 {'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:41:51 - __main__.stab - INFO - ===STABILIZING DONE===
-21:41:51 - __main__.ff - INFO - Updating The Finger Table
-21:41:51 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827825927689030091791, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:51 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:52 - __main__.ff - INFO - Updating The Finger Table
-21:41:52 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827828179488843777039, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:52 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:53 - __main__.ff - INFO - Updating The Finger Table
-21:41:53 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827832683088471147535, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:53 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:54 - __main__.ff - INFO - Updating The Finger Table
-21:41:54 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827841690287725888527, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:54 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:55 - __main__.ff - INFO - Updating The Finger Table
-21:41:55 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827859704686235370511, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:55 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:56 - __main__.ff - INFO - Updating The Finger Table
-21:41:56 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827895733483254334479, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:56 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:57 - __main__.ff - INFO - Updating The Finger Table
-21:41:57 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827967791077292262415, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:57 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:58 - __main__.ff - INFO - Updating The Finger Table
-21:41:58 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882828111906265368118287, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:58 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:41:59 - __main__.ff - INFO - Updating The Finger Table
-21:41:59 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882828400136641519830031, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:41:59 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:00 - __main__ - INFO - Multicast discovery message sent.
-21:42:00 - __main__.ff - INFO - Updating The Finger Table
-21:42:00 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882828976597393823253519, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:00 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:00 - __main__ - INFO - Sending request to http://172.17.0.2:8001/check_predecessor
-21:42:00 - __main__ - DEBUG - Payload: {}
-21:42:00 - __main__.rh - DEBUG - Request path /check_predecessor
-21:42:00 - __main__.rh - DEBUG - Handling the following request 
-{}
-21:42:00 - __main__ - DEBUG - From http://172.17.0.2:8001/check_predecessor recieved:
+08:07:28 - __main__ - INFO - Sending request to http://172.17.0.2:8001/notify
+Payload: {'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+08:07:28 - __main__.rh - DEBUG - Request path /notify
+08:07:28 - __main__.rh - DEBUG - Handling the following request 
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+08:07:29 - __main__ - DEBUG - From http://172.17.0.2:8001/notify received:
 {'id': None, 'ip': None}
-21:42:00 - __main__.cp - INFO - ===Predecesor Checking Done===
-21:42:01 - __main__.stab - INFO - Stabilizing:
-21:42:01 - __main__.stab - INFO - Current succesor is 172.17.0.2
-21:42:01 - __main__.stab - INFO - Current predecesor is: 172.17.0.2
-21:42:01 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
-21:42:01 - __main__ - DEBUG - Payload: {}
-21:42:01 - __main__.rh - DEBUG - Request path /get_predecessor
-21:42:01 - __main__.rh - DEBUG - Handling the following request 
-{}
-21:42:01 - __main__.rh - DEBUG - Response for get_predecesor request:
-746391104433116747568177882827823675889216406543,172.17.0.2,8001
-21:42:01 - __main__ - DEBUG - From http://172.17.0.2:8001/get_predecessor recieved:
-{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:42:01 - __main__ - DEBUG - Get Predecesor Response:
-{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:42:01 - __main__.stab - INFO - ===STABILIZING DONE===
-21:42:01 - __main__.ff - INFO - Updating The Finger Table
-21:42:01 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882830129518898430100495, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:01 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:02 - __main__.ff - INFO - Updating The Finger Table
-21:42:02 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882832435361907643794447, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:02 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:03 - __main__.ff - INFO - Updating The Finger Table
-21:42:03 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882837047047926071182351, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:03 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:04 - __main__.ff - INFO - Updating The Finger Table
-21:42:04 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882846270419962925958159, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:04 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:05 - __main__.ff - INFO - Updating The Finger Table
-21:42:05 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882864717164036635509775, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:05 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:06 - __main__.ff - INFO - Updating The Finger Table
-21:42:06 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882901610652184054613007, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:06 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:07 - __main__.ff - INFO - Updating The Finger Table
-21:42:07 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882975397628478892819471, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:07 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:08 - __main__.ff - INFO - Updating The Finger Table
-21:42:08 - __main__ - DEBUG - inbetween (k = 746391104433116747568177883122971581068569232399, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:08 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:09 - __main__.ff - INFO - Updating The Finger Table
-21:42:09 - __main__ - DEBUG - inbetween (k = 746391104433116747568177883418119486247922058255, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:09 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:10 - __main__ - INFO - Multicast discovery message sent.
-21:42:10 - __main__ - INFO - Sending request to http://172.17.0.2:8001/check_predecessor
-21:42:10 - __main__ - DEBUG - Payload: {}
-21:42:11 - __main__.rh - DEBUG - Request path /check_predecessor
-21:42:11 - __main__.rh - DEBUG - Handling the following request 
-{}
-21:42:11 - __main__.ff - INFO - Updating The Finger Table
-21:42:11 - __main__ - DEBUG - inbetween (k = 746391104433116747568177884008415296606627709967, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:11 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:11 - __main__ - DEBUG - From http://172.17.0.2:8001/check_predecessor recieved:
+08:07:29 - __main__.stab - INFO - ===STABILIZING DONE===
+08:07:38 - __main__ - INFO - Multicast discovery message sent.
+08:07:38 - __main__.rh - DEBUG - Request path /find_successor
+08:07:38 - __main__.rh - DEBUG - Handling the following request 
+{'id': '685966170926969970295131996809687121594286967556'}
+08:07:38 - __main__ - DEBUG - Inbetween (k = 685966170926969970295131996809687121594286967556, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
+08:07:38 - __main__.ff - INFO - Updating The Finger Table
+08:07:38 - __main__ - DEBUG - Inbetween (k = 746391104433116747568177882827823675889216406575, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
+08:07:38 - __main__.ff - INFO - ===Finger Table Updating Done===
+08:07:38 - __main__.rh - DEBUG - Request path /notify
+08:07:38 - __main__.rh - DEBUG - Handling the following request 
+{'id': 685966170926969970295131996809687121594286967556, 'ip': '172.17.0.3'}
+08:07:38 - __main__ - DEBUG - Inbetween (k = 685966170926969970295131996809687121594286967556, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
+08:07:38 - __main__.rh - DEBUG - Request path /election
+08:07:38 - __main__.rh - DEBUG - Handling the following request 
+{'ids': [685966170926969970295131996809687121594286967556], 'initiator': 685966170926969970295131996809687121594286967556}
+08:07:38 - __main__ - INFO - Sending request to http://172.17.0.2:8001/election
+Payload: {'ids': [685966170926969970295131996809687121594286967556, 746391104433116747568177882827823675889216406543], 'initiator': 685966170926969970295131996809687121594286967556}
+08:07:38 - __main__ - INFO - Sending request to http://172.17.0.3:8001/check_predecessor
+Payload: {}
+08:07:38 - __main__ - DEBUG - From http://172.17.0.3:8001/check_predecessor received:
 {'id': None, 'ip': None}
-21:42:11 - __main__.cp - INFO - ===Predecesor Checking Done===
-21:42:11 - __main__.stab - INFO - Stabilizing:
-21:42:11 - __main__.stab - INFO - Current succesor is 172.17.0.2
-21:42:11 - __main__.stab - INFO - Current predecesor is: 172.17.0.2
-21:42:11 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
-21:42:11 - __main__ - DEBUG - Payload: {}
-21:42:11 - __main__.rh - DEBUG - Request path /get_predecessor
-21:42:11 - __main__.rh - DEBUG - Handling the following request 
-{}
-21:42:11 - __main__.rh - DEBUG - Response for get_predecesor request:
-746391104433116747568177882827823675889216406543,172.17.0.2,8001
-21:42:11 - __main__ - DEBUG - From http://172.17.0.2:8001/get_predecessor recieved:
-{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:42:11 - __main__ - DEBUG - Get Predecesor Response:
-{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:42:11 - __main__.stab - INFO - ===STABILIZING DONE===
-21:42:12 - __main__.ff - INFO - Updating The Finger Table
-21:42:12 - __main__ - DEBUG - inbetween (k = 746391104433116747568177885189006917324039013391, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:12 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:13 - __main__.ff - INFO - Updating The Finger Table
-21:42:13 - __main__ - DEBUG - inbetween (k = 746391104433116747568177887550190158758861620239, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:13 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:14 - __main__.ff - INFO - Updating The Finger Table
-21:42:14 - __main__ - DEBUG - inbetween (k = 746391104433116747568177892272556641628506833935, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:14 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:15 - __main__.ff - INFO - Updating The Finger Table
-21:42:15 - __main__ - DEBUG - inbetween (k = 746391104433116747568177901717289607367797261327, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:15 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:16 - __main__.ff - INFO - Updating The Finger Table
-21:42:16 - __main__ - DEBUG - inbetween (k = 746391104433116747568177920606755538846378116111, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:16 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:17 - __main__.ff - INFO - Updating The Finger Table
-21:42:17 - __main__ - DEBUG - inbetween (k = 746391104433116747568177958385687401803539825679, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:17 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:18 - __main__.ff - INFO - Updating The Finger Table
-21:42:18 - __main__ - DEBUG - inbetween (k = 746391104433116747568178033943551127717863244815, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:18 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:19 - __main__.ff - INFO - Updating The Finger Table
-21:42:19 - __main__ - DEBUG - inbetween (k = 746391104433116747568178185059278579546510083087, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:19 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:20 - __main__.ff - INFO - Updating The Finger Table
-21:42:20 - __main__ - DEBUG - inbetween (k = 746391104433116747568178487290733483203803759631, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:20 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:20 - __main__ - INFO - Multicast discovery message sent.
-21:42:21 - __main__ - INFO - Sending request to http://172.17.0.2:8001/check_predecessor
-21:42:21 - __main__ - DEBUG - Payload: {}
-21:42:21 - __main__.rh - DEBUG - Request path /check_predecessor
-21:42:21 - __main__.rh - DEBUG - Handling the following request 
-{}
-21:42:21 - __main__ - DEBUG - From http://172.17.0.2:8001/check_predecessor recieved:
+08:07:38 - __main__.cp - INFO - ===Predecessor Checking Done===
+08:07:39 - __main__.stab - INFO - Stabilizing:
+08:07:39 - __main__.stab - INFO - Current successor is 172.17.0.2
+08:07:39 - __main__.stab - INFO - Current predecessor is: 172.17.0.3
+08:07:39 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
+Payload: {}
+08:07:48 - __main__ - INFO - Multicast discovery message sent.
+08:07:48 - __main__.ff - INFO - Updating The Finger Table
+08:07:48 - __main__ - DEBUG - Inbetween (k = 746391104433116747568177882827823675889216406607, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
+08:07:48 - __main__.ff - INFO - ===Finger Table Updating Done===
+08:07:48 - __main__ - INFO - Sending request to http://172.17.0.3:8001/check_predecessor
+Payload: {}
+08:07:48 - __main__ - DEBUG - From http://172.17.0.3:8001/check_predecessor received:
 {'id': None, 'ip': None}
-21:42:21 - __main__.cp - INFO - ===Predecesor Checking Done===
-21:42:21 - __main__.ff - INFO - Updating The Finger Table
-21:42:21 - __main__ - DEBUG - inbetween (k = 746391104433116747568179091753643290518391112719, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:21 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:21 - __main__.stab - INFO - Stabilizing:
-21:42:21 - __main__.stab - INFO - Current succesor is 172.17.0.2
-21:42:21 - __main__.stab - INFO - Current predecesor is: 172.17.0.2
-21:42:21 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
-21:42:21 - __main__ - DEBUG - Payload: {}
-21:42:21 - __main__.rh - DEBUG - Request path /get_predecessor
-21:42:21 - __main__.rh - DEBUG - Handling the following request 
-{}
-21:42:21 - __main__.rh - DEBUG - Response for get_predecesor request:
-746391104433116747568177882827823675889216406543,172.17.0.2,8001
-21:42:21 - __main__ - DEBUG - From http://172.17.0.2:8001/get_predecessor recieved:
-{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:42:21 - __main__ - DEBUG - Get Predecesor Response:
-{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:42:21 - __main__.stab - INFO - ===STABILIZING DONE===
-21:42:22 - __main__.ff - INFO - Updating The Finger Table
-21:42:22 - __main__ - DEBUG - inbetween (k = 746391104433116747568180300679462905147565818895, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:22 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:23 - __main__.ff - INFO - Updating The Finger Table
-21:42:23 - __main__ - DEBUG - inbetween (k = 746391104433116747568182718531102134405915231247, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:23 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:24 - __main__.ff - INFO - Updating The Finger Table
-21:42:24 - __main__ - DEBUG - inbetween (k = 746391104433116747568187554234380592922614055951, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:24 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:25 - __main__.ff - INFO - Updating The Finger Table
-21:42:25 - __main__ - DEBUG - inbetween (k = 746391104433116747568197225640937509956011705359, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:25 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:26 - __main__.ff - INFO - Updating The Finger Table
-21:42:26 - __main__ - DEBUG - inbetween (k = 746391104433116747568216568454051344022807004175, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:26 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:27 - __main__.ff - INFO - Updating The Finger Table
-21:42:27 - __main__ - DEBUG - inbetween (k = 746391104433116747568255254080279012156397601807, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:27 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:28 - __main__.ff - INFO - Updating The Finger Table
-21:42:28 - __main__ - DEBUG - inbetween (k = 746391104433116747568332625332734348423578797071, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:28 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:29 - __main__.ff - INFO - Updating The Finger Table
-21:42:29 - __main__ - DEBUG - inbetween (k = 746391104433116747568487367837645020957941187599, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:29 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:30 - __main__.ff - INFO - Updating The Finger Table
-21:42:30 - __main__ - DEBUG - inbetween (k = 746391104433116747568796852847466366026665968655, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:30 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:30 - __main__ - INFO - Multicast discovery message sent.
-21:42:31 - __main__ - INFO - Sending request to http://172.17.0.2:8001/check_predecessor
-21:42:31 - __main__ - DEBUG - Payload: {}
-21:42:31 - __main__.rh - DEBUG - Request path /check_predecessor
-21:42:31 - __main__.rh - DEBUG - Handling the following request 
-{}
-21:42:31 - __main__ - DEBUG - From http://172.17.0.2:8001/check_predecessor recieved:
+08:07:48 - __main__.cp - INFO - ===Predecessor Checking Done===
+08:07:58 - __main__ - INFO - Multicast discovery message sent.
+08:07:58 - __main__.ff - INFO - Updating The Finger Table
+08:07:58 - __main__ - DEBUG - Inbetween (k = 746391104433116747568177882827823675889216406671, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
+08:07:58 - __main__.ff - INFO - ===Finger Table Updating Done===
+08:07:58 - __main__ - INFO - Sending request to http://172.17.0.3:8001/check_predecessor
+Payload: {}
+08:07:58 - __main__ - DEBUG - From http://172.17.0.3:8001/check_predecessor received:
 {'id': None, 'ip': None}
-21:42:31 - __main__.cp - INFO - ===Predecesor Checking Done===
-21:42:31 - __main__.stab - INFO - Stabilizing:
-21:42:31 - __main__.stab - INFO - Current succesor is 172.17.0.2
-21:42:31 - __main__.stab - INFO - Current predecesor is: 172.17.0.2
-21:42:31 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
-21:42:31 - __main__ - DEBUG - Payload: {}
-21:42:31 - __main__.rh - DEBUG - Request path /get_predecessor
-21:42:31 - __main__.rh - DEBUG - Handling the following request 
-{}
-21:42:31 - __main__.rh - DEBUG - Response for get_predecesor request:
-746391104433116747568177882827823675889216406543,172.17.0.2,8001
-21:42:31 - __main__ - DEBUG - From http://172.17.0.2:8001/get_predecessor recieved:
-{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:42:31 - __main__ - DEBUG - Get Predecesor Response:
-{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:42:31 - __main__.stab - INFO - ===STABILIZING DONE===
-21:42:31 - __main__.ff - INFO - Updating The Finger Table
-21:42:31 - __main__ - DEBUG - inbetween (k = 746391104433116747569415822867109056164115530767, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:31 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:32 - __main__.ff - INFO - Updating The Finger Table
-21:42:32 - __main__ - DEBUG - inbetween (k = 746391104433116747570653762906394436439014654991, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:32 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:33 - __main__.ff - INFO - Updating The Finger Table
-21:42:33 - __main__ - DEBUG - inbetween (k = 746391104433116747573129642984965196988812903439, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:33 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:34 - __main__.ff - INFO - Updating The Finger Table
-21:42:34 - __main__ - DEBUG - inbetween (k = 746391104433116747578081403142106718088409400335, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:34 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:35 - __main__.ff - INFO - Updating The Finger Table
-21:42:35 - __main__ - DEBUG - inbetween (k = 746391104433116747587984923456389760287602394127, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:35 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:36 - __main__.ff - INFO - Updating The Finger Table
-21:42:36 - __main__ - DEBUG - inbetween (k = 746391104433116747607791964084955844685988381711, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:36 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:37 - __main__.ff - INFO - Updating The Finger Table
-21:42:37 - __main__ - DEBUG - inbetween (k = 746391104433116747647406045342088013482760356879, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:37 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:38 - __main__.ff - INFO - Updating The Finger Table
-21:42:38 - __main__ - DEBUG - inbetween (k = 746391104433116747726634207856352351076304307215, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:38 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:39 - __main__.ff - INFO - Updating The Finger Table
-21:42:39 - __main__ - DEBUG - inbetween (k = 746391104433116747885090532884881026263392207887, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:39 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:40 - __main__ - INFO - Multicast discovery message sent.
-21:42:40 - __main__.ff - INFO - Updating The Finger Table
-21:42:40 - __main__ - DEBUG - inbetween (k = 746391104433116748202003182941938376637568009231, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:40 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:41 - __main__ - INFO - Sending request to http://172.17.0.2:8001/check_predecessor
-21:42:41 - __main__ - DEBUG - Payload: {}
-21:42:41 - __main__.rh - DEBUG - Request path /check_predecessor
-21:42:41 - __main__.rh - DEBUG - Handling the following request 
-{}
-21:42:41 - __main__ - DEBUG - From http://172.17.0.2:8001/check_predecessor recieved:
+08:07:58 - __main__.cp - INFO - ===Predecessor Checking Done===
+08:08:08 - __main__ - INFO - Multicast discovery message sent.
+08:08:08 - __main__.ff - INFO - Updating The Finger Table
+08:08:08 - __main__ - DEBUG - Inbetween (k = 746391104433116747568177882827823675889216406799, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
+08:08:08 - __main__.ff - INFO - ===Finger Table Updating Done===
+08:08:08 - __main__ - INFO - Sending request to http://172.17.0.3:8001/check_predecessor
+Payload: {}
+08:08:08 - __main__ - DEBUG - From http://172.17.0.3:8001/check_predecessor received:
 {'id': None, 'ip': None}
-21:42:41 - __main__.cp - INFO - ===Predecesor Checking Done===
-21:42:41 - __main__.stab - INFO - Stabilizing:
-21:42:41 - __main__.stab - INFO - Current succesor is 172.17.0.2
-21:42:41 - __main__.stab - INFO - Current predecesor is: 172.17.0.2
-21:42:41 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
-21:42:41 - __main__ - DEBUG - Payload: {}
-21:42:41 - __main__.rh - DEBUG - Request path /get_predecessor
-21:42:41 - __main__.rh - DEBUG - Handling the following request 
-{}
-21:42:41 - __main__.rh - DEBUG - Response for get_predecesor request:
-746391104433116747568177882827823675889216406543,172.17.0.2,8001
-21:42:41 - __main__ - DEBUG - From http://172.17.0.2:8001/get_predecessor recieved:
-{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:42:41 - __main__ - DEBUG - Get Predecesor Response:
-{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:42:41 - __main__.stab - INFO - ===STABILIZING DONE===
-21:42:41 - __main__.ff - INFO - Updating The Finger Table
-21:42:41 - __main__ - DEBUG - inbetween (k = 746391104433116748835828483056053077385919611919, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:41 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:42 - __main__.ff - INFO - Updating The Finger Table
-21:42:42 - __main__ - DEBUG - inbetween (k = 746391104433116750103479083284282478882622817295, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:42 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:43 - __main__.ff - INFO - Updating The Finger Table
-21:42:43 - __main__ - DEBUG - inbetween (k = 746391104433116752638780283740741281876029228047, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:43 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:44 - __main__.ff - INFO - Updating The Finger Table
-21:42:44 - __main__ - DEBUG - inbetween (k = 746391104433116757709382684653658887862842049551, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:44 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:45 - __main__.ff - INFO - Updating The Finger Table
-21:42:45 - __main__ - DEBUG - inbetween (k = 746391104433116767850587486479494099836467692559, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:45 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:46 - __main__.ff - INFO - Updating The Finger Table
-21:42:46 - __main__ - DEBUG - inbetween (k = 746391104433116788132997090131164523783718978575, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:46 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:47 - __main__.ff - INFO - Updating The Finger Table
-21:42:47 - __main__ - DEBUG - inbetween (k = 746391104433116828697816297434505371678221550607, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:47 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:48 - __main__.ff - INFO - Updating The Finger Table
-21:42:48 - __main__ - DEBUG - inbetween (k = 746391104433116909827454712041187067467226694671, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:48 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:49 - __main__.ff - INFO - Updating The Finger Table
-21:42:49 - __main__ - DEBUG - inbetween (k = 746391104433117072086731541254550459045236982799, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:49 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:50 - __main__ - INFO - Multicast discovery message sent.
-21:42:50 - __main__.ff - INFO - Updating The Finger Table
-21:42:50 - __main__ - DEBUG - inbetween (k = 746391104433117396605285199681277242201257559055, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:50 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:51 - __main__ - INFO - Sending request to http://172.17.0.2:8001/check_predecessor
-21:42:51 - __main__ - DEBUG - Payload: {}
-21:42:51 - __main__.rh - DEBUG - Request path /check_predecessor
-21:42:51 - __main__.rh - DEBUG - Handling the following request 
-{}
-21:42:51 - __main__ - DEBUG - From http://172.17.0.2:8001/check_predecessor recieved:
+08:08:08 - __main__.cp - INFO - ===Predecessor Checking Done===
+08:08:18 - __main__ - INFO - Multicast discovery message sent.
+08:08:18 - __main__.ff - INFO - Updating The Finger Table
+08:08:18 - __main__ - DEBUG - Inbetween (k = 746391104433116747568177882827823675889216407055, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
+08:08:18 - __main__.ff - INFO - ===Finger Table Updating Done===
+08:08:18 - __main__ - INFO - Sending request to http://172.17.0.3:8001/check_predecessor
+Payload: {}
+08:08:18 - __main__ - DEBUG - From http://172.17.0.3:8001/check_predecessor received:
 {'id': None, 'ip': None}
-21:42:51 - __main__.cp - INFO - ===Predecesor Checking Done===
-21:42:51 - __main__.stab - INFO - Stabilizing:
-21:42:51 - __main__.stab - INFO - Current succesor is 172.17.0.2
-21:42:51 - __main__.stab - INFO - Current predecesor is: 172.17.0.2
-21:42:51 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
-21:42:51 - __main__ - DEBUG - Payload: {}
-21:42:51 - __main__.rh - DEBUG - Request path /get_predecessor
-21:42:51 - __main__.rh - DEBUG - Handling the following request 
-{}
-21:42:51 - __main__.rh - DEBUG - Response for get_predecesor request:
-746391104433116747568177882827823675889216406543,172.17.0.2,8001
-21:42:51 - __main__ - DEBUG - From http://172.17.0.2:8001/get_predecessor recieved:
-{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:42:51 - __main__ - DEBUG - Get Predecesor Response:
-{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:42:51 - __main__.stab - INFO - ===STABILIZING DONE===
-21:42:51 - __main__.ff - INFO - Updating The Finger Table
-21:42:51 - __main__ - DEBUG - inbetween (k = 746391104433118045642392516534730808513298711567, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:51 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:52 - __main__.ff - INFO - Updating The Finger Table
-21:42:52 - __main__ - DEBUG - inbetween (k = 746391104433119343716607150241637941137381016591, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:52 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:53 - __main__.ff - INFO - Updating The Finger Table
-21:42:53 - __main__ - DEBUG - inbetween (k = 746391104433121939865036417655452206385545626639, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:53 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:55 - __main__.ff - INFO - Updating The Finger Table
-21:42:55 - __main__ - DEBUG - inbetween (k = 746391104433127132161894952483080736881874846735, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:55 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:56 - __main__.ff - INFO - Updating The Finger Table
-21:42:56 - __main__ - DEBUG - inbetween (k = 746391104433137516755612022138337797874533286927, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:56 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:57 - __main__.ff - INFO - Updating The Finger Table
-21:42:57 - __main__ - DEBUG - inbetween (k = 746391104433158285943046161448851919859850167311, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:57 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:58 - __main__.ff - INFO - Updating The Finger Table
-21:42:58 - __main__ - DEBUG - inbetween (k = 746391104433199824317914440069880163830483928079, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:58 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:42:59 - __main__.ff - INFO - Updating The Finger Table
-21:42:59 - __main__ - DEBUG - inbetween (k = 746391104433282901067650997311936651771751449615, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:42:59 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:00 - __main__.ff - INFO - Updating The Finger Table
-21:43:00 - __main__ - DEBUG - inbetween (k = 746391104433449054567124111796049627654286492687, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:00 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:00 - __main__ - INFO - Multicast discovery message sent.
-21:43:01 - __main__.ff - INFO - Updating The Finger Table
-21:43:01 - __main__ - DEBUG - inbetween (k = 746391104433781361566070340764275579419356578831, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:01 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:01 - __main__ - INFO - Sending request to http://172.17.0.2:8001/check_predecessor
-21:43:01 - __main__ - DEBUG - Payload: {}
-21:43:01 - __main__.rh - DEBUG - Request path /check_predecessor
-21:43:01 - __main__.rh - DEBUG - Handling the following request 
-{}
-21:43:01 - __main__ - DEBUG - From http://172.17.0.2:8001/check_predecessor recieved:
+08:08:18 - __main__.cp - INFO - ===Predecessor Checking Done===
+08:08:28 - __main__ - INFO - Multicast discovery message sent.
+08:08:28 - __main__.ff - INFO - Updating The Finger Table
+08:08:28 - __main__ - DEBUG - Inbetween (k = 746391104433116747568177882827823675889216407567, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
+08:08:28 - __main__.ff - INFO - ===Finger Table Updating Done===
+08:08:28 - __main__ - INFO - Sending request to http://172.17.0.3:8001/check_predecessor
+Payload: {}
+08:08:28 - __main__ - DEBUG - From http://172.17.0.3:8001/check_predecessor received:
 {'id': None, 'ip': None}
-21:43:01 - __main__.cp - INFO - ===Predecesor Checking Done===
-21:43:01 - __main__.stab - INFO - Stabilizing:
-21:43:01 - __main__.stab - INFO - Current succesor is 172.17.0.2
-21:43:01 - __main__.stab - INFO - Current predecesor is: 172.17.0.2
-21:43:01 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
-21:43:01 - __main__ - DEBUG - Payload: {}
-21:43:01 - __main__.rh - DEBUG - Request path /get_predecessor
-21:43:01 - __main__.rh - DEBUG - Handling the following request 
-{}
-21:43:01 - __main__.rh - DEBUG - Response for get_predecesor request:
-746391104433116747568177882827823675889216406543,172.17.0.2,8001
-21:43:01 - __main__ - DEBUG - From http://172.17.0.2:8001/get_predecessor recieved:
-{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:43:01 - __main__ - DEBUG - Get Predecesor Response:
-{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:43:01 - __main__.stab - INFO - ===STABILIZING DONE===
-21:43:02 - __main__.ff - INFO - Updating The Finger Table
-21:43:02 - __main__ - DEBUG - inbetween (k = 746391104434445975563962798700727482949496751119, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:02 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:03 - __main__.ff - INFO - Updating The Finger Table
-21:43:03 - __main__ - DEBUG - inbetween (k = 746391104435775203559747714573631290009777095695, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:03 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:04 - __main__.ff - INFO - Updating The Finger Table
-21:43:04 - __main__ - DEBUG - inbetween (k = 746391104438433659551317546319438904130337784847, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:04 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:05 - __main__.ff - INFO - Updating The Finger Table
-21:43:05 - __main__ - DEBUG - inbetween (k = 746391104443750571534457209811054132371459163151, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:05 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:06 - __main__.ff - INFO - Updating The Finger Table
-21:43:06 - __main__ - DEBUG - inbetween (k = 746391104454384395500736536794284588853701919759, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:06 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:07 - __main__.ff - INFO - Updating The Finger Table
-21:43:07 - __main__ - DEBUG - inbetween (k = 746391104475652043433295190760745501818187432975, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:07 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:08 - __main__.ff - INFO - Updating The Finger Table
-21:43:08 - __main__ - DEBUG - inbetween (k = 746391104518187339298412498693667327747158459407, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:08 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:09 - __main__.ff - INFO - Updating The Finger Table
-21:43:09 - __main__ - DEBUG - inbetween (k = 746391104603257931028647114559510979605100512271, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:09 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:10 - __main__.ff - INFO - Updating The Finger Table
-21:43:10 - __main__ - DEBUG - inbetween (k = 746391104773399114489116346291198283320984617999, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:10 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:10 - __main__ - INFO - Multicast discovery message sent.
-21:43:11 - __main__.ff - INFO - Updating The Finger Table
-21:43:11 - __main__ - DEBUG - inbetween (k = 746391105113681481410054809754572890752752829455, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:11 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:11 - __main__ - INFO - Sending request to http://172.17.0.2:8001/check_predecessor
-21:43:11 - __main__ - DEBUG - Payload: {}
-21:43:11 - __main__.rh - DEBUG - Request path /check_predecessor
-21:43:11 - __main__.rh - DEBUG - Handling the following request 
-{}
-21:43:11 - __main__ - DEBUG - From http://172.17.0.2:8001/check_predecessor recieved:
+08:08:28 - __main__.cp - INFO - ===Predecessor Checking Done===
+08:08:38 - __main__ - INFO - Multicast discovery message sent.
+08:08:38 - __main__.ff - INFO - Updating The Finger Table
+08:08:38 - __main__ - DEBUG - Inbetween (k = 746391104433116747568177882827823675889216408591, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
+08:08:38 - __main__.ff - INFO - ===Finger Table Updating Done===
+08:08:38 - __main__ - INFO - Sending request to http://172.17.0.3:8001/check_predecessor
+Payload: {}
+08:08:38 - __main__ - DEBUG - From http://172.17.0.3:8001/check_predecessor received:
 {'id': None, 'ip': None}
-21:43:11 - __main__.cp - INFO - ===Predecesor Checking Done===
-21:43:11 - __main__.stab - INFO - Stabilizing:
-21:43:11 - __main__.stab - INFO - Current succesor is 172.17.0.2
-21:43:11 - __main__.stab - INFO - Current predecesor is: 172.17.0.2
-21:43:11 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
-21:43:11 - __main__ - DEBUG - Payload: {}
-21:43:11 - __main__.rh - DEBUG - Request path /get_predecessor
-21:43:11 - __main__.rh - DEBUG - Handling the following request 
-{}
-21:43:11 - __main__.rh - DEBUG - Response for get_predecesor request:
-746391104433116747568177882827823675889216406543,172.17.0.2,8001
-21:43:11 - __main__ - DEBUG - From http://172.17.0.2:8001/get_predecessor recieved:
-{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:43:11 - __main__ - DEBUG - Get Predecesor Response:
-{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:43:11 - __main__.stab - INFO - ===STABILIZING DONE===
-21:43:12 - __main__.ff - INFO - Updating The Finger Table
-21:43:12 - __main__ - DEBUG - inbetween (k = 746391105794246215251931736681322105616289252367, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:12 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:13 - __main__.ff - INFO - Updating The Finger Table
-21:43:13 - __main__ - DEBUG - inbetween (k = 746391107155375682935685590534820535343362098191, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:13 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:14 - __main__.ff - INFO - Updating The Finger Table
-21:43:14 - __main__ - DEBUG - inbetween (k = 746391109877634618303193298241817394797507789839, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:14 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:15 - __main__.ff - INFO - Updating The Finger Table
-21:43:15 - __main__ - DEBUG - inbetween (k = 746391115322152489038208713655811113705799173135, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:15 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:16 - __main__.ff - INFO - Updating The Finger Table
-21:43:16 - __main__ - DEBUG - inbetween (k = 746391126211188230508239544483798551522381939727, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:16 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:17 - __main__.ff - INFO - Updating The Finger Table
-21:43:17 - __main__ - DEBUG - inbetween (k = 746391147989259713448301206139773427155547472911, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:17 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:18 - __main__.ff - INFO - Updating The Finger Table
-21:43:18 - __main__ - DEBUG - inbetween (k = 746391191545402679328424529451723178421878539279, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:18 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:19 - __main__.ff - INFO - Updating The Finger Table
-21:43:19 - __main__ - DEBUG - inbetween (k = 746391278657688611088671176075622680954540672015, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:19 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:20 - __main__.ff - INFO - Updating The Finger Table
-21:43:20 - __main__ - DEBUG - inbetween (k = 746391452882260474609164469323421686019864937487, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:20 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:20 - __main__ - INFO - Multicast discovery message sent.
-21:43:21 - __main__ - INFO - Sending request to http://172.17.0.2:8001/check_predecessor
-21:43:21 - __main__ - DEBUG - Payload: {}
-21:43:21 - __main__.rh - DEBUG - Request path /check_predecessor
-21:43:21 - __main__.rh - DEBUG - Handling the following request 
-{}
-21:43:21 - __main__ - DEBUG - From http://172.17.0.2:8001/check_predecessor recieved:
+08:08:38 - __main__.cp - INFO - ===Predecessor Checking Done===
+08:08:48 - __main__ - INFO - Multicast discovery message sent.
+08:08:48 - __main__.ff - INFO - Updating The Finger Table
+08:08:48 - __main__ - DEBUG - Inbetween (k = 746391104433116747568177882827823675889216410639, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
+08:08:48 - __main__.ff - INFO - ===Finger Table Updating Done===
+08:08:48 - __main__ - INFO - Sending request to http://172.17.0.3:8001/check_predecessor
+Payload: {}
+08:08:48 - __main__ - DEBUG - From http://172.17.0.3:8001/check_predecessor received:
 {'id': None, 'ip': None}
-21:43:21 - __main__.cp - INFO - ===Predecesor Checking Done===
-21:43:21 - __main__.ff - INFO - Updating The Finger Table
-21:43:21 - __main__ - DEBUG - inbetween (k = 746391801331404201650151055819019696150513468431, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:21 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:21 - __main__.stab - INFO - Stabilizing:
-21:43:21 - __main__.stab - INFO - Current succesor is 172.17.0.2
-21:43:21 - __main__.stab - INFO - Current predecesor is: 172.17.0.2
-21:43:21 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
-21:43:21 - __main__ - DEBUG - Payload: {}
-21:43:21 - __main__.rh - DEBUG - Request path /get_predecessor
-21:43:21 - __main__.rh - DEBUG - Handling the following request 
-{}
-21:43:21 - __main__.rh - DEBUG - Response for get_predecesor request:
-746391104433116747568177882827823675889216406543,172.17.0.2,8001
-21:43:22 - __main__ - DEBUG - From http://172.17.0.2:8001/get_predecessor recieved:
-{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:43:22 - __main__ - DEBUG - Get Predecesor Response:
-{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:43:22 - __main__.stab - INFO - ===STABILIZING DONE===
-21:43:22 - __main__.ff - INFO - Updating The Finger Table
-21:43:22 - __main__ - DEBUG - inbetween (k = 746392498229691655732124228810215716411810530319, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:22 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:23 - __main__.ff - INFO - Updating The Finger Table
-21:43:23 - __main__ - DEBUG - inbetween (k = 746393892026266563896070574792607756934404654095, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:23 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:24 - __main__.ff - INFO - Updating The Finger Table
-21:43:24 - __main__ - DEBUG - inbetween (k = 746396679619416380223963266757391837979592901647, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:24 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:25 - __main__.ff - INFO - Updating The Finger Table
-21:43:25 - __main__ - DEBUG - inbetween (k = 746402254805716012879748650686960000069969396751, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:25 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:26 - __main__.ff - INFO - Updating The Finger Table
-21:43:26 - __main__ - DEBUG - inbetween (k = 746413405178315278191319418546096324250722386959, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:26 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:27 - __main__.ff - INFO - Updating The Finger Table
-21:43:27 - __main__ - DEBUG - inbetween (k = 746435705923513808814460954264368972612228367375, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:27 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:28 - __main__.ff - INFO - Updating The Finger Table
-21:43:28 - __main__ - DEBUG - inbetween (k = 746480307413910870060744025700914269335240328207, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:28 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:29 - __main__.ff - INFO - Updating The Finger Table
-21:43:29 - __main__ - DEBUG - inbetween (k = 746569510394704992553310168574004862781264249871, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:29 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:30 - __main__ - INFO - Multicast discovery message sent.
-21:43:30 - __main__.ff - INFO - Updating The Finger Table
-21:43:30 - __main__ - DEBUG - inbetween (k = 746747916356293237538442454320186049673312093199, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:30 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:31 - __main__ - INFO - Sending request to http://172.17.0.2:8001/check_predecessor
-21:43:31 - __main__ - DEBUG - Payload: {}
-21:43:31 - __main__.rh - DEBUG - Request path /check_predecessor
-21:43:31 - __main__.rh - DEBUG - Handling the following request 
-{}
-21:43:31 - __main__ - DEBUG - From http://172.17.0.2:8001/check_predecessor recieved:
+08:08:48 - __main__.cp - INFO - ===Predecessor Checking Done===
+08:08:58 - __main__ - INFO - Multicast discovery message sent.
+08:08:58 - __main__.ff - INFO - Updating The Finger Table
+08:08:58 - __main__ - DEBUG - Inbetween (k = 746391104433116747568177882827823675889216414735, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
+08:08:58 - __main__.ff - INFO - ===Finger Table Updating Done===
+08:08:58 - __main__ - INFO - Sending request to http://172.17.0.3:8001/check_predecessor
+Payload: {}
+08:08:58 - __main__ - DEBUG - From http://172.17.0.3:8001/check_predecessor received:
 {'id': None, 'ip': None}
-21:43:31 - __main__.cp - INFO - ===Predecesor Checking Done===
-21:43:31 - __main__.ff - INFO - Updating The Finger Table
-21:43:31 - __main__ - DEBUG - inbetween (k = 747104728279469727508707025812548423457407779855, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:31 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:32 - __main__.stab - INFO - Stabilizing:
-21:43:32 - __main__.stab - INFO - Current succesor is 172.17.0.2
-21:43:32 - __main__.stab - INFO - Current predecesor is: 172.17.0.2
-21:43:32 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
-21:43:32 - __main__ - DEBUG - Payload: {}
-21:43:32 - __main__.rh - DEBUG - Request path /get_predecessor
-21:43:32 - __main__.rh - DEBUG - Handling the following request 
-{}
-21:43:32 - __main__.rh - DEBUG - Response for get_predecesor request:
-746391104433116747568177882827823675889216406543,172.17.0.2,8001
-21:43:32 - __main__ - DEBUG - From http://172.17.0.2:8001/get_predecessor recieved:
-{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:43:32 - __main__ - DEBUG - Get Predecesor Response:
-{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:43:32 - __main__.stab - INFO - ===STABILIZING DONE===
-21:43:32 - __main__.ff - INFO - Updating The Finger Table
-21:43:32 - __main__ - DEBUG - inbetween (k = 747818352125822707449236168797273171025599153167, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:32 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:33 - __main__.ff - INFO - Updating The Finger Table
-21:43:33 - __main__ - DEBUG - inbetween (k = 749245599818528667330294454766722666161981899791, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:33 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:34 - __main__.ff - INFO - Updating The Finger Table
-21:43:34 - __main__ - DEBUG - inbetween (k = 752100095203940587092411026705621656434747393039, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:34 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:35 - __main__.ff - INFO - Updating The Finger Table
-21:43:35 - __main__ - DEBUG - inbetween (k = 757809085974764426616644170583419636980278379535, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:35 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:36 - __main__.ff - INFO - Updating The Finger Table
-21:43:36 - __main__ - DEBUG - inbetween (k = 769227067516412105665110458339015598071340352527, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:36 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:38 - __main__.ff - INFO - Updating The Finger Table
-21:43:38 - __main__ - DEBUG - inbetween (k = 792063030599707463762043033850207520253464298511, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:38 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:39 - __main__.ff - INFO - Updating The Finger Table
-21:43:39 - __main__ - DEBUG - inbetween (k = 837734956766298179955908184872591364617712190479, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:39 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:40 - __main__.ff - INFO - Updating The Finger Table
-21:43:40 - __main__ - DEBUG - inbetween (k = 929078809099479612343638486917359053346207974415, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:40 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:40 - __main__ - INFO - Multicast discovery message sent.
-21:43:41 - __main__.ff - INFO - Updating The Finger Table
-21:43:41 - __main__ - DEBUG - inbetween (k = 1111766513765842477119099091006894430803199542287, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:41 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:41 - __main__ - INFO - Sending request to http://172.17.0.2:8001/check_predecessor
-21:43:41 - __main__ - DEBUG - Payload: {}
-21:43:41 - __main__.rh - DEBUG - Request path /check_predecessor
-21:43:41 - __main__.rh - DEBUG - Handling the following request 
-{}
-21:43:41 - __main__ - DEBUG - From http://172.17.0.2:8001/check_predecessor recieved:
+08:08:58 - __main__.cp - INFO - ===Predecessor Checking Done===
+08:09:08 - __main__ - INFO - Multicast discovery message sent.
+08:09:08 - __main__.ff - INFO - Updating The Finger Table
+08:09:08 - __main__ - DEBUG - Inbetween (k = 746391104433116747568177882827823675889216422927, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
+08:09:08 - __main__.ff - INFO - ===Finger Table Updating Done===
+08:09:08 - __main__ - INFO - Sending request to http://172.17.0.3:8001/check_predecessor
+Payload: {}
+08:09:08 - __main__ - DEBUG - From http://172.17.0.3:8001/check_predecessor received:
 {'id': None, 'ip': None}
-21:43:41 - __main__.cp - INFO - ===Predecesor Checking Done===
-21:43:42 - __main__.ff - INFO - Updating The Finger Table
-21:43:42 - __main__ - DEBUG - inbetween (k = 15640285767665288466335466469682166061250135055, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:42 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:42 - __main__.stab - INFO - Stabilizing:
-21:43:42 - __main__.stab - INFO - Current succesor is 172.17.0.2
-21:43:42 - __main__.stab - INFO - Current predecesor is: 172.17.0.2
-21:43:42 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
-21:43:42 - __main__ - DEBUG - Payload: {}
-21:43:42 - __main__.rh - DEBUG - Request path /get_predecessor
-21:43:42 - __main__.rh - DEBUG - Handling the following request 
-{}
-21:43:42 - __main__.rh - DEBUG - Response for get_predecesor request:
-746391104433116747568177882827823675889216406543,172.17.0.2,8001
-21:43:42 - __main__ - DEBUG - From http://172.17.0.2:8001/get_predecessor recieved:
-{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:43:42 - __main__ - DEBUG - Get Predecesor Response:
-{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:43:42 - __main__.stab - INFO - ===STABILIZING DONE===
-21:43:43 - __main__.ff - INFO - Updating The Finger Table
-21:43:43 - __main__.ff - INFO - Finished Finger Table Iteration
-21:43:43 - __main__ - DEBUG - Finger table for node 172.17.0.2:8001|746391104433116747568177882827823675889216406543
-21:43:43 - __main__ - DEBUG - 746391104433116747568177882827823675889216406544-746391104433116747568177882827823675889216406543-172.17.0.2:8001
-21:43:43 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889216406544, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:43 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:44 - __main__.ff - INFO - Updating The Finger Table
-21:43:44 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889216406545, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:44 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:45 - __main__.ff - INFO - Updating The Finger Table
-21:43:45 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889216406547, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:45 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:46 - __main__.ff - INFO - Updating The Finger Table
-21:43:46 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889216406551, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:46 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:47 - __main__.ff - INFO - Updating The Finger Table
-21:43:47 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889216406559, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:47 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:48 - __main__.ff - INFO - Updating The Finger Table
-21:43:48 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889216406575, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:48 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:49 - __main__.ff - INFO - Updating The Finger Table
-21:43:49 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889216406607, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:49 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:50 - __main__.ff - INFO - Updating The Finger Table
-21:43:50 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889216406671, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:50 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:50 - __main__ - INFO - Multicast discovery message sent.
-21:43:51 - __main__.ff - INFO - Updating The Finger Table
-21:43:51 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889216406799, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:51 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:51 - __main__ - INFO - Sending request to http://172.17.0.2:8001/check_predecessor
-21:43:51 - __main__ - DEBUG - Payload: {}
-21:43:51 - __main__.rh - DEBUG - Request path /check_predecessor
-21:43:51 - __main__.rh - DEBUG - Handling the following request 
-{}
-21:43:51 - __main__ - DEBUG - From http://172.17.0.2:8001/check_predecessor recieved:
+08:09:08 - __main__.cp - INFO - ===Predecessor Checking Done===
+08:09:18 - __main__ - INFO - Multicast discovery message sent.
+08:09:18 - __main__.ff - INFO - Updating The Finger Table
+08:09:18 - __main__ - DEBUG - Inbetween (k = 746391104433116747568177882827823675889216439311, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
+08:09:18 - __main__.ff - INFO - ===Finger Table Updating Done===
+08:09:18 - __main__ - INFO - Sending request to http://172.17.0.3:8001/check_predecessor
+Payload: {}
+08:09:18 - __main__ - DEBUG - From http://172.17.0.3:8001/check_predecessor received:
 {'id': None, 'ip': None}
-21:43:51 - __main__.cp - INFO - ===Predecesor Checking Done===
-21:43:52 - __main__.stab - INFO - Stabilizing:
-21:43:52 - __main__.stab - INFO - Current succesor is 172.17.0.2
-21:43:52 - __main__.stab - INFO - Current predecesor is: 172.17.0.2
-21:43:52 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
-21:43:52 - __main__ - DEBUG - Payload: {}
-21:43:52 - __main__.rh - DEBUG - Request path /get_predecessor
-21:43:52 - __main__.rh - DEBUG - Handling the following request 
-{}
-21:43:52 - __main__.rh - DEBUG - Response for get_predecesor request:
-746391104433116747568177882827823675889216406543,172.17.0.2,8001
-21:43:52 - __main__ - DEBUG - From http://172.17.0.2:8001/get_predecessor recieved:
-{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:43:52 - __main__.ff - INFO - Updating The Finger Table
-21:43:52 - __main__ - DEBUG - Get Predecesor Response:
-{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:43:52 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889216407055, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:52 - __main__.stab - INFO - ===STABILIZING DONE===
-21:43:52 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:53 - __main__.ff - INFO - Updating The Finger Table
-21:43:53 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889216407567, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:53 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:54 - __main__.ff - INFO - Updating The Finger Table
-21:43:54 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889216408591, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:54 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:55 - __main__.ff - INFO - Updating The Finger Table
-21:43:55 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889216410639, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:55 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:56 - __main__.ff - INFO - Updating The Finger Table
-21:43:56 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889216414735, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:56 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:57 - __main__.ff - INFO - Updating The Finger Table
-21:43:57 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889216422927, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:57 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:58 - __main__.ff - INFO - Updating The Finger Table
-21:43:58 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889216439311, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:58 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:43:59 - __main__.ff - INFO - Updating The Finger Table
-21:43:59 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889216472079, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:43:59 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:00 - __main__.ff - INFO - Updating The Finger Table
-21:44:00 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889216537615, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:00 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:00 - __main__ - INFO - Multicast discovery message sent.
-21:44:01 - __main__.ff - INFO - Updating The Finger Table
-21:44:01 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889216668687, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:01 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:01 - __main__ - INFO - Sending request to http://172.17.0.2:8001/check_predecessor
-21:44:01 - __main__ - DEBUG - Payload: {}
-21:44:01 - __main__.rh - DEBUG - Request path /check_predecessor
-21:44:01 - __main__.rh - DEBUG - Handling the following request 
-{}
-21:44:01 - __main__ - DEBUG - From http://172.17.0.2:8001/check_predecessor recieved:
+08:09:18 - __main__.cp - INFO - ===Predecessor Checking Done===
+08:09:28 - __main__ - INFO - Multicast discovery message sent.
+08:09:28 - __main__.ff - INFO - Updating The Finger Table
+08:09:28 - __main__ - DEBUG - Inbetween (k = 746391104433116747568177882827823675889216472079, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
+08:09:28 - __main__.ff - INFO - ===Finger Table Updating Done===
+08:09:28 - __main__ - INFO - Sending request to http://172.17.0.3:8001/check_predecessor
+Payload: {}
+08:09:29 - __main__ - DEBUG - From http://172.17.0.3:8001/check_predecessor received:
 {'id': None, 'ip': None}
-21:44:01 - __main__.cp - INFO - ===Predecesor Checking Done===
-21:44:02 - __main__.stab - INFO - Stabilizing:
-21:44:02 - __main__.stab - INFO - Current succesor is 172.17.0.2
-21:44:02 - __main__.stab - INFO - Current predecesor is: 172.17.0.2
-21:44:02 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
-21:44:02 - __main__ - DEBUG - Payload: {}
-21:44:02 - __main__.rh - DEBUG - Request path /get_predecessor
-21:44:02 - __main__.rh - DEBUG - Handling the following request 
-{}
-21:44:02 - __main__.rh - DEBUG - Response for get_predecesor request:
-746391104433116747568177882827823675889216406543,172.17.0.2,8001
-21:44:02 - __main__ - DEBUG - From http://172.17.0.2:8001/get_predecessor recieved:
-{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:44:02 - __main__ - DEBUG - Get Predecesor Response:
-{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:44:02 - __main__.stab - INFO - ===STABILIZING DONE===
-21:44:02 - __main__.ff - INFO - Updating The Finger Table
-21:44:02 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889216930831, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:02 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:03 - __main__.ff - INFO - Updating The Finger Table
-21:44:03 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889217455119, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:03 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:04 - __main__.ff - INFO - Updating The Finger Table
-21:44:04 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889218503695, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:04 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:05 - __main__.ff - INFO - Updating The Finger Table
-21:44:05 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889220600847, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:05 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:06 - __main__.ff - INFO - Updating The Finger Table
-21:44:06 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889224795151, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:06 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:07 - __main__.ff - INFO - Updating The Finger Table
-21:44:07 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889233183759, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:07 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:08 - __main__.ff - INFO - Updating The Finger Table
-21:44:08 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889249960975, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:08 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:09 - __main__.ff - INFO - Updating The Finger Table
-21:44:09 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889283515407, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:09 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:10 - __main__ - INFO - Multicast discovery message sent.
-21:44:10 - __main__.ff - INFO - Updating The Finger Table
-21:44:10 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889350624271, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:10 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:11 - __main__.ff - INFO - Updating The Finger Table
-21:44:11 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889484841999, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:11 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:11 - __main__ - INFO - Sending request to http://172.17.0.2:8001/check_predecessor
-21:44:11 - __main__ - DEBUG - Payload: {}
-21:44:11 - __main__.rh - DEBUG - Request path /check_predecessor
-21:44:11 - __main__.rh - DEBUG - Handling the following request 
-{}
-21:44:11 - __main__ - DEBUG - From http://172.17.0.2:8001/check_predecessor recieved:
+08:09:29 - __main__.cp - INFO - ===Predecessor Checking Done===
+08:09:38 - __main__ - INFO - Multicast discovery message sent.
+08:09:38 - __main__.ff - INFO - Updating The Finger Table
+08:09:38 - __main__ - DEBUG - Inbetween (k = 746391104433116747568177882827823675889216537615, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
+08:09:38 - __main__.ff - INFO - ===Finger Table Updating Done===
+08:09:39 - __main__ - INFO - Sending request to http://172.17.0.3:8001/check_predecessor
+Payload: {}
+08:09:39 - __main__ - DEBUG - From http://172.17.0.3:8001/check_predecessor received:
 {'id': None, 'ip': None}
-21:44:11 - __main__.cp - INFO - ===Predecesor Checking Done===
-21:44:12 - __main__.stab - INFO - Stabilizing:
-21:44:12 - __main__.stab - INFO - Current succesor is 172.17.0.2
-21:44:12 - __main__.stab - INFO - Current predecesor is: 172.17.0.2
-21:44:12 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
-21:44:12 - __main__ - DEBUG - Payload: {}
-21:44:12 - __main__.rh - DEBUG - Request path /get_predecessor
-21:44:12 - __main__.rh - DEBUG - Handling the following request 
-{}
-21:44:12 - __main__.rh - DEBUG - Response for get_predecesor request:
-746391104433116747568177882827823675889216406543,172.17.0.2,8001
-21:44:12 - __main__ - DEBUG - From http://172.17.0.2:8001/get_predecessor recieved:
-{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:44:12 - __main__ - DEBUG - Get Predecesor Response:
-{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:44:12 - __main__.stab - INFO - ===STABILIZING DONE===
-21:44:12 - __main__.ff - INFO - Updating The Finger Table
-21:44:12 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675889753277455, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:12 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:13 - __main__.ff - INFO - Updating The Finger Table
-21:44:13 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675890290148367, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:13 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:14 - __main__.ff - INFO - Updating The Finger Table
-21:44:14 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675891363890191, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:14 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:15 - __main__.ff - INFO - Updating The Finger Table
-21:44:15 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675893511373839, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:15 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:16 - __main__.ff - INFO - Updating The Finger Table
-21:44:17 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675897806341135, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:17 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:18 - __main__.ff - INFO - Updating The Finger Table
-21:44:18 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675906396275727, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:18 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:19 - __main__.ff - INFO - Updating The Finger Table
-21:44:19 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675923576144911, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:19 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:20 - __main__.ff - INFO - Updating The Finger Table
-21:44:20 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823675957935883279, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:20 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:20 - __main__ - INFO - Multicast discovery message sent.
-21:44:21 - __main__.ff - INFO - Updating The Finger Table
-21:44:21 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823676026655360015, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:21 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:21 - __main__ - INFO - Sending request to http://172.17.0.2:8001/check_predecessor
-21:44:21 - __main__ - DEBUG - Payload: {}
-21:44:22 - __main__.rh - DEBUG - Request path /check_predecessor
-21:44:22 - __main__.rh - DEBUG - Handling the following request 
-{}
-21:44:22 - __main__ - DEBUG - From http://172.17.0.2:8001/check_predecessor recieved:
-{'id': None, 'ip': None}
-21:44:22 - __main__.cp - INFO - ===Predecesor Checking Done===
-21:44:22 - __main__.ff - INFO - Updating The Finger Table
-21:44:22 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823676164094313487, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:22 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:22 - __main__.stab - INFO - Stabilizing:
-21:44:22 - __main__.stab - INFO - Current succesor is 172.17.0.2
-21:44:22 - __main__.stab - INFO - Current predecesor is: 172.17.0.2
-21:44:22 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
-21:44:22 - __main__ - DEBUG - Payload: {}
-21:44:22 - __main__.rh - DEBUG - Request path /get_predecessor
-21:44:22 - __main__.rh - DEBUG - Handling the following request 
-{}
-21:44:22 - __main__.rh - DEBUG - Response for get_predecesor request:
-746391104433116747568177882827823675889216406543,172.17.0.2,8001
-21:44:22 - __main__ - DEBUG - From http://172.17.0.2:8001/get_predecessor recieved:
-{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:44:22 - __main__ - DEBUG - Get Predecesor Response:
-{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:44:22 - __main__.stab - INFO - ===STABILIZING DONE===
-21:44:23 - __main__.ff - INFO - Updating The Finger Table
-21:44:23 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823676438972220431, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:23 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:24 - __main__.ff - INFO - Updating The Finger Table
-21:44:24 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823676988728034319, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:24 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:25 - __main__.ff - INFO - Updating The Finger Table
-21:44:25 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823678088239662095, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:25 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:26 - __main__.ff - INFO - Updating The Finger Table
-21:44:26 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823680287262917647, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:26 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:27 - __main__.ff - INFO - Updating The Finger Table
-21:44:27 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823684685309428751, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:27 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:28 - __main__.ff - INFO - Updating The Finger Table
-21:44:28 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823693481402450959, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:28 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:29 - __main__.ff - INFO - Updating The Finger Table
-21:44:29 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823711073588495375, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:29 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:30 - __main__.ff - INFO - Updating The Finger Table
-21:44:30 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823746257960584207, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:30 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:30 - __main__ - INFO - Multicast discovery message sent.
-21:44:31 - __main__.ff - INFO - Updating The Finger Table
-21:44:31 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823816626704761871, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:31 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:32 - __main__ - INFO - Sending request to http://172.17.0.2:8001/check_predecessor
-21:44:32 - __main__ - DEBUG - Payload: {}
-21:44:32 - __main__.rh - DEBUG - Request path /check_predecessor
-21:44:32 - __main__.rh - DEBUG - Handling the following request 
-{}
-21:44:32 - __main__ - DEBUG - From http://172.17.0.2:8001/check_predecessor recieved:
-{'id': None, 'ip': None}
-21:44:32 - __main__.cp - INFO - ===Predecesor Checking Done===
-21:44:32 - __main__.ff - INFO - Updating The Finger Table
-21:44:32 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827823957364193117199, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:32 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:32 - __main__.stab - INFO - Stabilizing:
-21:44:32 - __main__.stab - INFO - Current succesor is 172.17.0.2
-21:44:32 - __main__.stab - INFO - Current predecesor is: 172.17.0.2
-21:44:32 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
-21:44:32 - __main__ - DEBUG - Payload: {}
-21:44:32 - __main__.rh - DEBUG - Request path /get_predecessor
-21:44:32 - __main__.rh - DEBUG - Handling the following request 
-{}
-21:44:32 - __main__.rh - DEBUG - Response for get_predecesor request:
-746391104433116747568177882827823675889216406543,172.17.0.2,8001
-21:44:32 - __main__ - DEBUG - From http://172.17.0.2:8001/get_predecessor recieved:
-{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:44:32 - __main__ - DEBUG - Get Predecesor Response:
-{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:44:32 - __main__.stab - INFO - ===STABILIZING DONE===
-21:44:33 - __main__.ff - INFO - Updating The Finger Table
-21:44:33 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827824238839169827855, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:33 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:34 - __main__.ff - INFO - Updating The Finger Table
-21:44:34 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827824801789123249167, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:34 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:35 - __main__.ff - INFO - Updating The Finger Table
-21:44:35 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827825927689030091791, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:35 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:36 - __main__.ff - INFO - Updating The Finger Table
-21:44:36 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827828179488843777039, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:36 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:37 - __main__.ff - INFO - Updating The Finger Table
-21:44:37 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827832683088471147535, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:37 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:38 - __main__.ff - INFO - Updating The Finger Table
-21:44:38 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827841690287725888527, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:38 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:39 - __main__.ff - INFO - Updating The Finger Table
-21:44:39 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827859704686235370511, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:39 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:40 - __main__.ff - INFO - Updating The Finger Table
-21:44:40 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827895733483254334479, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:40 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:40 - __main__ - INFO - Multicast discovery message sent.
-21:44:41 - __main__.ff - INFO - Updating The Finger Table
-21:44:41 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882827967791077292262415, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:41 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:42 - __main__ - INFO - Sending request to http://172.17.0.2:8001/check_predecessor
-21:44:42 - __main__ - DEBUG - Payload: {}
-21:44:42 - __main__.rh - DEBUG - Request path /check_predecessor
-21:44:42 - __main__.rh - DEBUG - Handling the following request 
-{}
-21:44:42 - __main__ - DEBUG - From http://172.17.0.2:8001/check_predecessor recieved:
-{'id': None, 'ip': None}
-21:44:42 - __main__.cp - INFO - ===Predecesor Checking Done===
-21:44:42 - __main__.ff - INFO - Updating The Finger Table
-21:44:42 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882828111906265368118287, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:42 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:42 - __main__.stab - INFO - Stabilizing:
-21:44:42 - __main__.stab - INFO - Current succesor is 172.17.0.2
-21:44:42 - __main__.stab - INFO - Current predecesor is: 172.17.0.2
-21:44:42 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
-21:44:42 - __main__ - DEBUG - Payload: {}
-21:44:42 - __main__.rh - DEBUG - Request path /get_predecessor
-21:44:42 - __main__.rh - DEBUG - Handling the following request 
-{}
-21:44:42 - __main__.rh - DEBUG - Response for get_predecesor request:
-746391104433116747568177882827823675889216406543,172.17.0.2,8001
-21:44:43 - __main__ - DEBUG - From http://172.17.0.2:8001/get_predecessor recieved:
-{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:44:43 - __main__ - DEBUG - Get Predecesor Response:
-{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:44:43 - __main__.stab - INFO - ===STABILIZING DONE===
-21:44:43 - __main__.ff - INFO - Updating The Finger Table
-21:44:43 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882828400136641519830031, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:43 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:44 - __main__.ff - INFO - Updating The Finger Table
-21:44:44 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882828976597393823253519, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:44 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:45 - __main__.ff - INFO - Updating The Finger Table
-21:44:45 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882830129518898430100495, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:45 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:46 - __main__.ff - INFO - Updating The Finger Table
-21:44:46 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882832435361907643794447, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:46 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:47 - __main__.ff - INFO - Updating The Finger Table
-21:44:47 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882837047047926071182351, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:47 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:48 - __main__.ff - INFO - Updating The Finger Table
-21:44:48 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882846270419962925958159, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:48 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:49 - __main__.ff - INFO - Updating The Finger Table
-21:44:49 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882864717164036635509775, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:49 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:50 - __main__ - INFO - Multicast discovery message sent.
-21:44:50 - __main__.ff - INFO - Updating The Finger Table
-21:44:50 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882901610652184054613007, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:50 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:51 - __main__.ff - INFO - Updating The Finger Table
-21:44:51 - __main__ - DEBUG - inbetween (k = 746391104433116747568177882975397628478892819471, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:51 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:52 - __main__ - INFO - Sending request to http://172.17.0.2:8001/check_predecessor
-21:44:52 - __main__ - DEBUG - Payload: {}
-21:44:52 - __main__.rh - DEBUG - Request path /check_predecessor
-21:44:52 - __main__.rh - DEBUG - Handling the following request 
-{}
-21:44:52 - __main__ - DEBUG - From http://172.17.0.2:8001/check_predecessor recieved:
-{'id': None, 'ip': None}
-21:44:52 - __main__.cp - INFO - ===Predecesor Checking Done===
-21:44:52 - __main__.ff - INFO - Updating The Finger Table
-21:44:52 - __main__ - DEBUG - inbetween (k = 746391104433116747568177883122971581068569232399, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:52 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:53 - __main__.stab - INFO - Stabilizing:
-21:44:53 - __main__.stab - INFO - Current succesor is 172.17.0.2
-21:44:53 - __main__.stab - INFO - Current predecesor is: 172.17.0.2
-21:44:53 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
-21:44:53 - __main__ - DEBUG - Payload: {}
-21:44:53 - __main__.rh - DEBUG - Request path /get_predecessor
-21:44:53 - __main__.rh - DEBUG - Handling the following request 
-{}
-21:44:53 - __main__.rh - DEBUG - Response for get_predecesor request:
-746391104433116747568177882827823675889216406543,172.17.0.2,8001
-21:44:53 - __main__ - DEBUG - From http://172.17.0.2:8001/get_predecessor recieved:
-{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:44:53 - __main__ - DEBUG - Get Predecesor Response:
-{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:44:53 - __main__.stab - INFO - ===STABILIZING DONE===
-21:44:53 - __main__.ff - INFO - Updating The Finger Table
-21:44:53 - __main__ - DEBUG - inbetween (k = 746391104433116747568177883418119486247922058255, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:53 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:54 - __main__.ff - INFO - Updating The Finger Table
-21:44:54 - __main__ - DEBUG - inbetween (k = 746391104433116747568177884008415296606627709967, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:54 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:55 - __main__.ff - INFO - Updating The Finger Table
-21:44:55 - __main__ - DEBUG - inbetween (k = 746391104433116747568177885189006917324039013391, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:55 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:57 - __main__.ff - INFO - Updating The Finger Table
-21:44:57 - __main__ - DEBUG - inbetween (k = 746391104433116747568177887550190158758861620239, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:57 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:58 - __main__.ff - INFO - Updating The Finger Table
-21:44:58 - __main__ - DEBUG - inbetween (k = 746391104433116747568177892272556641628506833935, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:58 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:44:59 - __main__.ff - INFO - Updating The Finger Table
-21:44:59 - __main__ - DEBUG - inbetween (k = 746391104433116747568177901717289607367797261327, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:44:59 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:45:00 - __main__.ff - INFO - Updating The Finger Table
-21:45:00 - __main__ - DEBUG - inbetween (k = 746391104433116747568177920606755538846378116111, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:45:00 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:45:00 - __main__ - INFO - Multicast discovery message sent.
-21:45:01 - __main__.ff - INFO - Updating The Finger Table
-21:45:01 - __main__ - DEBUG - inbetween (k = 746391104433116747568177958385687401803539825679, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:45:01 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:45:02 - __main__.ff - INFO - Updating The Finger Table
-21:45:02 - __main__ - DEBUG - inbetween (k = 746391104433116747568178033943551127717863244815, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:45:02 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:45:02 - __main__ - INFO - Sending request to http://172.17.0.2:8001/check_predecessor
-21:45:02 - __main__ - DEBUG - Payload: {}
-21:45:02 - __main__.rh - DEBUG - Request path /check_predecessor
-21:45:02 - __main__.rh - DEBUG - Handling the following request 
-{}
-21:45:02 - __main__ - DEBUG - From http://172.17.0.2:8001/check_predecessor recieved:
-{'id': None, 'ip': None}
-21:45:02 - __main__.cp - INFO - ===Predecesor Checking Done===
-21:45:03 - __main__.stab - INFO - Stabilizing:
-21:45:03 - __main__.stab - INFO - Current succesor is 172.17.0.2
-21:45:03 - __main__.stab - INFO - Current predecesor is: 172.17.0.2
-21:45:03 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
-21:45:03 - __main__ - DEBUG - Payload: {}
-21:45:03 - __main__.ff - INFO - Updating The Finger Table
-21:45:03 - __main__ - DEBUG - inbetween (k = 746391104433116747568178185059278579546510083087, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:45:03 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:45:03 - __main__.rh - DEBUG - Request path /get_predecessor
-21:45:03 - __main__.rh - DEBUG - Handling the following request 
-{}
-21:45:03 - __main__.rh - DEBUG - Response for get_predecesor request:
-746391104433116747568177882827823675889216406543,172.17.0.2,8001
-21:45:03 - __main__ - DEBUG - From http://172.17.0.2:8001/get_predecessor recieved:
-{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:45:03 - __main__ - DEBUG - Get Predecesor Response:
-{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:45:03 - __main__.stab - INFO - ===STABILIZING DONE===
-21:45:04 - __main__.ff - INFO - Updating The Finger Table
-21:45:04 - __main__ - DEBUG - inbetween (k = 746391104433116747568178487290733483203803759631, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:45:04 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:45:05 - __main__.ff - INFO - Updating The Finger Table
-21:45:05 - __main__ - DEBUG - inbetween (k = 746391104433116747568179091753643290518391112719, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:45:05 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:45:06 - __main__.ff - INFO - Updating The Finger Table
-21:45:06 - __main__ - DEBUG - inbetween (k = 746391104433116747568180300679462905147565818895, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:45:06 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:45:07 - __main__.ff - INFO - Updating The Finger Table
-21:45:07 - __main__ - DEBUG - inbetween (k = 746391104433116747568182718531102134405915231247, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:45:07 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:45:08 - __main__.ff - INFO - Updating The Finger Table
-21:45:08 - __main__ - DEBUG - inbetween (k = 746391104433116747568187554234380592922614055951, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:45:08 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:45:09 - __main__.ff - INFO - Updating The Finger Table
-21:45:09 - __main__ - DEBUG - inbetween (k = 746391104433116747568197225640937509956011705359, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:45:09 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:45:10 - __main__.ff - INFO - Updating The Finger Table
-21:45:10 - __main__ - DEBUG - inbetween (k = 746391104433116747568216568454051344022807004175, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:45:10 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:45:10 - __main__ - INFO - Multicast discovery message sent.
-21:45:11 - __main__.ff - INFO - Updating The Finger Table
-21:45:11 - __main__ - DEBUG - inbetween (k = 746391104433116747568255254080279012156397601807, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:45:11 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:45:12 - __main__ - INFO - Sending request to http://172.17.0.2:8001/check_predecessor
-21:45:12 - __main__ - DEBUG - Payload: {}
-21:45:12 - __main__.ff - INFO - Updating The Finger Table
-21:45:12 - __main__ - DEBUG - inbetween (k = 746391104433116747568332625332734348423578797071, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:45:12 - __main__.rh - DEBUG - Request path /check_predecessor
-21:45:12 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:45:12 - __main__.rh - DEBUG - Handling the following request 
-{}
-21:45:12 - __main__ - DEBUG - From http://172.17.0.2:8001/check_predecessor recieved:
-{'id': None, 'ip': None}
-21:45:12 - __main__.cp - INFO - ===Predecesor Checking Done===
-21:45:13 - __main__.stab - INFO - Stabilizing:
-21:45:13 - __main__.stab - INFO - Current succesor is 172.17.0.2
-21:45:13 - __main__.stab - INFO - Current predecesor is: 172.17.0.2
-21:45:13 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
-21:45:13 - __main__ - DEBUG - Payload: {}
-21:45:13 - __main__.rh - DEBUG - Request path /get_predecessor
-21:45:13 - __main__.rh - DEBUG - Handling the following request 
-{}
-21:45:13 - __main__.rh - DEBUG - Response for get_predecesor request:
-746391104433116747568177882827823675889216406543,172.17.0.2,8001
-21:45:13 - __main__ - DEBUG - From http://172.17.0.2:8001/get_predecessor recieved:
-{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:45:13 - __main__ - DEBUG - Get Predecesor Response:
-{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:45:13 - __main__.stab - INFO - ===STABILIZING DONE===
-21:45:13 - __main__.ff - INFO - Updating The Finger Table
-21:45:13 - __main__ - DEBUG - inbetween (k = 746391104433116747568487367837645020957941187599, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:45:13 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:45:14 - __main__.ff - INFO - Updating The Finger Table
-21:45:14 - __main__ - DEBUG - inbetween (k = 746391104433116747568796852847466366026665968655, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:45:14 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:45:15 - __main__.ff - INFO - Updating The Finger Table
-21:45:15 - __main__ - DEBUG - inbetween (k = 746391104433116747569415822867109056164115530767, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:45:15 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:45:16 - __main__.ff - INFO - Updating The Finger Table
-21:45:16 - __main__ - DEBUG - inbetween (k = 746391104433116747570653762906394436439014654991, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:45:16 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:45:17 - __main__.ff - INFO - Updating The Finger Table
-21:45:17 - __main__ - DEBUG - inbetween (k = 746391104433116747573129642984965196988812903439, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:45:17 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:45:18 - __main__.ff - INFO - Updating The Finger Table
-21:45:18 - __main__ - DEBUG - inbetween (k = 746391104433116747578081403142106718088409400335, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:45:18 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:45:19 - __main__.ff - INFO - Updating The Finger Table
-21:45:19 - __main__ - DEBUG - inbetween (k = 746391104433116747587984923456389760287602394127, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:45:19 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:45:20 - __main__.ff - INFO - Updating The Finger Table
-21:45:20 - __main__ - INFO - Multicast discovery message sent.
-21:45:20 - __main__ - DEBUG - inbetween (k = 746391104433116747607791964084955844685988381711, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:45:20 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:45:21 - __main__.ff - INFO - Updating The Finger Table
-21:45:21 - __main__ - DEBUG - inbetween (k = 746391104433116747647406045342088013482760356879, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:45:21 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:45:22 - __main__ - INFO - Sending request to http://172.17.0.2:8001/check_predecessor
-21:45:22 - __main__ - DEBUG - Payload: {}
-21:45:22 - __main__.rh - DEBUG - Request path /check_predecessor
-21:45:22 - __main__.rh - DEBUG - Handling the following request 
-{}
-21:45:22 - __main__ - DEBUG - From http://172.17.0.2:8001/check_predecessor recieved:
-{'id': None, 'ip': None}
-21:45:22 - __main__.cp - INFO - ===Predecesor Checking Done===
-21:45:22 - __main__.ff - INFO - Updating The Finger Table
-21:45:22 - __main__ - DEBUG - inbetween (k = 746391104433116747726634207856352351076304307215, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:45:22 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:45:23 - __main__.stab - INFO - Stabilizing:
-21:45:23 - __main__.stab - INFO - Current succesor is 172.17.0.2
-21:45:23 - __main__.stab - INFO - Current predecesor is: 172.17.0.2
-21:45:23 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
-21:45:23 - __main__ - DEBUG - Payload: {}
-21:45:23 - __main__.rh - DEBUG - Request path /get_predecessor
-21:45:23 - __main__.rh - DEBUG - Handling the following request 
-{}
-21:45:23 - __main__.rh - DEBUG - Response for get_predecesor request:
-746391104433116747568177882827823675889216406543,172.17.0.2,8001
-21:45:23 - __main__ - DEBUG - From http://172.17.0.2:8001/get_predecessor recieved:
-{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:45:23 - __main__ - DEBUG - Get Predecesor Response:
-{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-21:45:23 - __main__.stab - INFO - ===STABILIZING DONE===
-21:45:23 - __main__.ff - INFO - Updating The Finger Table
-21:45:23 - __main__ - DEBUG - inbetween (k = 746391104433116747885090532884881026263392207887, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:45:23 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:45:24 - __main__.ff - INFO - Updating The Finger Table
-21:45:24 - __main__ - DEBUG - inbetween (k = 746391104433116748202003182941938376637568009231, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:45:24 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:45:25 - __main__.ff - INFO - Updating The Finger Table
-21:45:25 - __main__ - DEBUG - inbetween (k = 746391104433116748835828483056053077385919611919, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:45:25 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:45:26 - __main__.ff - INFO - Updating The Finger Table
-21:45:26 - __main__ - DEBUG - inbetween (k = 746391104433116750103479083284282478882622817295, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:45:26 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:45:27 - __main__.ff - INFO - Updating The Finger Table
-21:45:27 - __main__ - DEBUG - inbetween (k = 746391104433116752638780283740741281876029228047, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:45:28 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:45:29 - __main__.ff - INFO - Updating The Finger Table
-21:45:29 - __main__ - DEBUG - inbetween (k = 746391104433116757709382684653658887862842049551, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:45:29 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:45:30 - __main__.ff - INFO - Updating The Finger Table
-21:45:30 - __main__ - DEBUG - inbetween (k = 746391104433116767850587486479494099836467692559, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:45:30 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:45:30 - __main__ - INFO - Multicast discovery message sent.
-21:45:31 - __main__.ff - INFO - Updating The Finger Table
-21:45:31 - __main__ - DEBUG - inbetween (k = 746391104433116788132997090131164523783718978575, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:45:31 - __main__.ff - INFO - ===Finger Table Updating Done===
-21:45:32 - __main__.ff - INFO - Updating The Finger Table
-21:45:32 - __main__ - DEBUG - inbetween (k = 746391104433116828697816297434505371678221550607, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
-21:45:32 - __main__.ff - INFO - ===Finger Table Updating Done===
+08:09:39 - __main__.cp - INFO - ===Predecessor Checking Done===

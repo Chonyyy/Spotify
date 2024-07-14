@@ -23,7 +23,7 @@ if __name__ == "__main__":
 
     discovered_ip = None
     multicast_thread = threading.Thread(target=send_multicast, daemon=True)
-    multicast_thread.start()
+    multicast_thread.start()#FIXME: Discovery not always works
 
     if len(sys.argv) >= 2:
         other_ip = sys.argv[1]

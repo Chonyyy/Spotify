@@ -15,12 +15,12 @@ def send_multicast():
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
     sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, 2)
     
-    while True:
+    while True:#Is this necesary ?
         sock.sendto(DISCOVERY_MESSAGE, (MULTICAST_GROUP, MULTICAST_PORT))
         logger.info("Multicast discovery message sent.")
         time.sleep(10)
 
-def receive_multicast():
+def receive_multicast():#TODO: Move this logic to chord node, if ip recieved is self ip ignore it
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     sock.bind(('', MULTICAST_PORT))
