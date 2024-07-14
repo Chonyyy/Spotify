@@ -1,242 +1,115 @@
-08:07:36 - __main__ - INFO - Multicast discovery message sent.
-08:07:38 - __main__ - INFO - Discovered node: 172.17.0.2
-08:07:38 - __main__ - INFO - node_addr: 172.17.0.3:8001
-08:07:38 - __main__ - INFO - HTTP serving commenced
-08:07:38 - __main__.stab - INFO - Stabilizing:
-08:07:38 - __main__.ff - INFO - Updating The Finger Table
-08:07:38 - __main__.cp - INFO - Checking Predecessor
-08:07:38 - __main__.stab - INFO - Current successor is 172.17.0.3
-08:07:38 - __main__ - INFO - Joining to node 172.17.0.2
-08:07:38 - __main__ - DEBUG - Inbetween (k = 685966170926969970295131996809687121594286967558, start = 685966170926969970295131996809687121594286967556, end = 685966170926969970295131996809687121594286967556)
-08:07:38 - __main__.ff - INFO - ===Finger Table Updating Done===
-08:07:38 - __main__.stab - INFO - Current predecessor is: 172.17.0.3
-08:07:38 - __main__ - INFO - Sending request to http://172.17.0.2:8001/find_successor
+08:44:20 - __main__ - INFO - Multicast discovery message sent.
+08:44:21 - __main__ - INFO - Discovered node: 172.17.0.2
+08:44:21 - __main__ - INFO - node_addr: 172.17.0.3:8001
+08:44:21 - __main__ - INFO - HTTP serving commenced
+08:44:21 - __main__.stab - INFO - Stabilizing:
+08:44:21 - __main__.ff - INFO - Updating The Finger Table
+08:44:21 - __main__.stab - INFO - Current successor is 172.17.0.3
+08:44:21 - __main__.cp - INFO - Checking Predecessor
+08:44:21 - __main__ - INFO - Joining to node 172.17.0.2
+08:44:21 - __main__ - DEBUG - Inbetween (k = 685966170926969970295131996809687121594286967558, start = 685966170926969970295131996809687121594286967556, end = 685966170926969970295131996809687121594286967556)
+08:44:21 - __main__.stab - INFO - Current predecessor is: 172.17.0.3
+08:44:21 - __main__ - INFO - Sending request to http://172.17.0.3:8001/check_predecessor
+Payload: {}
+08:44:21 - __main__ - INFO - Sending request to http://172.17.0.2:8001/find_successor
 Payload: {'id': '685966170926969970295131996809687121594286967556'}
-08:07:38 - __main__ - INFO - Sending request to http://172.17.0.3:8001/check_predecessor
+08:44:21 - __main__.ff - INFO - ===Finger Table Updating Done===
+08:44:21 - __main__ - INFO - Sending request to http://172.17.0.3:8001/get_predecessor
 Payload: {}
-08:07:38 - __main__ - INFO - Sending request to http://172.17.0.3:8001/get_predecessor
-Payload: {}
-08:07:38 - __main__.rh - DEBUG - Request path /check_predecessor
-08:07:38 - __main__.rh - DEBUG - Handling the following request 
+08:44:21 - __main__.rh - DEBUG - Request path /check_predecessor
+08:44:21 - __main__.rh - DEBUG - Handling the following request 
 {}
-08:07:38 - __main__.rh - DEBUG - Request path /get_predecessor
-08:07:38 - __main__ - DEBUG - From http://172.17.0.3:8001/check_predecessor received:
+08:44:21 - __main__.rh - DEBUG - Request path /get_predecessor
+08:44:21 - __main__.rh - DEBUG - Handling the following request 
+{}
+08:44:21 - __main__ - DEBUG - From http://172.17.0.3:8001/check_predecessor received:
 {'id': None, 'ip': None}
-08:07:38 - __main__.rh - DEBUG - Handling the following request 
-{}
-08:07:38 - __main__.cp - INFO - ===Predecessor Checking Done===
-08:07:38 - __main__.rh - DEBUG - Response for get_predecessor request:
+08:44:21 - __main__.rh - DEBUG - Response for get_predecessor request:
 685966170926969970295131996809687121594286967556,172.17.0.3,8001
-08:07:38 - __main__ - DEBUG - From http://172.17.0.3:8001/get_predecessor received:
+08:44:21 - __main__.cp - INFO - ===Predecessor Checking Done===
+08:44:21 - __main__ - DEBUG - From http://172.17.0.3:8001/get_predecessor received:
 {'id': 685966170926969970295131996809687121594286967556, 'ip': '172.17.0.3'}
-08:07:38 - __main__ - DEBUG - Get Predecessor Response:
+08:44:21 - __main__ - DEBUG - Get Predecessor Response:
 {'id': 685966170926969970295131996809687121594286967556, 'ip': '172.17.0.3'}
-08:07:38 - __main__ - INFO - Sending request to http://172.17.0.3:8001/notify
+08:44:21 - __main__ - INFO - Sending request to http://172.17.0.3:8001/notify
 Payload: {'id': 685966170926969970295131996809687121594286967556, 'ip': '172.17.0.3'}
-08:07:38 - __main__.rh - DEBUG - Request path /notify
-08:07:38 - __main__.rh - DEBUG - Handling the following request 
+08:44:21 - __main__.rh - DEBUG - Request path /notify
+08:44:21 - __main__.rh - DEBUG - Handling the following request 
 {'id': 685966170926969970295131996809687121594286967556, 'ip': '172.17.0.3'}
-08:07:38 - __main__ - DEBUG - From http://172.17.0.3:8001/notify received:
+08:44:21 - __main__ - DEBUG - From http://172.17.0.3:8001/notify received:
 {'id': None, 'ip': None}
-08:07:38 - __main__.stab - INFO - ===STABILIZING DONE===
-08:07:38 - __main__ - DEBUG - From http://172.17.0.2:8001/find_successor received:
+08:44:21 - __main__.stab - INFO - ===STABILIZING DONE===
+08:44:21 - __main__ - DEBUG - From http://172.17.0.2:8001/find_successor received:
 {'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-08:07:38 - __main__ - DEBUG - Find Successor Response:
+08:44:21 - __main__ - DEBUG - Find Successor Response:
 {'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
-08:07:38 - __main__ - INFO - New-Succ-join | 172.17.0.2 | node 685966170926969970295131996809687121594286967556
-08:07:38 - __main__ - INFO - Sending request to http://172.17.0.2:8001/notify
+08:44:21 - __main__ - INFO - New-Succ-join | 172.17.0.2 | node 685966170926969970295131996809687121594286967556
+08:44:21 - __main__ - INFO - Sending request to http://172.17.0.2:8001/notify
 Payload: {'id': 685966170926969970295131996809687121594286967556, 'ip': '172.17.0.3'}
-08:07:38 - __main__ - DEBUG - From http://172.17.0.2:8001/notify received:
+08:44:21 - __main__ - DEBUG - From http://172.17.0.2:8001/notify received:
 {'id': None, 'ip': None}
-08:07:38 - __main__ - INFO - Node 685966170926969970295131996809687121594286967556 starting an election.
-08:07:38 - __main__ - INFO - Sending request to http://172.17.0.2:8001/election
-Payload: {'ids': [685966170926969970295131996809687121594286967556], 'initiator': 685966170926969970295131996809687121594286967556}
-08:07:38 - __main__.rh - DEBUG - Request path /check_predecessor
-08:07:38 - __main__.rh - DEBUG - Handling the following request 
+08:44:23 - __main__.rh - DEBUG - Request path /notify
+08:44:23 - __main__.rh - DEBUG - Handling the following request 
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+08:44:23 - __main__ - DEBUG - Inbetween (k = 746391104433116747568177882827823675889216406543, start = 685966170926969970295131996809687121594286967556, end = 685966170926969970295131996809687121594286967556)
+08:44:29 - __main__.rh - DEBUG - Request path /check_predecessor
+08:44:29 - __main__.rh - DEBUG - Handling the following request 
 {}
-08:07:46 - __main__ - INFO - Multicast discovery message sent.
-08:07:48 - __main__.ff - INFO - Updating The Finger Table
-08:07:48 - __main__ - DEBUG - Inbetween (k = 685966170926969970295131996809687121594286967560, start = 685966170926969970295131996809687121594286967556, end = 746391104433116747568177882827823675889216406543)
-08:07:48 - __main__.ff - INFO - ===Finger Table Updating Done===
-08:07:48 - __main__ - INFO - Sending request to http://172.17.0.3:8001/check_predecessor
+08:44:30 - __main__ - INFO - Multicast discovery message sent.
+08:44:31 - __main__.ff - INFO - Updating The Finger Table
+08:44:31 - __main__ - DEBUG - Inbetween (k = 685966170926969970295131996809687121594286967560, start = 685966170926969970295131996809687121594286967556, end = 746391104433116747568177882827823675889216406543)
+08:44:31 - __main__.ff - INFO - ===Finger Table Updating Done===
+08:44:31 - __main__ - INFO - Sending request to http://172.17.0.2:8001/check_predecessor
 Payload: {}
-08:07:48 - __main__.rh - DEBUG - Request path /check_predecessor
-08:07:48 - __main__.rh - DEBUG - Handling the following request 
-{}
-08:07:48 - __main__ - DEBUG - From http://172.17.0.3:8001/check_predecessor received:
+08:44:31 - __main__.stab - INFO - Stabilizing:
+08:44:31 - __main__.stab - INFO - Current successor is 172.17.0.2
+08:44:31 - __main__.stab - INFO - Current predecessor is: 172.17.0.2
+08:44:31 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
+Payload: {}
+08:44:31 - __main__ - DEBUG - From http://172.17.0.2:8001/check_predecessor received:
 {'id': None, 'ip': None}
-08:07:48 - __main__.cp - INFO - ===Predecessor Checking Done===
-08:07:48 - __main__.stab - INFO - Stabilizing:
-08:07:48 - __main__.stab - INFO - Current successor is 172.17.0.2
-08:07:48 - __main__.stab - INFO - Current predecessor is: 172.17.0.3
-08:07:48 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
-Payload: {}
-08:07:48 - __main__.rh - DEBUG - Request path /check_predecessor
-08:07:48 - __main__.rh - DEBUG - Handling the following request 
-{}
-08:07:56 - __main__ - INFO - Multicast discovery message sent.
-08:07:58 - __main__.ff - INFO - Updating The Finger Table
-08:07:58 - __main__ - DEBUG - Inbetween (k = 685966170926969970295131996809687121594286967564, start = 685966170926969970295131996809687121594286967556, end = 746391104433116747568177882827823675889216406543)
-08:07:58 - __main__.ff - INFO - ===Finger Table Updating Done===
-08:07:58 - __main__ - INFO - Sending request to http://172.17.0.3:8001/check_predecessor
-Payload: {}
-08:07:58 - __main__.rh - DEBUG - Request path /check_predecessor
-08:07:58 - __main__.rh - DEBUG - Handling the following request 
-{}
-08:07:58 - __main__ - DEBUG - From http://172.17.0.3:8001/check_predecessor received:
+08:44:31 - __main__.cp - INFO - ===Predecessor Checking Done===
+08:44:31 - __main__ - DEBUG - From http://172.17.0.2:8001/get_predecessor received:
+{'id': 685966170926969970295131996809687121594286967556, 'ip': '172.17.0.3'}
+08:44:31 - __main__ - DEBUG - Get Predecessor Response:
+{'id': 685966170926969970295131996809687121594286967556, 'ip': '172.17.0.3'}
+08:44:31 - __main__ - INFO - Sending request to http://172.17.0.2:8001/notify
+Payload: {'id': 685966170926969970295131996809687121594286967556, 'ip': '172.17.0.3'}
+08:44:31 - __main__ - DEBUG - From http://172.17.0.2:8001/notify received:
 {'id': None, 'ip': None}
-08:07:58 - __main__.cp - INFO - ===Predecessor Checking Done===
-08:07:58 - __main__.rh - DEBUG - Request path /check_predecessor
-08:07:58 - __main__.rh - DEBUG - Handling the following request 
+08:44:31 - __main__.stab - INFO - ===STABILIZING DONE===
+08:44:33 - __main__.rh - DEBUG - Request path /get_predecessor
+08:44:33 - __main__.rh - DEBUG - Handling the following request 
 {}
-08:08:06 - __main__ - INFO - Multicast discovery message sent.
-08:08:08 - __main__.ff - INFO - Updating The Finger Table
-08:08:08 - __main__ - DEBUG - Inbetween (k = 685966170926969970295131996809687121594286967572, start = 685966170926969970295131996809687121594286967556, end = 746391104433116747568177882827823675889216406543)
-08:08:08 - __main__.ff - INFO - ===Finger Table Updating Done===
-08:08:08 - __main__ - INFO - Sending request to http://172.17.0.3:8001/check_predecessor
+08:44:33 - __main__.rh - DEBUG - Response for get_predecessor request:
+746391104433116747568177882827823675889216406543,172.17.0.2,8001
+08:44:33 - __main__.rh - DEBUG - Request path /notify
+08:44:33 - __main__.rh - DEBUG - Handling the following request 
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+08:44:33 - __main__ - DEBUG - Inbetween (k = 746391104433116747568177882827823675889216406543, start = 746391104433116747568177882827823675889216406543, end = 685966170926969970295131996809687121594286967556)
+08:44:39 - __main__.rh - DEBUG - Request path /check_predecessor
+08:44:39 - __main__.rh - DEBUG - Handling the following request 
+{}
+08:44:40 - __main__ - INFO - Multicast discovery message sent.
+08:44:41 - __main__.ff - INFO - Updating The Finger Table
+08:44:41 - __main__ - DEBUG - Inbetween (k = 685966170926969970295131996809687121594286967564, start = 685966170926969970295131996809687121594286967556, end = 746391104433116747568177882827823675889216406543)
+08:44:41 - __main__.ff - INFO - ===Finger Table Updating Done===
+08:44:41 - __main__ - INFO - Sending request to http://172.17.0.2:8001/check_predecessor
 Payload: {}
-08:08:08 - __main__.rh - DEBUG - Request path /check_predecessor
-08:08:08 - __main__.rh - DEBUG - Handling the following request 
-{}
-08:08:08 - __main__ - DEBUG - From http://172.17.0.3:8001/check_predecessor received:
+08:44:41 - __main__ - DEBUG - From http://172.17.0.2:8001/check_predecessor received:
 {'id': None, 'ip': None}
-08:08:08 - __main__.cp - INFO - ===Predecessor Checking Done===
-08:08:08 - __main__.rh - DEBUG - Request path /check_predecessor
-08:08:08 - __main__.rh - DEBUG - Handling the following request 
-{}
-08:08:16 - __main__ - INFO - Multicast discovery message sent.
-08:08:18 - __main__.ff - INFO - Updating The Finger Table
-08:08:18 - __main__ - DEBUG - Inbetween (k = 685966170926969970295131996809687121594286967588, start = 685966170926969970295131996809687121594286967556, end = 746391104433116747568177882827823675889216406543)
-08:08:18 - __main__.ff - INFO - ===Finger Table Updating Done===
-08:08:18 - __main__ - INFO - Sending request to http://172.17.0.3:8001/check_predecessor
+08:44:41 - __main__.cp - INFO - ===Predecessor Checking Done===
+08:44:41 - __main__.stab - INFO - Stabilizing:
+08:44:41 - __main__.stab - INFO - Current successor is 172.17.0.2
+08:44:41 - __main__.stab - INFO - Current predecessor is: 172.17.0.2
+08:44:41 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
 Payload: {}
-08:08:18 - __main__.rh - DEBUG - Request path /check_predecessor
-08:08:18 - __main__.rh - DEBUG - Handling the following request 
-{}
-08:08:18 - __main__ - DEBUG - From http://172.17.0.3:8001/check_predecessor received:
+08:44:42 - __main__ - DEBUG - From http://172.17.0.2:8001/get_predecessor received:
+{'id': 685966170926969970295131996809687121594286967556, 'ip': '172.17.0.3'}
+08:44:42 - __main__ - DEBUG - Get Predecessor Response:
+{'id': 685966170926969970295131996809687121594286967556, 'ip': '172.17.0.3'}
+08:44:42 - __main__ - INFO - Sending request to http://172.17.0.2:8001/notify
+Payload: {'id': 685966170926969970295131996809687121594286967556, 'ip': '172.17.0.3'}
+08:44:42 - __main__ - DEBUG - From http://172.17.0.2:8001/notify received:
 {'id': None, 'ip': None}
-08:08:18 - __main__.cp - INFO - ===Predecessor Checking Done===
-08:08:18 - __main__.rh - DEBUG - Request path /check_predecessor
-08:08:18 - __main__.rh - DEBUG - Handling the following request 
-{}
-08:08:26 - __main__ - INFO - Multicast discovery message sent.
-08:08:28 - __main__.ff - INFO - Updating The Finger Table
-08:08:28 - __main__ - DEBUG - Inbetween (k = 685966170926969970295131996809687121594286967620, start = 685966170926969970295131996809687121594286967556, end = 746391104433116747568177882827823675889216406543)
-08:08:28 - __main__.ff - INFO - ===Finger Table Updating Done===
-08:08:28 - __main__ - INFO - Sending request to http://172.17.0.3:8001/check_predecessor
-Payload: {}
-08:08:28 - __main__.rh - DEBUG - Request path /check_predecessor
-08:08:28 - __main__.rh - DEBUG - Handling the following request 
-{}
-08:08:28 - __main__ - DEBUG - From http://172.17.0.3:8001/check_predecessor received:
-{'id': None, 'ip': None}
-08:08:28 - __main__.cp - INFO - ===Predecessor Checking Done===
-08:08:28 - __main__.rh - DEBUG - Request path /check_predecessor
-08:08:28 - __main__.rh - DEBUG - Handling the following request 
-{}
-08:08:36 - __main__ - INFO - Multicast discovery message sent.
-08:08:38 - __main__.ff - INFO - Updating The Finger Table
-08:08:38 - __main__ - DEBUG - Inbetween (k = 685966170926969970295131996809687121594286967684, start = 685966170926969970295131996809687121594286967556, end = 746391104433116747568177882827823675889216406543)
-08:08:38 - __main__.ff - INFO - ===Finger Table Updating Done===
-08:08:38 - __main__ - INFO - Sending request to http://172.17.0.3:8001/check_predecessor
-Payload: {}
-08:08:38 - __main__.rh - DEBUG - Request path /check_predecessor
-08:08:38 - __main__.rh - DEBUG - Handling the following request 
-{}
-08:08:38 - __main__ - DEBUG - From http://172.17.0.3:8001/check_predecessor received:
-{'id': None, 'ip': None}
-08:08:38 - __main__.cp - INFO - ===Predecessor Checking Done===
-08:08:38 - __main__.rh - DEBUG - Request path /check_predecessor
-08:08:38 - __main__.rh - DEBUG - Handling the following request 
-{}
-08:08:46 - __main__ - INFO - Multicast discovery message sent.
-08:08:48 - __main__.ff - INFO - Updating The Finger Table
-08:08:48 - __main__ - DEBUG - Inbetween (k = 685966170926969970295131996809687121594286967812, start = 685966170926969970295131996809687121594286967556, end = 746391104433116747568177882827823675889216406543)
-08:08:48 - __main__.ff - INFO - ===Finger Table Updating Done===
-08:08:48 - __main__ - INFO - Sending request to http://172.17.0.3:8001/check_predecessor
-Payload: {}
-08:08:48 - __main__.rh - DEBUG - Request path /check_predecessor
-08:08:48 - __main__.rh - DEBUG - Handling the following request 
-{}
-08:08:48 - __main__ - DEBUG - From http://172.17.0.3:8001/check_predecessor received:
-{'id': None, 'ip': None}
-08:08:48 - __main__.cp - INFO - ===Predecessor Checking Done===
-08:08:48 - __main__.rh - DEBUG - Request path /check_predecessor
-08:08:48 - __main__.rh - DEBUG - Handling the following request 
-{}
-08:08:56 - __main__ - INFO - Multicast discovery message sent.
-08:08:58 - __main__.ff - INFO - Updating The Finger Table
-08:08:58 - __main__ - DEBUG - Inbetween (k = 685966170926969970295131996809687121594286968068, start = 685966170926969970295131996809687121594286967556, end = 746391104433116747568177882827823675889216406543)
-08:08:58 - __main__.ff - INFO - ===Finger Table Updating Done===
-08:08:58 - __main__ - INFO - Sending request to http://172.17.0.3:8001/check_predecessor
-Payload: {}
-08:08:58 - __main__.rh - DEBUG - Request path /check_predecessor
-08:08:58 - __main__.rh - DEBUG - Handling the following request 
-{}
-08:08:58 - __main__ - DEBUG - From http://172.17.0.3:8001/check_predecessor received:
-{'id': None, 'ip': None}
-08:08:58 - __main__.cp - INFO - ===Predecessor Checking Done===
-08:08:58 - __main__.rh - DEBUG - Request path /check_predecessor
-08:08:58 - __main__.rh - DEBUG - Handling the following request 
-{}
-08:09:06 - __main__ - INFO - Multicast discovery message sent.
-08:09:08 - __main__.ff - INFO - Updating The Finger Table
-08:09:08 - __main__ - DEBUG - Inbetween (k = 685966170926969970295131996809687121594286968580, start = 685966170926969970295131996809687121594286967556, end = 746391104433116747568177882827823675889216406543)
-08:09:08 - __main__.ff - INFO - ===Finger Table Updating Done===
-08:09:08 - __main__ - INFO - Sending request to http://172.17.0.3:8001/check_predecessor
-Payload: {}
-08:09:08 - __main__.rh - DEBUG - Request path /check_predecessor
-08:09:08 - __main__.rh - DEBUG - Handling the following request 
-{}
-08:09:08 - __main__ - DEBUG - From http://172.17.0.3:8001/check_predecessor received:
-{'id': None, 'ip': None}
-08:09:08 - __main__.cp - INFO - ===Predecessor Checking Done===
-08:09:08 - __main__.rh - DEBUG - Request path /check_predecessor
-08:09:08 - __main__.rh - DEBUG - Handling the following request 
-{}
-08:09:16 - __main__ - INFO - Multicast discovery message sent.
-08:09:18 - __main__.ff - INFO - Updating The Finger Table
-08:09:18 - __main__ - DEBUG - Inbetween (k = 685966170926969970295131996809687121594286969604, start = 685966170926969970295131996809687121594286967556, end = 746391104433116747568177882827823675889216406543)
-08:09:18 - __main__.ff - INFO - ===Finger Table Updating Done===
-08:09:18 - __main__ - INFO - Sending request to http://172.17.0.3:8001/check_predecessor
-Payload: {}
-08:09:18 - __main__.rh - DEBUG - Request path /check_predecessor
-08:09:18 - __main__.rh - DEBUG - Handling the following request 
-{}
-08:09:18 - __main__ - DEBUG - From http://172.17.0.3:8001/check_predecessor received:
-{'id': None, 'ip': None}
-08:09:18 - __main__.cp - INFO - ===Predecessor Checking Done===
-08:09:18 - __main__.rh - DEBUG - Request path /check_predecessor
-08:09:18 - __main__.rh - DEBUG - Handling the following request 
-{}
-08:09:26 - __main__ - INFO - Multicast discovery message sent.
-08:09:28 - __main__.ff - INFO - Updating The Finger Table
-08:09:28 - __main__ - DEBUG - Inbetween (k = 685966170926969970295131996809687121594286971652, start = 685966170926969970295131996809687121594286967556, end = 746391104433116747568177882827823675889216406543)
-08:09:28 - __main__.ff - INFO - ===Finger Table Updating Done===
-08:09:28 - __main__ - INFO - Sending request to http://172.17.0.3:8001/check_predecessor
-Payload: {}
-08:09:28 - __main__.rh - DEBUG - Request path /check_predecessor
-08:09:28 - __main__.rh - DEBUG - Handling the following request 
-{}
-08:09:28 - __main__ - DEBUG - From http://172.17.0.3:8001/check_predecessor received:
-{'id': None, 'ip': None}
-08:09:28 - __main__.cp - INFO - ===Predecessor Checking Done===
-08:09:29 - __main__.rh - DEBUG - Request path /check_predecessor
-08:09:29 - __main__.rh - DEBUG - Handling the following request 
-{}
-08:09:36 - __main__ - INFO - Multicast discovery message sent.
-08:09:38 - __main__.ff - INFO - Updating The Finger Table
-08:09:38 - __main__ - DEBUG - Inbetween (k = 685966170926969970295131996809687121594286975748, start = 685966170926969970295131996809687121594286967556, end = 746391104433116747568177882827823675889216406543)
-08:09:38 - __main__.ff - INFO - ===Finger Table Updating Done===
-08:09:38 - __main__ - INFO - Sending request to http://172.17.0.3:8001/check_predecessor
-Payload: {}
-08:09:38 - __main__.rh - DEBUG - Request path /check_predecessor
-08:09:38 - __main__.rh - DEBUG - Handling the following request 
-{}
-08:09:38 - __main__ - DEBUG - From http://172.17.0.3:8001/check_predecessor received:
-{'id': None, 'ip': None}
-08:09:38 - __main__.cp - INFO - ===Predecessor Checking Done===
-08:09:39 - __main__.rh - DEBUG - Request path /check_predecessor
-08:09:39 - __main__.rh - DEBUG - Handling the following request 
-{}
-08:09:46 - __main__ - INFO - Multicast discovery message sent.
+08:44:42 - __main__.stab - INFO - ===STABILIZING DONE===

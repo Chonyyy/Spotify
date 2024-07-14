@@ -362,7 +362,8 @@ class ChordNode:
         self.succ = node.find_successor(self.id)
         logger.info(f'New-Succ-join | {node.id} | node {self.id}')
         self.succ.notify(self.ref)
-        self.start_election()#TODO: Debug this and add start election logic when the leader exits the network
+        #FIXME: Election is breaking everything
+        # self.start_election()#TODO: Debug this and add start election logic when the leader exits the network
 
     def stabilize(self):
         """Regularly check and stabilize the Chord structure."""
