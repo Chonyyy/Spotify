@@ -9,11 +9,12 @@ from server.handlers.user import User
 
 # Set up logging
 logger = logging.getLogger("__main__")
-logger_stab = logging.getLogger("__main__.stab")
+logger_stab = logging.getLogger("__main__.st")
 logger_ff = logging.getLogger("__main__.ff")
 logger_cp = logging.getLogger("__main__.cp")
 logger_rh = logging.getLogger("__main__.rh")
 logger_le = logging.getLogger("__main__.le")
+logger_dt = logging.getLogger("__main__.dt")
 
 def get_sha_repr(data: str) -> int:
     """Return SHA-1 hash representation of a string as an integer."""
@@ -23,7 +24,6 @@ def get_sha_repr(data: str) -> int:
 class ChordNodeRequestHandler(BaseHTTPRequestHandler):
 
     def do_POST(self):
-        #TODO: Some requests need to be handled in 
         """Handle POST requests."""
         content_length = int(self.headers['Content-Length'])
         post_data = json.loads(self.rfile.read(content_length))
@@ -32,12 +32,12 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):
         
         response = None
 
-        if self.path == '/register':
-            response = self.handle_register(post_data)
+        if self.path == '/store-data':
+            response = self.handle_store_data(post_data)
             self.send_json_response(response)
-        elif self.path == '/store_user':
-            response = self.handle_store_user(post_data)
-            self.send_json_response(response)
+        elif self.path == '/debug-node-data':
+            self.server.node._debug_log_data()
+            self.send_json_response({"status": "success"})
         elif self.path == '/election':
             response = self.handle_election(post_data)
         elif self.path == '/coordinator':
@@ -58,7 +58,7 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):
         elif self.path == '/notify':
             response = self.handle_notify(post_data)
             self.send_json_response(response)
-        elif self.path == '/check_predecessor':#TODO: This one and the one bellow should be get requests
+        elif self.path == '/check_predecessor':
             response = {'status': 'success'}
             self.send_json_response(response, status=200)#TODO: change this to get request
         elif self.path == '/ping':
@@ -90,25 +90,23 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):
         elif self.path == '/debug/discover':
             logger.info(f'Discovery Debug Not Implemented')#TODO: Fix discovery
         elif self.path == '/debug/finger_table':
-            self.server.node._print_finger_table()
+            self.server.node.print_finger_table()
         elif self.path == '/debug/start-election':
             self.handle_start_election()
             
         else:
-            self.send_json_response(response, error_message='Page not found', status=404)#TODO: This response will always be sent, change this
+            self.send_json_response(response, error_message='Page not found', status=404)
 
-    def handle_register(self, post_data):
-        username = post_data['username']
-        password = post_data['password']
-        user = User(username, password)
-        self.server.node.store_user(user)
-        return {"status": "success"}
-
-    def handle_store_user(self, post_data):
-        username = post_data['username']
-        password = post_data['password']
-        user = User(username, password)
-        self.server.node.data[get_sha_repr(username)] = user.to_dict()
+    def handle_store_data(self, post_data):
+        if 'callback' not in post_data:
+            
+            self.send_json_response(None, error_message='Provided data must contain a callback addr', status=400)
+        if 'key_fields' not in post_data or not isinstance(post_data['key_fields'], list):
+            self.send_json_response(None, error_message='Provided data must contain a key_fields list')
+        callback = post_data['callback']
+        key_fields = post_data['key_fields']
+        del post_data['callback'], post_data['key_fields']
+        self.server.node.store_data(key_fields, post_data, callback)
         return {"status": "success"}
 
     def handle_election(self, post_data):
@@ -157,11 +155,11 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):
         node = ChordNodeReference(post_data['id'], post_data['ip'])
         self.server.node.notify(node)
 
-    def handle_get_user(self, path):
+    def handle_get_data(self, path):
         query = path.split('?')
         if len(query) > 1:
             username = query[1].split('=')[1]
-            return self.server.node.get_user(username)
+            return self.server.node.get_data(username)
         else:
             self.send_response(400)
             self.end_headers()
@@ -193,26 +191,42 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):
                 self.wfile.write(json.dumps({'id': None, 'ip': None}).encode())
 
 #region NodeReference
+
 class ChordNodeReference:
     def __init__(self, id: str, ip: str, port: int = 8001):
         self.id = get_sha_repr(ip) if not id else id
         self.ip = ip
         self.port = port
+        self.replication_queue = []
         
     #region Coordination
+    
     def send_election_message(self, election_message):
         self._send_request('/election', election_message)
 
     def send_coordinator_message(self, coordinator_message):
         self._send_request('/coordinator', coordinator_message)
 
-    #region Buisness logic
-    def send_store_user(self, user: User):
+    #region Data
+    # def get_data(self, key_fields, data, callback = None):
+    
+    def send_store_data(self, data, callback, key_fields):
         """Send request to store a user."""
-        data = {'username': user.username, 'password': user.password}
-        self._send_request('/store_user', data)
+        data['callback'] = callback
+        data['key_fields'] = key_fields
+        self._send_request('/store-data', data)
+        
+    def enqueue_rep_operation(self, **args):
+        pass
+    
+    def aply_rep_operations(self, **args):
+        pass
+        
+    # def send_get_data(self, data, callback):#TODO: Implement this
+    #     """Send request to get an user"""
 
     #region Chord logic
+    
     def find_successor(self, id: int) -> 'ChordNodeReference':
         """Find successor of a given id."""
         response = self._send_request('/find_successor', {'id': str(id)})
@@ -257,16 +271,18 @@ class ChordNodeReference:
         return ChordNodeReference(response['id'], response['ip'], self.port)
 
     #region Utils
+    
     def _send_request(self, path: str, data: dict) -> dict:
         """Send a request and handle retries."""
         max_retries = 4
         for i in range(max_retries):
+            response = None
             try:
                 url = f'http://{self.ip}:{self.port}{path}'
                 logger.info(f'Sending request to {url}\nPayload: {data}')
 
-                response = requests.post(url, json=data).json()
-                
+                response_raw = requests.post(url, json=data)
+                response = response_raw.json()#FIXME: Remove this after you are done
                 logger.debug(f'From {url} received:\n{response}')
                 return response
             except requests.ConnectionError as e:
@@ -274,6 +290,9 @@ class ChordNodeReference:
                 logger.error(f'{e}')
                 if i == max_retries - 1:
                     raise e
+            except requests.exceptions.JSONDecodeError as e:
+                logger.error(f'JSON Decode Error: {e}')
+                logger.error(f'Response text: {response_raw.text}')  # Log the response body
             except Exception as e:
                 logger.error(f"Error sending data to {path}: {data}\n{e}")
                 raise e
@@ -297,6 +316,7 @@ class ChordNode:
         self.finger = [self.ref] * self.m  # Finger table
         self.next = 0  # Finger table index to fix next
         self.data = {}
+        self.replicated_data = {}
         self.leader = self.ref
         self.election_started = False#TODO: What happens if the election takes too long
 
@@ -315,6 +335,42 @@ class ChordNode:
         threading.Thread(target=self.check_predecessor, daemon=True).start()  # Start check predecessor thread
         threading.Thread(target=self.check_leader, daemon=True).start()
           
+          
+    #region Data
+    
+    def store_data(self, key_fields, data, callback = None):#TODO: Respond to the callback once the data is actually stored
+        key_information = ''
+        for element in [str(data[k]) for k in key_fields]:
+            key_information += element
+        key = get_sha_repr(key_information)
+        logger_dt.info(f'Storing information: {key_information}; key: {key}')
+        target_node = self.find_succ(key)
+        logger.info(f'Asking for key {key}, to node {target_node.ip}|{target_node.id}')
+        if target_node.id == self.id:
+            self.data[key] = data
+            logger.info(f'Data {key_information} stored at node {self.ip}')
+            #TODO: Replicate
+        else:
+            data['key_fields'] = key_fields
+            threading.Thread(target=target_node.send_store_data, args= [data, callback, key_fields], daemon=True).start()#FIXME: It works, but still raises a json decode error
+            # target_node.send_store_data(data, callback, key_fields)#FIXME: This creates a problem where a node expects a response and in order to do so the other one needs to make a request to it so they stay blocked
+            
+    def get_data(self, key_fields, data, callback = None):
+        key_information = ''
+        for element in [str(data[k]) for k in key_fields]:
+            key_information += element
+        key = get_sha_repr(key_information)
+        logger_dt.info(f'Getting information: {key_information}; key: {key}')
+        target_node = self.find_succ(key)
+        
+        if target_node.id == self.id:
+            return self.data.get(key, None)
+        else:
+            return target_node.send_get_data(data, callback)
+        
+    def _debug_log_data(self):
+        logger.debug(f'Data in node {self.ip}\n{self.data.values()}')
+
     #region Coordination
 
     def check_leader(self):
@@ -372,35 +428,8 @@ class ChordNode:
         
     def notify_all_nodes(self, leader):
         """Notify all nodes about the new leader."""
-        # notification_message = {'id': leader_id, 'ip': self.get_ip(leader_id)}#TODO: Maybe this makes sense
         notification_message = {'leader': (leader[0], leader[1]), 'initiator': (self.id, self.ip)}
         self.succ.send_coordinator_message(notification_message)
-    
-    #region buisness logic
-
-    def store_user(self, user: User):
-        """Store user in the appropriate node."""
-        user_key = get_sha_repr(user.username)
-        logger.debug(f'Storing user: {user_key}')
-        target_node = self.find_succ(user_key)
-        if target_node.id == self.id:
-            self.data[user_key] = user.to_dict()
-            logger.info(f'User {user.username} stored at node {self.ip}')
-        else:
-            target_node.send_store_user(user)
-
-    def get_user(self, username: str) -> dict:
-        """Retrieve user from the appropriate node."""
-        user_key = get_sha_repr(username)
-        target_node = self.find_succ(user_key)
-        if target_node.id == self.id:
-            return self.data.get(user_key, None)
-        else:
-            return target_node.send_get_user(username)
-
-    def list_users(self) -> dict:
-        """List all users stored in this node."""
-        return {"users": list(self.data.values())}
     
     #region Chord logic
 
@@ -422,11 +451,14 @@ class ChordNode:
         node = self
         while not self._inbetween(id, node.id, node.succ.id):
             node = node.closest_preceding_finger(id)
+            logger.debug(f'closest preceding finger found {node.id}')
+        logger.debug(f'Pred found {node.id}')
         return node
 
     def closest_preceding_finger(self, id: int) -> 'ChordNodeReference':
         """Find the closest preceding finger for a given id."""
         for i in range(self.m - 1, -1, -1):
+            print(i)
             if self.finger[i] and self._inbetween(self.finger[i].id, self.id, id):
                 return self.finger[i]
         return self.ref
@@ -462,7 +494,7 @@ class ChordNode:
             # except ConnectionRefusedError:
             except requests.ConnectionError:
                 self.succ = self.ref
-                self.pred = self.ref#FIXME: THIS WILL CAUSE PROBLEMS IF THERES A PREDECESOR
+                # self.pred = self.ref#FIXME: THIS WILL CAUSE PROBLEMS IF THERES A PREDECESOR
                 logger.info(f'New-Succ-Stabilize | self | node {self.id}')
             except Exception as e:
                 logger_stab.error(f"in stabilize: {e}")
@@ -482,7 +514,7 @@ class ChordNode:
                 self.next = (self.next + 1) % self.m
                 if self.next == 0:
                     logger_ff.info('Finished Finger Table Iteration')
-                    self._print_finger_table()
+                    self.print_finger_table()
                 self.finger[self.next] = self.find_succ((self.id + 2**self.next) % 2**self.m)
             except Exception as e:
                 logger_ff.error(f"Error in fix_fingers: {e}")
@@ -496,13 +528,12 @@ class ChordNode:
             try:
                 if self.pred:
                     self.pred.check_predecessor()
-            except Exception:
-                self.pred = self.ref #TODO: Debug this code
+            except requests.ConnectionError:#TODO: Debug this code
+                self.pred = self.ref
             logger_cp.info('===Predecessor Checking Done===')
             time.sleep(10)
             
-    #region Utils
-    def _print_finger_table(self):
+    def print_finger_table(self):
         """Print the finger table."""
         logger.debug(f"Finger table for node {self.ip}:{self.port}|{self.id}")
         intervals = []
