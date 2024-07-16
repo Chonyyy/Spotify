@@ -13,11 +13,13 @@ logger_stab = logging.getLogger("__main__.stab")
 logger_ff = logging.getLogger("__main__.ff")
 logger_cp = logging.getLogger("__main__.cp")
 logger_rh = logging.getLogger("__main__.rh")
+logger_le = logging.getLogger("__main__.le")
 
 def get_sha_repr(data: str) -> int:
     """Return SHA-1 hash representation of a string as an integer."""
     return int(hashlib.sha1(data.encode()).hexdigest(), 16)
 
+#region RequestHandler
 class ChordNodeRequestHandler(BaseHTTPRequestHandler):
 
     def do_POST(self):
@@ -32,30 +34,42 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):
 
         if self.path == '/register':
             response = self.handle_register(post_data)
+            self.send_json_response(response)
         elif self.path == '/store_user':
             response = self.handle_store_user(post_data)
+            self.send_json_response(response)
         elif self.path == '/election':
             response = self.handle_election(post_data)
         elif self.path == '/coordinator':
             response = self.handle_coordinator(post_data)
         elif self.path == '/find_successor':
             response = self.server.node.find_succ(post_data['id'])
+            self.send_json_response(response)
         elif self.path == '/find_predecessor':
             response = self.server.node.find_pred(post_data['id'])
+            self.send_json_response(response)
         elif self.path == '/get_successor':
             response = self.server.node.succ
+            self.send_json_response(response)
         elif self.path == '/get_predecessor':
             response = self.server.node.pred
             logger_rh.debug(f'Response for get_predecessor request:\n{response}')
+            self.send_json_response(response)
         elif self.path == '/notify':
             response = self.handle_notify(post_data)
-        elif self.path == '/check_predecessor':
-            pass  # No action needed for ping
+            self.send_json_response(response)
+        elif self.path == '/check_predecessor':#TODO: This one and the one bellow should be get requests
+            response = {'status': 'success'}
+            self.send_json_response(response, status=200)#TODO: change this to get request
+        elif self.path == '/ping':
+            response = {'status': 'success'}
+            self.send_json_response(response, status=200)#TODO: change this to get request
         elif self.path == '/closest_preceding_finger':
             response = self.server.node.closest_preceding_finger(post_data['id'])
+            self.send_json_response(response)
+        else:
+            self.send_json_response({}, 'Invalid Endpoint', status=404)
         
-        self.send_json_response(response)
-    
     def do_GET(self):
         """Handle GET requests."""
         logger_rh.debug(f'Request path {self.path}')
@@ -63,16 +77,25 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):
         
         if self.path.startswith('/get_user'):
             response = self.handle_get_user(self.path)
+            self.send_json_response(response, status=200)
+            
         elif self.path == '/list_users':
             response = self.server.node.list_users()
-        elif self.path == '/discover':
-            logger.info(f'Discovery started')
+            self.send_json_response(response, status=200)
+            
+        elif self.path == '/election_failed':
+            self.send_json_response({'status':'Accepted'}, status=202)
+            self.handle_start_election()
+            
+        elif self.path == '/debug/discover':
+            logger.info(f'Discovery Debug Not Implemented')#TODO: Fix discovery
         elif self.path == '/debug/finger_table':
             self.server.node._print_finger_table()
         elif self.path == '/debug/start-election':
             self.handle_start_election()
-        
-        self.send_json_response(response, error_message='User not found')#TODO: This response will always be sent, change this
+            
+        else:
+            self.send_json_response(response, error_message='Page not found', status=404)#TODO: This response will always be sent, change this
 
     def handle_register(self, post_data):
         username = post_data['username']
@@ -89,16 +112,46 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):
         return {"status": "success"}
 
     def handle_election(self, post_data):
-        #TODO: Add request validations here
-        threading.Thread(target=self.server.node.process_election_message, args=[post_data], daemon=True).start()
-        # self.server.node.process_election_message(post_data)
-        return {"status": "success"}
+        
+        # Request validation
+        necessary_fields = all(['candidates' in post_data, 'initiator' in post_data])
+        correct_types = necessary_fields and all([isinstance(post_data['candidates'], list), isinstance(post_data['initiator'], list)])
+        all_info_init = correct_types and len(post_data['initiator']) == 2
+        all_info_candidates = all_info_init and all([len(x) == 2 for x in post_data['candidates']])
+        
+        if not necessary_fields:
+            error_message = "Missing necessary fields. Required: 'candidates' (list) and 'initiator' (list)."
+        elif not correct_types:
+            error_message = "Incorrect field types. 'candidates' and 'initiator' should be lists."
+        elif not all_info_init:
+            error_message = "Initiator must be a list of length 2."
+        elif not all_info_candidates:
+            error_message = "Each candidate must be a list of length 2."
+        else:
+            threading.Thread(target=self.server.node.process_election_message, args=[post_data], daemon=True).start()
+            self.send_json_response({"status": "success"})
+            return
+        self.send_json_response(None, error_message=error_message, status=400)
 
     def handle_coordinator(self, post_data):
-        #TODO: Add request validations here
-        threading.Thread(target=self.server.node.process_coordinator_message, args=[post_data], daemon=True).start()
-        # self.server.node.process_coordinator_message(post_data)
-        return {"status": "success"}
+        
+        # Request validation
+        necessary_fields = all(['leader' in post_data, 'initiator' in post_data])
+        correct_types = necessary_fields and all([isinstance(post_data['leader'], list), isinstance(post_data['initiator'], list)])
+        correct_lengths = correct_types and all([len(post_data['leader']) == 2, len(post_data['initiator']) == 2])
+
+        if not necessary_fields:
+            error_message = "Missing necessary fields. Required: 'leader' (list) and 'initiator' (list)."
+        elif not correct_types:
+            error_message = "Incorrect field types. 'leader' and 'initiator' should be lists."
+        elif not correct_lengths:
+            error_message = "'leader' and 'initiator' must be lists of length 2."
+        else:
+            threading.Thread(target=self.server.node.process_coordinator_message, args=[post_data], daemon=True).start()
+            self.send_json_response({"status": "success"})
+            return
+
+        self.send_json_response({}, error_message=error_message, status=400)
 
     def handle_notify(self, post_data):
         node = ChordNodeReference(post_data['id'], post_data['ip'])
@@ -117,13 +170,17 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):
     def handle_start_election(self):
         threading.Thread(target=self.server.node.start_election, daemon=True).start()
     
-    def send_json_response(self, response, error_message=None):
-        self.send_response(200)
+    def send_json_response(self, response, error_message=None, status=200, origin = None):
+        if origin:
+            print(f'Responging to {self.client_address}, from {origin}')
+        self.send_response(status)
         self.send_header("Content-type", "application/json")
         self.end_headers()
-
+        
         if response:
             if isinstance(response, dict):
+                if origin:
+                    print('response as dict')
                 self.wfile.write(json.dumps(response).encode())
             elif isinstance(response, ChordNodeReference):
                 self.wfile.write(json.dumps({'id': response.id, 'ip': response.ip}).encode())
@@ -135,7 +192,7 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):
             else:
                 self.wfile.write(json.dumps({'id': None, 'ip': None}).encode())
 
-
+#region NodeReference
 class ChordNodeReference:
     def __init__(self, id: str, ip: str, port: int = 8001):
         self.id = get_sha_repr(ip) if not id else id
@@ -182,6 +239,10 @@ class ChordNodeReference:
         logger.debug(f'Get Predecessor Response:\n{response}')
         return ChordNodeReference(response['id'], response['ip'], self.port)
 
+    @property
+    def ping(self):
+        self._send_request('/ping', {})
+
     def notify(self, node: 'ChordNodeReference'):
         """Notify the node of a change."""
         self._send_request('/notify', {'id': node.id, 'ip': node.ip})
@@ -205,6 +266,7 @@ class ChordNodeReference:
                 logger.info(f'Sending request to {url}\nPayload: {data}')
 
                 response = requests.post(url, json=data).json()
+                
                 logger.debug(f'From {url} received:\n{response}')
                 return response
             except requests.ConnectionError as e:
@@ -213,7 +275,7 @@ class ChordNodeReference:
                 if i == max_retries - 1:
                     raise e
             except Exception as e:
-                logger.error(f"Error sending data: {e}")
+                logger.error(f"Error sending data to {path}: {data}\n{e}")
                 raise e
             
     def __str__(self) -> str:
@@ -222,6 +284,7 @@ class ChordNodeReference:
     def __repr__(self) -> str:
         return str(self)
 
+#region ChordNode
 class ChordNode:
     def __init__(self, ip: str, port: int = 8001, m: int = 160):
         self.id = get_sha_repr(ip)
@@ -234,7 +297,7 @@ class ChordNode:
         self.finger = [self.ref] * self.m  # Finger table
         self.next = 0  # Finger table index to fix next
         self.data = {}
-        self.leader = self.id
+        self.leader = self.ref
         self.election_started = False#TODO: What happens if the election takes too long
 
         server_address = (self.ip, self.port)
@@ -250,68 +313,68 @@ class ChordNode:
         threading.Thread(target=self.stabilize, daemon=True).start()  # Start stabilize thread
         threading.Thread(target=self.fix_fingers, daemon=True).start()  # Start fix fingers thread
         threading.Thread(target=self.check_predecessor, daemon=True).start()  # Start check predecessor thread
-        
-    
+        threading.Thread(target=self.check_leader, daemon=True).start()
+          
     #region Coordination
+
+    def check_leader(self):
+        """Regularly check the leader availability."""
+        while True and not self.election_started:
+            logger_le.info('===CHECKING LEADER===')
+            try:
+                self.leader.ping
+            except requests.ConnectionError:
+                logger_le.info('Connection with leader ended')
+                self.start_election()
+            except Exception as e:
+                logger_le.error(f"in checking leader: {e}")
+                raise e
+            logger_le.info('===CHECKING LEADER===')
+            time.sleep(10)
     
     def start_election(self):
-        logger.info(f'Node {self.id} starting an election.')
+        self.election_started = True
+        logger_le.info(f'Node {self.id} starting an election.')
         self.leader = None  # Clear current leader
-        election_message = {'ids': [self.id], 'initiator': self.id}
+        election_message = {'candidates': [(self.id, self.ip)], 'initiator': (self.id, self.ip)}
         self.succ.send_election_message(election_message)
         
     def process_coordinator_message(self, coordinator_message):
         # self.leader = ChordNodeReference(coordinator_message['id'], coordinator_message['ip'])
-        if self.id == coordinator_message['initiator']:
-            logger.info(f'=== Election Done ===')
+        self.election_started = False
+        if self.id == coordinator_message['initiator'][0]:
+            logger_le.info(f'=== Election Done ===')
             return
-        self.leader = coordinator_message['id']
-        logger.info(f'Node {self.id} acknowledges new leader: {self.leader}')
+        self.leader = ChordNodeReference(coordinator_message['leader'][0], coordinator_message['leader'][1])
+        logger_le.info(f'Node {self.id} acknowledges new leader: {(self.leader.id, self.leader.ip)}')
         self.succ.send_coordinator_message(coordinator_message)
         
     def process_election_message(self, election_message):
-        if self.id == election_message['initiator']:
+        if not self.election_started:
+            self.election_started = True
+        if self.id == election_message['initiator'][0]:
             # Election has completed the ring
-            self.determine_leader(election_message['ids'])
+            self.determine_leader(election_message['candidates'])
         else:
             # Add self to the list of participating nodes and forward the message
-            election_message['ids'].append(self.id)
+            election_message['candidates'].append((self.id, self.ip))
             self.succ.send_election_message(election_message)
 
-    def get_higher_nodes(self):
-        """Return a list of nodes with higher IDs."""
-        # This can be implemented based on your existing node discovery mechanism
-        # For example, using the finger table or known nodes
-        higher_nodes = [self.finger[i] for i in range(self.m) if self.finger[i].id > self.id]
-        return higher_nodes
-    
-    def determine_leader(self, ids):
-        new_leader_id = max(ids)
-        logger.info(f'Node {new_leader_id} is elected as the new leader.')
-        # self.leader = ChordNodeReference(new_leader_id, self.get_ip(new_leader_id))# Maybe this makes sense
-        self.leader = new_leader_id
-        logger.info(f'Node {self.id} acknowledged the new leader: {self.leader}')
-        self.notify_all_nodes(new_leader_id)
-    
-    def become_leader(self):
-        logger.info(f'Node {self.id} is the new leader.')
-        self.leader = self.ref  # Set itself as the leader
-        self.notify_all_nodes()
-    
-    def notify_all_nodes(self, leader_id):
+    def determine_leader(self, candidates):
+        # Find the candidate with the highest id
+        new_leader = max(candidates, key=lambda candidate: candidate[0])
+        
+        # Update the leader information
+        self.leader = ChordNodeReference(new_leader[0], new_leader[1])
+        logger_le.info(f'Node {self.id} acknowledged the new leader: {(self.leader.id, self.leader.ip)}')
+        
+        self.notify_all_nodes(new_leader)
+        
+    def notify_all_nodes(self, leader):
         """Notify all nodes about the new leader."""
         # notification_message = {'id': leader_id, 'ip': self.get_ip(leader_id)}#TODO: Maybe this makes sense
-        notification_message = {'id': leader_id, 'initiator': self.id}
+        notification_message = {'leader': (leader[0], leader[1]), 'initiator': (self.id, self.ip)}
         self.succ.send_coordinator_message(notification_message)
-    
-    def get_all_nodes(self):
-        """Return a list of all known nodes."""
-        # This can be implemented based on your existing node discovery mechanism
-        # For example, using the finger table or known nodes
-        all_nodes = [self.finger[i] for i in range(self.m)]
-        return all_nodes
-    
-    #endregion Coordination
     
     #region buisness logic
 
@@ -339,8 +402,6 @@ class ChordNode:
         """List all users stored in this node."""
         return {"users": list(self.data.values())}
     
-    #endregion Buisness logic
-
     #region Chord logic
 
     def _inbetween(self, k: int, start: int, end: int) -> bool:
@@ -379,13 +440,13 @@ class ChordNode:
         self.succ = node.find_successor(self.id)
         logger.info(f'New-Succ-join | {node.id} | node {self.id}')
         self.succ.notify(self.ref)
-        #FIXME: Election here starts to soon, wait until later to start elections
-        # self.start_election()#TODO: Debug this and add start election logic when the leader exits the network
+        time.sleep(10) #To wait a bit for the ring to stabilize
+        self.start_election()
 
     def stabilize(self):
         """Regularly check and stabilize the Chord structure."""
         while True:
-            logger_stab.info('Stabilizing:')
+            logger_stab.info('===STABILIZING===')
             try:
                 logger_stab.info(f'Current successor is {self.succ.ip}')
                 if self.pred:
@@ -404,7 +465,7 @@ class ChordNode:
                 self.pred = self.ref#FIXME: THIS WILL CAUSE PROBLEMS IF THERES A PREDECESOR
                 logger.info(f'New-Succ-Stabilize | self | node {self.id}')
             except Exception as e:
-                logger_stab.error(f"Error in stabilize: {e}")
+                logger_stab.error(f"in stabilize: {e}")
             logger_stab.info('===STABILIZING DONE===')
             time.sleep(10)
 
