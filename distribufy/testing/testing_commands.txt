@@ -1,5 +1,8 @@
-//Register a new user
-Invoke-WebRequest -Uri http://localhost:8001/register -Method POST -Body '{"username": "user1", "password": "password123"}' -ContentType "application/json"
+//Store Data
+Invoke-WebRequest -Uri http://localhost:8001/store-data -Method POST -Body '{"username": "user1", "password": "password123", "callback":"warever.com", "key_fields":["username"]}' -ContentType "application/json"
+
+//Debug Data
+Invoke-WebRequest -Uri http://localhost:8001/debug-node-data -Method POST -Body '{}' -ContentType "application/json"
 
 //Getting an specific user
 Invoke-WebRequest -Uri http://localhost:8001/get_user?user=user1 -Method GET -ContentType "application/json"
