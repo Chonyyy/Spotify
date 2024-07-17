@@ -108,11 +108,21 @@ class ChordNode:
         logger.info(f'Replic storage comenced')
         if source == self.pred.id:
             logger.info(f'Storing replic information: {data} in from pred node {source}')
-            self.replicated_data_pred[key] = data
+            d = {}
+            d["id"] = key
+            for clave, valor in data.items():
+                d[clave] = valor 
+            d["source"] = source
+            self.replicated_data_pred.insert(d)
             logger.info(f'Replicated data stored')
         if source == self.succ.id:
             logger.info(f'Storing replic information: {data} in from succ node {source}')
-            self.replicated_data_succ[key] = data
+            d = {}
+            d["id"] = key
+            for clave, valor in data.items():
+                d[clave] = valor 
+            d["source"] = source
+            self.replicated_data_succ.insert(d)
             logger.info(f'Replicated data stored')
             
     def enqueue_replication_operation(self, data, operation, key):#TODO: Debug

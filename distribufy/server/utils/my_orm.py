@@ -1,5 +1,7 @@
-import json
+import json, logging
 from prettytable import PrettyTable
+
+logger = logging.getLogger("__main__")
 
 class JSONDatabase:
     def __init__(self, filepath, columns):
@@ -35,8 +37,12 @@ class JSONDatabase:
 
     def insert(self, record):
         self.validate_record(record)
-        self.data.append(record)
-        self.save()
+        if not record in self.data:
+            logger.info(record)
+            self.data.append(record)
+            self.save()
+        else:
+            raise ValueError(f"Data already exists")
 
     def query(self, key, value):
         return [record for record in self.data if record.get(key) == value]
