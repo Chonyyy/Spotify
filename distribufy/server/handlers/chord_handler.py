@@ -66,7 +66,7 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):
             elif self.path == '/notify':
                 response = self.handle_notify(post_data)
                 self.send_json_response(response)
-            elif self.path == '/check_predecessor':#FIXME: I broke this
+            elif self.path == '/check_predecessor':
                 response = {'status': 'success'}
                 self.send_json_response(response, status=200)#TODO: change this to get request
             elif self.path == '/ping':
@@ -140,14 +140,17 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):
             return
 
         key = params['key'][0]
-        file_path = self.server.node.get_file_path(key)
+        print(key)
+        print(self.server.node.data)
+        file_path = self.server.node.data.query('id', key)[0]['addr']
+        print(file_path)
 
         if not file_path or not os.path.exists(file_path):
             self.send_json_response(None, error_message='File not found', status=404)
             return
 
         try:
-            with open(file_path, 'rb') as file:
+            with open(file_path, 'rb') as file:#TODO: Debug this
                 file_data = file.read()
 
             self.send_response(200)

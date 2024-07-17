@@ -44,8 +44,10 @@ class JSONDatabase:
         else:
             raise ValueError(f"Data already exists")
 
-    def query(self, key, value):
-        return [record for record in self.data if record.get(key) == value]
+    def query(self, key, value, cond = None):
+        if not cond:
+            return [record for record in self.data if record.get(key) == value]
+        return [record for record in self.data if cond(record.get(key))]
 
     def update(self, key, value, update_data):
         self.validate_record(update_data)

@@ -61,7 +61,7 @@ class GatewayRequestHandler(BaseHTTPRequestHandler):
         elif self.path == '/notify':
             response = self.handle_notify(post_data)
             self.send_json_response(response)
-        elif self.path == '/check_predecessor':#FIXME: I broke this
+        elif self.path == '/check_predecessor':
             response = {'status': 'success'}
             self.send_json_response(response, status=200)#TODO: change this to get request
         elif self.path == '/ping':
@@ -93,7 +93,7 @@ class GatewayRequestHandler(BaseHTTPRequestHandler):
             self.send_json_response({'status':'Accepted'}, status=202)
             self.handle_start_election()
         elif self.path == '/debug/discover':
-            logger.info(f'Discovery Debug Not Implemented')#TODO: Fix discovery
+            logger.info(f'Discovery Debug Not Implemented')#TODO: Make discovery automatic
         elif self.path == '/debug/finger_table':
             self.server.node.print_finger_table()
         elif self.path == '/debug/start-election':
@@ -103,8 +103,6 @@ class GatewayRequestHandler(BaseHTTPRequestHandler):
             self.send_json_response(response, error_message='Page not found', status=404)
             
     def handle_store_replic(self, post_data):
-        #TODO: Add validations
-        print('hola')
         if 'source' not in post_data:
             self.send_json_response(None, error_message='Provided data must contain a source id', status=400)
         if post_data['source'] != self.server.node.succ.id or post_data['source'] != self.server.node.pred.id:
@@ -113,7 +111,6 @@ class GatewayRequestHandler(BaseHTTPRequestHandler):
         key = post_data['key']
         del post_data['key']
         del post_data['source']
-        print('adios')
         self.server.node.store_replic(source, post_data, key)
         return {"status": "success"} 
 

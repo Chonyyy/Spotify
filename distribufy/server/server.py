@@ -14,6 +14,8 @@ def initialize_database(role, filepath):
     elif role == 'music_ftp':
         columns = ['id', 'addr']
         replic_columns = ['id', 'addr', 'columns']
+    # elif role == 'gateway':
+    #     columns  = 
     return JSONDatabase(filepath, columns), JSONDatabase(filepath + 'pred', replic_columns), JSONDatabase(filepath + 'succ', replic_columns)
 
 def start_server(ip, other_ip=None, role = 'music_info', db_name = 'db'):

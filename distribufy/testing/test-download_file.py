@@ -22,8 +22,8 @@ def receive_file(server_url, key, output_path):
 
 if __name__ == "__main__":
     # Update these variables with your server URL, key, and output path
-    server_url = 'http://localhost:8000/send-file'
+    server_url = 'http://localhost:8001/download-file'
     key = 'your_file_key'
-    output_path = 'path/to/save/received_file.mp3'
+    output_path = './test_files/received_file.txt'
 
     receive_file(server_url, key, output_path)

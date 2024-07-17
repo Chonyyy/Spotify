@@ -38,7 +38,7 @@ class ChordNodeReference:
         data['key_fields'] = key_fields
         self._send_request('/store-data', data)
         
-    def send_get_data(self, key, callback):#TODO: Implement this
+    def send_get_data(self, key, callback):
         """Send request to get an user"""
         data = {
             'callback':callback,
@@ -56,6 +56,8 @@ class ChordNodeReference:
                     data['source'] = source
                     data['key'] = key
                     self._send_request('/store-replic', data)
+                else:
+                    logger.error('Operation not suported')#TODO: implement other operations
 
     #region Chord logic
     
@@ -114,7 +116,7 @@ class ChordNodeReference:
                 logger.info(f'Sending request to {url}\nPayload: {data}')
 
                 response_raw = requests.post(url, json=data)
-                response = response_raw.json()#TODO: Remove this after you are done
+                response = response_raw.json()
                 logger.debug(f'From {url} received:\n{response}')
                 return response
             except requests.ConnectionError as e:

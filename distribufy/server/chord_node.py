@@ -39,7 +39,6 @@ class ChordNode:
         self.data = db
         self.replicated_data_pred = pred_db
         self.replicated_data_succ = succ_db
-        self.replicating = False#TODO: Is this necesary with thread lock ?
         self.leader = self.ref
         self.election_started = False#TODO: What happens if the election takes too long
         #TODO: If pred or succ changes, replicate the whole database
@@ -96,8 +95,16 @@ class ChordNode:
             data['key_fields'] = key_fields
             threading.Thread(target=target_node.send_store_data, args= [data, callback, key_fields], daemon=True).start()
             
-    def store_file(self, file_key, file_name):
-        print(f'Hello {file_key}, {file_name}')#TODO: Implement this with database
+    def store_file(self, file_key, file_name):#TODO: A request asking for the addr of the node to store the information should come first
+        key = file_key
+        logger_dt.info(f'Storing information to file: {file_name}; key: {key}')
+        d = {}
+        d["id"] = key
+        d['addr'] = self.file_storage + '/' + file_name
+        
+        self.data.insert(d)
+        logger.info(f'Data {(key, file_name)} stored at node {self.ip}')
+        self.enqueue_replication_operation(d, 'file_insertion', key)
             
     def get_data(self, key, callback):#TODO: While testing sending to an invalid url, the url seemed fine but got an error
         logger_dt.info(f'Getting item by key {key}')
@@ -131,7 +138,7 @@ class ChordNode:
             self.replicated_data_succ.insert(d)
             logger.info(f'Replicated data stored')
             
-    def enqueue_replication_operation(self, data, operation, key):#TODO: Debug
+    def enqueue_replication_operation(self, data, operation, key):
         max_retries = 5
         retry_interval = 2  # seconds
         
@@ -292,7 +299,6 @@ class ChordNode:
             # except ConnectionRefusedError:
             except requests.ConnectionError:
                 self.succ = self.ref
-                # self.pred = self.ref#FIXME: THIS WILL CAUSE PROBLEMS IF THERES A PREDECESOR
                 logger.info(f'New-Succ-Stabilize | self | node {self.id}')
             except Exception as e:
                 logger_stab.error(f"in stabilize: {e}")
@@ -326,7 +332,7 @@ class ChordNode:
             try:
                 if self.pred:
                     self.pred.check_predecessor()
-            except requests.ConnectionError:#TODO: Debug this code
+            except requests.ConnectionError:
                 self.pred = self.ref
             logger_cp.info('===Predecessor Checking Done===')
             time.sleep(10)
