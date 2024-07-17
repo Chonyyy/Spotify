@@ -1,6 +1,9 @@
 //Store Data
 Invoke-WebRequest -Uri http://localhost:8001/store-data -Method POST -Body '{"username": "user1", "password": "password123", "callback":"warever.com", "key_fields":["username"]}' -ContentType "application/json"
 
+//Getting Data
+Invoke-WebRequest -Uri http://localhost:8002/get-data -Method POST -Body '{"callback":"https://warever.com", "key":922182856952740759111154525263473632235391720628}' -ContentType "application/json"
+
 //Debug Data
 Invoke-WebRequest -Uri http://localhost:8001/debug-node-data -Method POST -Body '{}' -ContentType "application/json"
 

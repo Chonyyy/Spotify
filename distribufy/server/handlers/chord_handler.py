@@ -6,6 +6,7 @@ import time
 import logging
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from server.handlers.user import User
+from server.utils.my_orm import JSONDatabase
 
 # Set up logging
 logger = logging.getLogger("__main__")
@@ -35,9 +36,14 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):
         if self.path == '/store-data':
             response = self.handle_store_data(post_data)
             self.send_json_response(response)
-        elif self.path == '/debug-node-data':
-            self.server.node._debug_log_data()
-            self.send_json_response({"status": "success"})
+        elif self.path == '/get-data':
+            response = self.handle_get_data(post_data)
+            self.send_json_response(response)
+        elif self.path == '/store-replic':
+            print('store replication')
+            # threading.Thread(target=self.handle_store_replic, args=[post_data], daemon=True)
+            self.handle_store_replic(post_data)
+            self.send_json_response({'status':'recieved'})
         elif self.path == '/election':
             response = self.handle_election(post_data)
         elif self.path == '/coordinator':
@@ -58,7 +64,7 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):
         elif self.path == '/notify':
             response = self.handle_notify(post_data)
             self.send_json_response(response)
-        elif self.path == '/check_predecessor':
+        elif self.path == '/check_predecessor':#FIXME: I broke this
             response = {'status': 'success'}
             self.send_json_response(response, status=200)#TODO: change this to get request
         elif self.path == '/ping':
@@ -67,6 +73,9 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):
         elif self.path == '/closest_preceding_finger':
             response = self.server.node.closest_preceding_finger(post_data['id'])
             self.send_json_response(response)
+        elif self.path == '/debug-node-data':
+            self.server.node._debug_log_data()
+            self.send_json_response({"status": "success"})
         else:
             self.send_json_response({}, 'Invalid Endpoint', status=404)
         
@@ -96,10 +105,24 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):
             
         else:
             self.send_json_response(response, error_message='Page not found', status=404)
+            
+    def handle_store_replic(self, post_data):
+        #TODO: Add validations
+        print('hola')
+        if 'source' not in post_data:
+            self.send_json_response(None, error_message='Provided data must contain a source id', status=400)
+        if post_data['source'] != self.server.node.succ.id or post_data['source'] != self.server.node.pred.id:
+            self.send_json_response(None, error_message='Data must belong to predecesor or succesor', status=400)
+        source = post_data['source']
+        key = post_data['key']
+        del post_data['key']
+        del post_data['source']
+        print('adios')
+        self.server.node.store_replic(source, post_data, key)
+        return {"status": "success"} 
 
     def handle_store_data(self, post_data):
         if 'callback' not in post_data:
-            
             self.send_json_response(None, error_message='Provided data must contain a callback addr', status=400)
         if 'key_fields' not in post_data or not isinstance(post_data['key_fields'], list):
             self.send_json_response(None, error_message='Provided data must contain a key_fields list')
@@ -108,9 +131,18 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):
         del post_data['callback'], post_data['key_fields']
         self.server.node.store_data(key_fields, post_data, callback)
         return {"status": "success"}
+    
+    def handle_get_data(self, post_data):
+        if 'callback' not in post_data:
+            self.send_json_response(None, error_message='Provided data must contain a callback addr', status=400)
+        if 'key' not in post_data:
+            self.send_json_response(None, error_message='Provided data must contain a key')
+        callback = post_data['callback']
+        key = post_data['key']
+        self.server.node.get_data(key, callback)
+        return {"status": "success"}
 
     def handle_election(self, post_data):
-        
         # Request validation
         necessary_fields = all(['candidates' in post_data, 'initiator' in post_data])
         correct_types = necessary_fields and all([isinstance(post_data['candidates'], list), isinstance(post_data['initiator'], list)])
@@ -155,16 +187,6 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):
         node = ChordNodeReference(post_data['id'], post_data['ip'])
         self.server.node.notify(node)
 
-    def handle_get_data(self, path):
-        query = path.split('?')
-        if len(query) > 1:
-            username = query[1].split('=')[1]
-            return self.server.node.get_data(username)
-        else:
-            self.send_response(400)
-            self.end_headers()
-            return
-
     def handle_start_election(self):
         threading.Thread(target=self.server.node.start_election, daemon=True).start()
     
@@ -206,9 +228,6 @@ class ChordNodeReference:
 
     def send_coordinator_message(self, coordinator_message):
         self._send_request('/coordinator', coordinator_message)
-
-    #region Data
-    # def get_data(self, key_fields, data, callback = None):
     
     def send_store_data(self, data, callback, key_fields):
         """Send request to store a user."""
@@ -216,14 +235,24 @@ class ChordNodeReference:
         data['key_fields'] = key_fields
         self._send_request('/store-data', data)
         
-    def enqueue_rep_operation(self, **args):
-        pass
-    
-    def aply_rep_operations(self, **args):
-        pass
+    def send_get_data(self, key, callback):#TODO: Implement this
+        """Send request to get an user"""
+        data = {
+            'callback':callback,
+            'key':key
+        }
+        self._send_request('/get-data', data)
         
-    # def send_get_data(self, data, callback):#TODO: Implement this
-    #     """Send request to get an user"""
+    def enqueue_rep_operation(self, source_id, data, operation='insertion', key=None):
+        self.replication_queue.append((source_id, data, operation, key))
+    
+    def apply_rep_operations(self):
+            while self.replication_queue:
+                source, data, operation, key = self.replication_queue.pop()
+                if operation == 'insertion':
+                    data['source'] = source
+                    data['key'] = key
+                    self._send_request('/store-replic', data)
 
     #region Chord logic
     
@@ -282,7 +311,7 @@ class ChordNodeReference:
                 logger.info(f'Sending request to {url}\nPayload: {data}')
 
                 response_raw = requests.post(url, json=data)
-                response = response_raw.json()#FIXME: Remove this after you are done
+                response = response_raw.json()#TODO: Remove this after you are done
                 logger.debug(f'From {url} received:\n{response}')
                 return response
             except requests.ConnectionError as e:
@@ -305,24 +334,28 @@ class ChordNodeReference:
 
 #region ChordNode
 class ChordNode:
-    def __init__(self, ip: str, port: int = 8001, m: int = 160):
+    def __init__(self, ip: str, db: JSONDatabase, pred_db: JSONDatabase, succ_db: JSONDatabase, role: str, port: int = 8001, m: int = 160):
         self.id = get_sha_repr(ip)
         self.ip = ip
         self.port = port
+        self.role = role
         self.ref = ChordNodeReference(self.id, self.ip, self.port)
         self.succ = self.ref  # Initial successor is itself
         self.pred = self.ref
         self.m = m  # Number of bits in the hash/key space
         self.finger = [self.ref] * self.m  # Finger table
         self.next = 0  # Finger table index to fix next
-        self.data = {}
-        self.replicated_data = {}
+        self.data = {}#TODO: implementar una clase database, que funcione como una db no relacional. Pandas para facilitar filtrado a lo mejor ?
+        self.replicated_data_pred = {}
+        self.replicated_data_succ = {}
+        self.replicating = False#TODO: Is this necesary with thread lock ?
         self.leader = self.ref
         self.election_started = False#TODO: What happens if the election takes too long
-
+        #TODO: If pred or succ changes, replicate the whole database
         server_address = (self.ip, self.port)
         self.httpd = HTTPServer(server_address, ChordNodeRequestHandler)
         self.httpd.node = self
+        self.replication_lock = threading.Lock()
 
         logger.info(f'node_addr: {ip}:{port}')
 
@@ -333,12 +366,21 @@ class ChordNode:
         threading.Thread(target=self.stabilize, daemon=True).start()  # Start stabilize thread
         threading.Thread(target=self.fix_fingers, daemon=True).start()  # Start fix fingers thread
         threading.Thread(target=self.check_predecessor, daemon=True).start()  # Start check predecessor thread
-        threading.Thread(target=self.check_leader, daemon=True).start()
-          
+        threading.Thread(target=self.check_leader, daemon=True).start()  # Start leader election thread
+        threading.Thread(target=self.replication_loop, daemon=True).start()  # Start replication thread
           
     #region Data
     
-    def store_data(self, key_fields, data, callback = None):#TODO: Respond to the callback once the data is actually stored
+    def replication_loop(self):
+        while True:
+            time.sleep(30)
+            if self.pred.replication_queue:
+                with self.replication_lock:
+                    self.succ.apply_rep_operations()
+                    self.pred.apply_rep_operations()
+        
+    #TODO: Respond to the callback once the data is actually stored
+    def store_data(self, key_fields, data, callback = None):
         key_information = ''
         for element in [str(data[k]) for k in key_fields]:
             key_information += element
@@ -349,27 +391,51 @@ class ChordNode:
         if target_node.id == self.id:
             self.data[key] = data
             logger.info(f'Data {key_information} stored at node {self.ip}')
-            #TODO: Replicate
+            self.enqueue_replication_operation(data, 'insertion', key)
         else:
             data['key_fields'] = key_fields
-            threading.Thread(target=target_node.send_store_data, args= [data, callback, key_fields], daemon=True).start()#FIXME: It works, but still raises a json decode error
-            # target_node.send_store_data(data, callback, key_fields)#FIXME: This creates a problem where a node expects a response and in order to do so the other one needs to make a request to it so they stay blocked
+            threading.Thread(target=target_node.send_store_data, args= [data, callback, key_fields], daemon=True).start()
             
-    def get_data(self, key_fields, data, callback = None):
-        key_information = ''
-        for element in [str(data[k]) for k in key_fields]:
-            key_information += element
-        key = get_sha_repr(key_information)
-        logger_dt.info(f'Getting information: {key_information}; key: {key}')
+    def get_data(self, key, callback):#TODO: While testing sending to an invalid url, the url seemed fine but got an error
+        logger_dt.info(f'Getting item by key {key}')
         target_node = self.find_succ(key)
-        
+        logger.info(f'Asking for key {key}, to node {target_node.ip}|{target_node.id}')
         if target_node.id == self.id:
-            return self.data.get(key, None)
+            ##TODO: respond to callback
+            data = self.data[key]
+            self._send_request(callback, data)
         else:
-            return target_node.send_get_data(data, callback)
+            threading.Thread(target=target_node.send_get_data, args= [key, callback], daemon=True).start()
+            
+    def store_replic(self, source, data, key):
+        logger.info(f'Replic storage comenced')
+        if source == self.pred.id:
+            logger.info(f'Storing replic information: {data} in from pred node {source}')
+            self.replicated_data_pred[key] = data
+            logger.info(f'Replicated data stored')
+        if source == self.succ.id:
+            logger.info(f'Storing replic information: {data} in from succ node {source}')
+            self.replicated_data_succ[key] = data
+            logger.info(f'Replicated data stored')
+            
+    def enqueue_replication_operation(self, data, operation, key):#TODO: Debug
+        max_retries = 5
+        retry_interval = 2  # seconds
+        
+        for _ in range(max_retries):
+            if self.succ.id == self.id or self.pred.id == self.id:
+                logger.info('Stabilization in progress. Retrying...')
+                time.sleep(retry_interval)
+            else:
+                with self.replication_lock:#TODO: Synch should be implemented so i cant delete something that havent been created ?
+                    self.pred.enqueue_rep_operation(self.id, data, operation, key)
+                    self.succ.enqueue_rep_operation(self.id, data, operation, key)
+                break
+        else:
+            logger.error('Failed to enqueue replication operation after multiple retries.')
         
     def _debug_log_data(self):
-        logger.debug(f'Data in node {self.ip}\n{self.data.values()}')
+        logger.debug(f'Data in node {self.ip}\n{self.data.values()}\nReplic succ\n{self.replicated_data_succ}\nReplic pred:\n{self.replicated_data_pred}')
 
     #region Coordination
 
@@ -559,3 +625,26 @@ class ChordNode:
 
         for start, end, ip, port in merged_intervals:
             logger.debug(f"{start}-{end}-{ip}:{port}")
+            
+    def _send_request(self, url: str, data: dict) -> dict:
+        """Send a request and handle retries."""
+        max_retries = 4
+        for i in range(max_retries):
+            response = None
+            try:
+                logger.info(f'Sending request to {url}\nPayload: {data}')
+                response_raw = requests.post(url, json=data).json()
+                # response = response_raw.json()#TODO: Remove this after you are done
+                logger.debug(f'From {url} received:\n{response}')
+                return response
+            except requests.ConnectionError as e:
+                logger.error(f'Connection Error in IP {self.ip}')
+                logger.error(f'{e}')
+                if i == max_retries - 1:
+                    raise e
+            except requests.exceptions.JSONDecodeError as e:
+                logger.error(f'JSON Decode Error: {e}')
+                logger.error(f'Response text: {response_raw.text}')  # Log the response body
+            except Exception as e:
+                logger.error(f"Error sending data to {url}: {data}\n{e}")
+                raise e

@@ -2,15 +2,28 @@ from server.handlers.chord_handler import ChordNode, ChordNodeReference
 # from server.handlers.music_handler import MusicHandler
 # from server.handlers.auth_handler import AuthHandler
 # from server.utils.sync_utils import SyncHandler
+from server.utils.my_orm import JSONDatabase
 import logging
 
 logger = logging.getLogger("__main__")
 
-def start_server(ip, other_ip=None):
+def initialize_database(role, filepath):
+    columns = None
+    replic_columns = None
+    if role == 'music_info':
+        columns = ['id','title', 'album', 'genre', 'artist']
+        replic_columns = ['id','title', 'album', 'genre', 'artist', 'source']
+    elif role == 'music_ftp':
+        columns = ['id', 'addr']
+        replic_columns = ['id', 'addr', 'columns']
+    return JSONDatabase(filepath, columns), JSONDatabase(filepath + 'pred', replic_columns), JSONDatabase(filepath + 'succ', replic_columns)
+
+def start_server(ip, other_ip=None, role = 'music_info', db_name = 'db'):
     print(f'Launching App on {ip}')
-    node = ChordNode(ip)
+    db, pred_db, succ_db = initialize_database(role)
+    node = ChordNode(ip, db = db, pred_db = pred_db, succ_db = succ_db)
     if other_ip:
-        node.join(ChordNodeReference(other_ip, other_ip, node.port))
+        node.join(ChordNodeReference(other_ip, other_ip, node.port, db = db, pred_db = pred_db, succ_db = succ_db))
         
     # # Add the new handlers to the HTTP server
     # node.httpd.RequestHandlerClass.handlers.update({
