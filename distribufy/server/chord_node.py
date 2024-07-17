@@ -7,6 +7,7 @@ from http.server import HTTPServer
 from server.utils.my_orm import JSONDatabase
 from server.node_reference import ChordNodeReference
 from server.handlers.chord_handler import ChordNodeRequestHandler
+from server.utils.multicast import send_multicast, receive_multicast
 
 # Set up logging
 logger = logging.getLogger("__main__")
@@ -218,6 +219,22 @@ class ChordNode:
                 return self.finger[i]
         return self.ref
 
+    def discover_entry(self):
+        
+        logger.info(f"Starting multicast discovery for role: {self.role}")
+        discovery_thread = threading.Thread(target=send_multicast, args=(self.role,))
+        discovery_thread.daemon = True
+        discovery_thread.start()
+
+        while True:
+            discovered_ip = receive_multicast(self.role)
+            if discovered_ip and discovered_ip != self.ip:
+                logger.info(f"Discovered entry point: {discovered_ip}")
+                discovered_node = ChordNodeReference(get_sha_repr(discovered_ip), discovered_ip, self.port)
+                self.join(discovered_node)
+                break
+        logger.info(f"Completed discovery and joined the Chord ring.")
+
     def join(self, node: 'ChordNodeReference'):
         """Join a Chord network using 'node' as an entry point."""
         if node.ip == self.ip:
@@ -226,7 +243,7 @@ class ChordNode:
         self.pred = self.ref
         self.succ = node.find_successor(self.id)
         logger.info(f'New-Succ-join | {node.id} | node {self.id}')
-        self.succ.notify(self.ref)
+        self.succ.notify({'id':self.id, 'ip':self.ip, 'role':self.role})
         time.sleep(10) #To wait a bit for the ring to stabilize
         self.start_election()
 

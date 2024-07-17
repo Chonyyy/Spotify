@@ -91,7 +91,7 @@ class ChordNodeReference:
 
     def notify(self, node: 'ChordNodeReference'):
         """Notify the node of a change."""
-        self._send_request('/notify', {'id': node.id, 'ip': node.ip})
+        self._send_request('/notify', {'id': node.id, 'ip': node.ip, 'role': node.role})
 
     def check_predecessor(self):
         """Ping the predecessor to check if it is alive."""

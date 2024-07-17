@@ -1,35 +1,52 @@
-# multicast_utils.py
 import socket
 import struct
 import threading
 import logging
 import time
+import json
 
-MULTICAST_GROUP = '224.1.1.1'
+MULTICAST_GROUPS = {
+    'music_info': '224.1.1.1',
+    'music_ftp': '224.1.1.2'
+}
 MULTICAST_PORT = 5000
-DISCOVERY_MESSAGE = b'CHORD_DISCOVERY'
+DISCOVERY_MESSAGE = 'CHORD_DISCOVERY'
 
 logger = logging.getLogger("__main__")
 
-def send_multicast():
+def send_multicast(role):
+    multicast_group = MULTICAST_GROUPS.get(role)
+    if not multicast_group:
+        raise ValueError(f"Invalid role: {role}")
+
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
     sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, 2)
-    
-    while True:#Is this necesary ?
-        sock.sendto(DISCOVERY_MESSAGE, (MULTICAST_GROUP, MULTICAST_PORT))
-        logger.info("Multicast discovery message sent.")
+
+    message = json.dumps({'message': DISCOVERY_MESSAGE, 'role': role}).encode('utf-8')
+
+    while True:
+        sock.sendto(message, (multicast_group, MULTICAST_PORT))
+        logger.info(f"Multicast discovery message sent for role {role}.")
         time.sleep(10)
 
-def receive_multicast():#TODO: Move this logic to chord node, if ip recieved is self ip ignore it
+def receive_multicast(role):
+    multicast_group = MULTICAST_GROUPS.get(role)
+    if not multicast_group:
+        raise ValueError(f"Invalid role: {role}")
+
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     sock.bind(('', MULTICAST_PORT))
-    
-    mreq = struct.pack('4sl', socket.inet_aton(MULTICAST_GROUP), socket.INADDR_ANY)
+
+    mreq = struct.pack('4sl', socket.inet_aton(multicast_group), socket.INADDR_ANY)
     sock.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP, mreq)
-    
+
     while True:
         data, addr = sock.recvfrom(1024)
-        if data == DISCOVERY_MESSAGE:
-            logger.info(f"Discovered node: {addr[0]}")
-            return addr[0]  # Return the IP address of the discovered node
+        try:
+            message = json.loads(data.decode('utf-8'))
+            if message['message'] == DISCOVERY_MESSAGE and message['role'] == role:
+                logger.info(f"Discovered node: {addr[0]} with role: {message['role']}")
+                return addr[0]  # Return the IP address of the discovered node
+        except (json.JSONDecodeError, KeyError):
+            logger.error(f"Received invalid discovery message: {data}")

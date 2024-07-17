@@ -92,7 +92,6 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):
         elif self.path == '/election_failed':
             self.send_json_response({'status':'Accepted'}, status=202)
             self.handle_start_election()
-            
         elif self.path == '/debug/discover':
             logger.info(f'Discovery Debug Not Implemented')#TODO: Fix discovery
         elif self.path == '/debug/finger_table':
