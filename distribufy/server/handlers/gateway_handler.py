@@ -2,8 +2,6 @@ import hashlib
 import threading
 import json
 import logging
-import os
-from urllib.parse import urlparse, parse_qs
 from http.server import BaseHTTPRequestHandler
 from server.node_reference import ChordNodeReference
 
@@ -21,65 +19,62 @@ def get_sha_repr(data: str) -> int:
     return int(hashlib.sha1(data.encode()).hexdigest(), 16)
 
 #region RequestHandler
-class ChordNodeRequestHandler(BaseHTTPRequestHandler):
+class GatewayRequestHandler(BaseHTTPRequestHandler):
 
     def do_POST(self):
-        logger_rh.debug(f'Request path {self.path}')
         """Handle POST requests."""
-        if self.path == '/upload-file':
-            self.handle_upload_file()#TODO: Try to divide this into different handlers ?
-        else:
-            content_length = int(self.headers['Content-Length'])
-            post_data = json.loads(self.rfile.read(content_length))
-            logger_rh.debug(f'Handling the following request \n{post_data}')
-            
-            response = None
+        content_length = int(self.headers['Content-Length'])
+        post_data = json.loads(self.rfile.read(content_length))
+        logger_rh.debug(f'Request path {self.path}')
+        logger_rh.debug(f'Handling the following request \n{post_data}')
+        
+        response = None
 
-            if self.path == '/store-data':
-                response = self.handle_store_data(post_data)
-                self.send_json_response(response)
-            elif self.path == '/get-data':
-                response = self.handle_get_data(post_data)
-                self.send_json_response(response)
-            elif self.path == '/store-replic':
-                print('store replication')
-                # threading.Thread(target=self.handle_store_replic, args=[post_data], daemon=True)
-                self.handle_store_replic(post_data)
-                self.send_json_response({'status':'recieved'})
-            elif self.path == '/election':
-                response = self.handle_election(post_data)
-            elif self.path == '/coordinator':
-                response = self.handle_coordinator(post_data)
-            elif self.path == '/find_successor':
-                response = self.server.node.find_succ(post_data['id'])
-                self.send_json_response(response)
-            elif self.path == '/find_predecessor':
-                response = self.server.node.find_pred(post_data['id'])
-                self.send_json_response(response)
-            elif self.path == '/get_successor':
-                response = self.server.node.succ
-                self.send_json_response(response)
-            elif self.path == '/get_predecessor':
-                response = self.server.node.pred
-                logger_rh.debug(f'Response for get_predecessor request:\n{response}')
-                self.send_json_response(response)
-            elif self.path == '/notify':
-                response = self.handle_notify(post_data)
-                self.send_json_response(response)
-            elif self.path == '/check_predecessor':#FIXME: I broke this
-                response = {'status': 'success'}
-                self.send_json_response(response, status=200)#TODO: change this to get request
-            elif self.path == '/ping':
-                response = {'status': 'success'}
-                self.send_json_response(response, status=200)#TODO: change this to get request
-            elif self.path == '/closest_preceding_finger':
-                response = self.server.node.closest_preceding_finger(post_data['id'])
-                self.send_json_response(response)
-            elif self.path == '/debug-node-data':
-                self.server.node._debug_log_data()
-                self.send_json_response({"status": "success"})
-            else:
-                self.send_json_response({}, 'Invalid Endpoint', status=404)
+        if self.path == '/store-data':
+            response = self.handle_store_data(post_data)
+            self.send_json_response(response)
+        elif self.path == '/get-data':
+            response = self.handle_get_data(post_data)
+            self.send_json_response(response)
+        elif self.path == '/store-replic':
+            print('store replication')
+            # threading.Thread(target=self.handle_store_replic, args=[post_data], daemon=True)
+            self.handle_store_replic(post_data)
+            self.send_json_response({'status':'recieved'})
+        elif self.path == '/election':
+            response = self.handle_election(post_data)
+        elif self.path == '/coordinator':
+            response = self.handle_coordinator(post_data)
+        elif self.path == '/find_successor':
+            response = self.server.node.find_succ(post_data['id'])
+            self.send_json_response(response)
+        elif self.path == '/find_predecessor':
+            response = self.server.node.find_pred(post_data['id'])
+            self.send_json_response(response)
+        elif self.path == '/get_successor':
+            response = self.server.node.succ
+            self.send_json_response(response)
+        elif self.path == '/get_predecessor':
+            response = self.server.node.pred
+            logger_rh.debug(f'Response for get_predecessor request:\n{response}')
+            self.send_json_response(response)
+        elif self.path == '/notify':
+            response = self.handle_notify(post_data)
+            self.send_json_response(response)
+        elif self.path == '/check_predecessor':#FIXME: I broke this
+            response = {'status': 'success'}
+            self.send_json_response(response, status=200)#TODO: change this to get request
+        elif self.path == '/ping':
+            response = {'status': 'success'}
+            self.send_json_response(response, status=200)#TODO: change this to get request
+        elif self.path == '/closest_preceding_finger':
+            response = self.server.node.closest_preceding_finger(post_data['id'])
+            self.send_json_response(response)
+        elif self.path == '/debug-node-data':
+            self.server.node._debug_log_data()
+            self.send_json_response({"status": "success"})
+        else:
+            self.send_json_response({}, 'Invalid Endpoint', status=404)
         
     def do_GET(self):
         """Handle GET requests."""
@@ -89,11 +84,11 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):
         if self.path.startswith('/get_user'):
             response = self.handle_get_user(self.path)
             self.send_json_response(response, status=200)
-        elif self.path.startswith('/download-file'):
-            self.handle_download_file()
+            
         elif self.path == '/list_users':
             response = self.server.node.list_users()
             self.send_json_response(response, status=200)
+            
         elif self.path == '/election_failed':
             self.send_json_response({'status':'Accepted'}, status=202)
             self.handle_start_election()
@@ -106,58 +101,6 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):
             
         else:
             self.send_json_response(response, error_message='Page not found', status=404)
-            
-    def handle_upload_file(self):
-        """Receives a file sent as a binary stream."""
-        total_file_size = int(self.headers['Content-Length'])
-        chunk_size = int(self.headers['Content-Length'])
-        # file_data = self.rfile.read(total_file_size)
-        
-        if 'key' not in self.headers or 'file_name' not in self.headers:
-            self.send_json_response(None, error_message='Missing key or file_name in headers', status=400)
-            return
-
-        key = self.headers['key']
-        file_name = self.headers['file_name']
-        file_path = os.path.join(self.server.node.file_storage, file_name)
-
-        try:
-            with open(file_path, 'wb') as file:
-                file.write(self.rfile.read(total_file_size))
-            
-            self.server.node.store_file(key, file_name)
-            self.send_json_response({"status": "success"})
-        except Exception as e:
-            self.send_json_response(None, error_message=str(e), status=500)
-            
-    def handle_download_file(self):
-        """Sends a file as a binary stream."""
-        query_params = urlparse(self.path).query
-        params = parse_qs(query_params)
-        
-        if 'key' not in params:
-            self.send_json_response(None, error_message='Query must contain a key', status=400)
-            return
-
-        key = params['key'][0]
-        file_path = self.server.node.get_file_path(key)
-
-        if not file_path or not os.path.exists(file_path):
-            self.send_json_response(None, error_message='File not found', status=404)
-            return
-
-        try:
-            with open(file_path, 'rb') as file:
-                file_data = file.read()
-
-            self.send_response(200)
-            self.send_header("Content-type", "application/octet-stream")
-            self.send_header("Content-Length", str(len(file_data)))
-            self.send_header("Content-Disposition", f'attachment; filename="{os.path.basename(file_path)}"')
-            self.end_headers()
-            self.wfile.write(file_data)
-        except Exception as e:
-            self.send_json_response(None, error_message=str(e), status=500)
             
     def handle_store_replic(self, post_data):
         #TODO: Add validations

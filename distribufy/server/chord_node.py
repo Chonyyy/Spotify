@@ -3,6 +3,7 @@ import threading
 import requests
 import time
 import logging
+import os
 from http.server import HTTPServer
 from server.utils.my_orm import JSONDatabase
 from server.node_reference import ChordNodeReference
@@ -45,6 +46,8 @@ class ChordNode:
         server_address = (self.ip, self.port)
         self.httpd = HTTPServer(server_address, ChordNodeRequestHandler)
         self.httpd.node = self
+        self.file_storage = f'./databases/node_{self.ip}/files' 
+        os.makedirs(self.file_storage, exist_ok=True)
         self.replication_lock = threading.Lock()
 
         logger.info(f'node_addr: {ip}:{port}')
@@ -87,6 +90,9 @@ class ChordNode:
         else:
             data['key_fields'] = key_fields
             threading.Thread(target=target_node.send_store_data, args= [data, callback, key_fields], daemon=True).start()
+            
+    def store_file(self, file_key, file_name):
+        print(f'Hello {file_key}, {file_name}')#TODO: Implement this with database
             
     def get_data(self, key, callback):#TODO: While testing sending to an invalid url, the url seemed fine but got an error
         logger_dt.info(f'Getting item by key {key}')

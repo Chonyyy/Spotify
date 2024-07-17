@@ -1,4 +1,4 @@
-from server.handlers.chord_handler import ChordNodeReference
+from server.handlers.file_transfer_handler import FileTransferHandler
 from server.chord_node import ChordNode
 from server.utils.my_orm import JSONDatabase
 import logging
@@ -22,13 +22,8 @@ def start_server(ip, other_ip=None, role = 'music_info', db_name = 'db'):
     node = ChordNode(ip, db = db, pred_db = pred_db, succ_db = succ_db, role=role)
         
     # # Add the new handlers to the HTTP server
-    # node.httpd.RequestHandlerClass.handlers.update({
-    #     '/register': AuthHandler,
-    #     '/login': AuthHandler,
-    #     '/add_song': MusicHandler,
-    #     '/remove_song': MusicHandler,
-    #     '/get_song': MusicHandler,
-    #     '/sync': SyncHandler
+    # node.httpd.RequestHandlerClass.handlers.update({###TODO: This generates an error, how do i extend the handler ?
+    #     '/ftp': FileTransferHandler
     # })
 
     while True:
