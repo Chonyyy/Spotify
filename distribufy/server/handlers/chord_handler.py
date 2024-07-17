@@ -104,7 +104,6 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):
             
     def handle_store_replic(self, post_data):
         #TODO: Add validations
-        print('hola')
         if 'source' not in post_data:
             self.send_json_response(None, error_message='Provided data must contain a source id', status=400)
         if post_data['source'] != self.server.node.succ.id or post_data['source'] != self.server.node.pred.id:
@@ -113,7 +112,6 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):
         key = post_data['key']
         del post_data['key']
         del post_data['source']
-        print('adios')
         self.server.node.store_replic(source, post_data, key)
         return {"status": "success"} 
 

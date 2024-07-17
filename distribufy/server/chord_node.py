@@ -35,9 +35,9 @@ class ChordNode:
         self.m = m  # Number of bits in the hash/key space
         self.finger = [self.ref] * self.m  # Finger table
         self.next = 0  # Finger table index to fix next
-        self.data = {}#TODO: implementar una clase database, que funcione como una db no relacional. Pandas para facilitar filtrado a lo mejor ?
-        self.replicated_data_pred = {}
-        self.replicated_data_succ = {}
+        self.data = db
+        self.replicated_data_pred = pred_db
+        self.replicated_data_succ = succ_db
         self.replicating = False#TODO: Is this necesary with thread lock ?
         self.leader = self.ref
         self.election_started = False#TODO: What happens if the election takes too long
@@ -79,7 +79,12 @@ class ChordNode:
         target_node = self.find_succ(key)
         logger.info(f'Asking for key {key}, to node {target_node.ip}|{target_node.id}')
         if target_node.id == self.id:
-            self.data[key] = data
+            d = {}
+            d["id"] = key
+            for clave, valor in data.items():
+                d[clave] = valor 
+                
+            self.data.insert(d)
             logger.info(f'Data {key_information} stored at node {self.ip}')
             self.enqueue_replication_operation(data, 'insertion', key)
         else:
@@ -92,7 +97,7 @@ class ChordNode:
         logger.info(f'Asking for key {key}, to node {target_node.ip}|{target_node.id}')
         if target_node.id == self.id:
             ##TODO: respond to callback
-            data = self.data[key]
+            data = self.data.query("id", key)
             self._send_request(callback, data)
         else:
             threading.Thread(target=target_node.send_get_data, args= [key, callback], daemon=True).start()
@@ -125,7 +130,7 @@ class ChordNode:
             logger.error('Failed to enqueue replication operation after multiple retries.')
         
     def _debug_log_data(self):
-        logger.debug(f'Data in node {self.ip}\n{self.data.values()}\nReplic succ\n{self.replicated_data_succ}\nReplic pred:\n{self.replicated_data_pred}')
+        logger.debug(f'Data in node {self.ip}\n{self.data}\nReplic succ\n{self.replicated_data_succ}\nReplic pred:\n{self.replicated_data_pred}')
 
     #region Coordination
 
@@ -342,8 +347,8 @@ class ChordNode:
             response = None
             try:
                 logger.info(f'Sending request to {url}\nPayload: {data}')
-                response_raw = requests.post(url, json=data).json()
-                # response = response_raw.json()#TODO: Remove this after you are done
+                response_raw = requests.post(url, json=data)
+                response = response_raw.json()#TODO: Remove this after you are done
                 logger.debug(f'From {url} received:\n{response}')
                 return response
             except requests.ConnectionError as e:
