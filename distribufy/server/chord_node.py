@@ -48,6 +48,8 @@ class ChordNode:
         self.replication_lock = threading.Lock()
 
         logger.info(f'node_addr: {ip}:{port}')
+        
+        self.discover_entry()
 
         # Start server and background threads
         threading.Thread(target=self.httpd.serve_forever, daemon=True).start()
@@ -234,9 +236,9 @@ class ChordNode:
                 logger.info(f"Discovered entry point: {discovered_ip}")
                 discovered_node = ChordNodeReference(get_sha_repr(discovered_ip), discovered_ip, self.port)
                 self.join(discovered_node)
-                break
+                return
             time.sleep(retry_interval)
-        logger.info(f"Completed discovery and joined the Chord ring.")
+        logger.info(f"No other node node discovered.")
 
     def join(self, node: 'ChordNodeReference'):
         """Join a Chord network using 'node' as an entry point."""
@@ -246,7 +248,7 @@ class ChordNode:
         self.pred = self.ref
         self.succ = node.find_successor(self.id)
         logger.info(f'New-Succ-join | {node.id} | node {self.id}')
-        self.succ.notify({'id':self.id, 'ip':self.ip})
+        self.succ.notify(self.ref)
         time.sleep(10) #To wait a bit for the ring to stabilize
         self.start_election()
 

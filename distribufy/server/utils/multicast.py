@@ -16,6 +16,7 @@ logger = logging.getLogger("__main__")
 
 def send_multicast(role):
     multicast_group = MULTICAST_GROUPS.get(role)
+    logger.info(f'Sending multicas msg in MG {multicast_group}')
     if not multicast_group:
         raise ValueError(f"Invalid role: {role}")
 
@@ -31,6 +32,7 @@ def send_multicast(role):
 
 def receive_multicast(role):
     multicast_group = MULTICAST_GROUPS.get(role)
+    logger.info(f'Recieving multicas msg in MG {multicast_group}')
     if not multicast_group:
         raise ValueError(f"Invalid role: {role}")
 
