@@ -220,19 +220,22 @@ class ChordNode:
         return self.ref
 
     def discover_entry(self):
+        retries = 4
+        retry_interval = 5
         
         logger.info(f"Starting multicast discovery for role: {self.role}")
         discovery_thread = threading.Thread(target=send_multicast, args=(self.role,))
         discovery_thread.daemon = True
         discovery_thread.start()
 
-        while True:
+        for _ in range(retries):
             discovered_ip = receive_multicast(self.role)
             if discovered_ip and discovered_ip != self.ip:
                 logger.info(f"Discovered entry point: {discovered_ip}")
                 discovered_node = ChordNodeReference(get_sha_repr(discovered_ip), discovered_ip, self.port)
                 self.join(discovered_node)
                 break
+            time.sleep(retry_interval)
         logger.info(f"Completed discovery and joined the Chord ring.")
 
     def join(self, node: 'ChordNodeReference'):
@@ -243,7 +246,7 @@ class ChordNode:
         self.pred = self.ref
         self.succ = node.find_successor(self.id)
         logger.info(f'New-Succ-join | {node.id} | node {self.id}')
-        self.succ.notify({'id':self.id, 'ip':self.ip, 'role':self.role})
+        self.succ.notify({'id':self.id, 'ip':self.ip})
         time.sleep(10) #To wait a bit for the ring to stabilize
         self.start_election()
 

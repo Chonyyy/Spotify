@@ -19,9 +19,7 @@ def initialize_database(role, filepath):
 def start_server(ip, other_ip=None, role = 'music_info', db_name = 'db'):
     print(f'Launching App on {ip}')
     db, pred_db, succ_db = initialize_database(role, db_name)
-    node = ChordNode(ip, db = db, pred_db = pred_db, succ_db = succ_db, role='testing')
-    if other_ip:
-        node.join(ChordNodeReference(other_ip, other_ip, node.port))
+    node = ChordNode(ip, db = db, pred_db = pred_db, succ_db = succ_db, role=role)
         
     # # Add the new handlers to the HTTP server
     # node.httpd.RequestHandlerClass.handlers.update({
