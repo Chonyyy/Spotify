@@ -1,7 +1,5 @@
-from server.handlers.chord_handler import ChordNode, ChordNodeReference
-# from server.handlers.music_handler import MusicHandler
-# from server.handlers.auth_handler import AuthHandler
-# from server.utils.sync_utils import SyncHandler
+from server.handlers.chord_handler import ChordNodeReference
+from server.chord_node import ChordNode
 from server.utils.my_orm import JSONDatabase
 import logging
 
@@ -20,10 +18,10 @@ def initialize_database(role, filepath):
 
 def start_server(ip, other_ip=None, role = 'music_info', db_name = 'db'):
     print(f'Launching App on {ip}')
-    db, pred_db, succ_db = initialize_database(role)
-    node = ChordNode(ip, db = db, pred_db = pred_db, succ_db = succ_db)
+    db, pred_db, succ_db = initialize_database(role, db_name)
+    node = ChordNode(ip, db = db, pred_db = pred_db, succ_db = succ_db, role='testing')
     if other_ip:
-        node.join(ChordNodeReference(other_ip, other_ip, node.port, db = db, pred_db = pred_db, succ_db = succ_db))
+        node.join(ChordNodeReference(other_ip, other_ip, node.port))
         
     # # Add the new handlers to the HTTP server
     # node.httpd.RequestHandlerClass.handlers.update({

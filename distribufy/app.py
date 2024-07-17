@@ -25,11 +25,6 @@ if __name__ == "__main__":
     multicast_thread = threading.Thread(target=send_multicast, daemon=True)
     multicast_thread.start()#FIXME: Discovery not always works
     database_name = f'db_{ip}'
-    # if len(sys.argv) >= 2:
-    #     other_ip = sys.argv[1]
-    #     start_server(ip, other_ip)
-    # else:
-    # Attempt to discover another node via multicast
     
     discovered_ip = receive_multicast()
     if discovered_ip:

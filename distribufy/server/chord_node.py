@@ -1,11 +1,9 @@
 import hashlib
 import threading
-import json
 import requests
 import time
 import logging
-from http.server import BaseHTTPRequestHandler, HTTPServer
-from server.handlers.user import User
+from http.server import HTTPServer
 from server.utils.my_orm import JSONDatabase
 from server.node_reference import ChordNodeReference
 from server.handlers.chord_handler import ChordNodeRequestHandler

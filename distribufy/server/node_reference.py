@@ -1,12 +1,6 @@
 import hashlib
-import threading
-import json
 import requests
-import time
 import logging
-from http.server import BaseHTTPRequestHandler, HTTPServer
-from server.handlers.user import User
-from server.utils.my_orm import JSONDatabase
 
 # Set up logging
 logger = logging.getLogger("__main__")
