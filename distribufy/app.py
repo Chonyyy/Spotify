@@ -24,6 +24,6 @@ if __name__ == "__main__":
     
     if len(sys.argv) >= 2:
         role = str(sys.argv[1])
-        start_server(ip, role, db_name=database_name)
+        start_server(ip, role=role, db_name=database_name)
     else:
         start_server(ip, db_name=database_name)
