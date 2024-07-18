@@ -98,7 +98,8 @@ class ChordNode:
         
     def replicate_all_database(self):
         for record in self.data.get_all():
-            recod = record.copy()
+            record = record.copy()
+            print('record copied')
             key = record['id']
             del record['id']
             self.enqueue_replication_operation(record, 'insertion', key)
@@ -350,9 +351,10 @@ class ChordNode:
                     self.succ = x
                     logger.info(f'New-Succ-Stabilize | {x.ip},{x.id}  | node {self.ip}, {self.ip}')
                     logger.info(f'enqueuing all database')
-                    # if self.succ.id != self.prev_succ and self.succ.id != self.id:
-                        # threading.Thread(target=self.succ.drop_suc_rep, daemon=True)
-                        # self.replicate_all_database()
+                    if self.succ.id != self.prev_succ and self.succ.id != self.id:
+                        logger.info(f'Full replication comenced')
+                        threading.Thread(target=self.succ.drop_suc_rep, daemon=True)
+                        self.replicate_all_database()
                     
                 self.succ.notify(self.ref)
             # except ConnectionRefusedError:
