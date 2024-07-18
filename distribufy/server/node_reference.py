@@ -25,6 +25,11 @@ class ChordNodeReference:
         self.replication_queue = []
         
     #region Coordination
+    def drop_suc_rep(self):
+        self._send_request('/drop-suc-rep', {})
+        
+    def drop_pred_rep(self):
+        self._send_request('/drop-pred-rep', {})
     
     def send_election_message(self, election_message):
         self._send_request('/election', election_message)

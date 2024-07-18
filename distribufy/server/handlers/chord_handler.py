@@ -38,6 +38,12 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):
             if self.path == '/store-data':
                 response = self.handle_store_data(post_data)
                 self.send_json_response(response)
+            elif self.path.startswith('/drop-suc-rep'):
+                response = self.server.node.drop_suc_rep()
+                self.send_json_response(response, status=200)
+            elif self.path.startswith('/drop-pred-rep'):
+                response = self.server.node.drop_pred_rep()
+                self.send_json_response(response, status=200)
             elif self.path == '/get-data':
                 response = self.handle_get_data(post_data)
                 self.send_json_response(response)

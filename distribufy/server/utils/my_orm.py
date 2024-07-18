@@ -49,6 +49,9 @@ class JSONDatabase:
             return [record for record in self.data if record.get(key) == value]
         return [record for record in self.data if cond(record.get(key))]
 
+    def get_all(self):
+        return self.data
+        
     def update(self, key, value, update_data):
         self.validate_record(update_data)
         for record in self.data:

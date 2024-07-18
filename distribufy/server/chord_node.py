@@ -19,6 +19,20 @@ logger_rh = logging.getLogger("__main__.rh")
 logger_le = logging.getLogger("__main__.le")
 logger_dt = logging.getLogger("__main__.dt")
 
+def initialize_database(role, filepath):
+    columns = None
+    replic_columns = None
+    if role == 'music_info':
+        columns = ['id','title', 'album', 'genre', 'artist']
+        replic_columns = ['id','title', 'album', 'genre', 'artist', 'source']
+    elif role == 'music_ftp':
+        columns = ['id', 'addr']
+        replic_columns = ['id', 'addr', 'columns']
+    elif role == 'gateway':
+        columns  = ['id', 'ip', 'role']
+    return JSONDatabase(filepath, columns), JSONDatabase(filepath + 'pred', replic_columns), JSONDatabase(filepath + 'succ', replic_columns)
+
+
 def get_sha_repr(data: str) -> int:
     """Return SHA-1 hash representation of a string as an integer."""
     return int(hashlib.sha1(data.encode()).hexdigest(), 16)
@@ -31,8 +45,10 @@ class ChordNode:
         self.port = port
         self.role = role
         self.ref = ChordNodeReference(self.id, self.ip, self.port)
-        self.succ = self.ref  # Initial successor is itself
+        self.succ = self.ref
+        self.prev_succ = self.id  
         self.pred = self.ref
+        self.prev_pred = self.id 
         self.m = m  # Number of bits in the hash/key space
         self.finger = [self.ref] * self.m  # Finger table
         self.next = 0  # Finger table index to fix next
@@ -71,7 +87,45 @@ class ChordNode:
             if self.pred.replication_queue:
                 with self.replication_lock:
                     self.succ.apply_rep_operations()
+                    self.prev_succ = self.succ.id
                     self.pred.apply_rep_operations()
+                    self.prev_pred = self.pred.id
+    
+    def drop_data(self):
+        if self.role == 'music_ftp':
+            self.delete_files(self.file_storage)
+        self.data = initialize_database(self.role, self.data.filepath)
+        
+    def replicate_all_database(self):
+        for record in self.data.get_all():
+            recod = record.copy()
+            key = record['id']
+            del record['id']
+            self.enqueue_replication_operation(record, 'insertion', key)
+        
+    def drop_suc_rep(self):
+        # if self.role == 'music_ftp':
+            # self.delete_files()
+        self.replicated_data_succ = initialize_database(self.role, self.replicated_data_succ.filepath)
+    
+    def drop_pred_rep(self):
+        # if self.role == 'music_ftp':
+        #     self.delete_files()
+        self.replicated_data_pred = initialize_database(self.role, self.replicated_data_pred.filepath)
+    
+    def delete_files(self, filepath):
+         # Lista todos los archivos en el directorio dado
+        files = os.listdir(filepath)
+        
+        # Itera sobre cada archivo en el directorio
+        for file in files:
+            # Construye la ruta completa del archivo
+            complete_rute = os.path.join(filepath, file)
+            
+            # Verifica si es un archivo y lo elimina
+            if os.path.isfile(complete_rute):
+                os.remove(complete_rute)
+                logger.info(f'Archivo eliminado: {complete_rute}')
         
     #TODO: Respond to the callback once the data is actually stored
     def store_data(self, key_fields, data, callback = None):
@@ -292,9 +346,14 @@ class ChordNode:
                     logger_stab.info('Current predecessor is None')
 
                 x = self.succ.pred
-                if x.id != self.id and x and self._inbetween(x.id, self.id, self.succ.id):
+                if x.id != self.id and x and self._inbetween(x.id, self.id, self.succ.id):#TODO: replicate all database
                     self.succ = x
-                    logger.info(f'New-Succ-Stabilize | {x.id} | node {self.id}')
+                    logger.info(f'New-Succ-Stabilize | {x.ip},{x.id}  | node {self.ip}, {self.ip}')
+                    logger.info(f'enqueuing all database')
+                    # if self.succ.id != self.prev_succ and self.succ.id != self.id:
+                        # threading.Thread(target=self.succ.drop_suc_rep, daemon=True)
+                        # self.replicate_all_database()
+                    
                 self.succ.notify(self.ref)
             # except ConnectionRefusedError:
             except requests.ConnectionError:
@@ -309,6 +368,9 @@ class ChordNode:
         """Notify the node of a change."""
         if node.id != self.id and (not self.pred or self._inbetween(node.id, self.pred.id, self.id)):
             self.pred = node
+            if self.pred.id != self.prev_succ and self.pred.id != self.id:
+                threading.Thread(target=self.succ.drop_pred_rep, daemon=True)
+                self.replicate_all_database()
 
     def fix_fingers(self):
         """Periodically update finger table entries."""

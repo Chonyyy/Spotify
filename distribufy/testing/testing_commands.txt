@@ -1,5 +1,5 @@
 //Store Data
-Invoke-WebRequest -Uri http://localhost:8001/store-data -Method POST -Body '{"username": "user1", "password": "password123", "callback":"warever.com", "key_fields":["username"]}' -ContentType "application/json"
+Invoke-WebRequest -Uri http://localhost:8001/store-data -Method POST -Body '{"key_fields":["title"],"title":"t", "album":"a", "genre":"g", "artist":"a", "callback": "http://a.com"}' -ContentType "application/json"
 curl -X POST http://localhost:8001/store-data \
      -H "Content-Type: application/json" \
      -d '{"username": "user1", "password": "password123", "callback":"warever.com", "key_fields":["username"]}'
