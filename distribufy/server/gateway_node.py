@@ -57,7 +57,8 @@ class GatewayNode(ChordNode):
         self.discover_entry()
         
         self.music_info_leader = self.discover_service('music_info')
-        self.music_ftp_leader = self.discover_service('music_ftp')
+        print(self.music_info_leader.ip)
+        # self.music_ftp_leader = self.discover_service('music_ftp')
 
         # Start server and background threads
         threading.Thread(target=self.httpd.serve_forever, daemon=True).start()
@@ -66,7 +67,7 @@ class GatewayNode(ChordNode):
         threading.Thread(target=self.stabilize, daemon=True).start()  # Start stabilize thread
         threading.Thread(target=self.fix_fingers, daemon=True).start()  # Start fix fingers thread
         threading.Thread(target=self.check_predecessor, daemon=True).start()  # Start check predecessor thread
-        threading.Thread(target=self.find_music_info, daemon=True).start()
+        # threading.Thread(target=self.find_music_info, daemon=True).start()
         # threading.Thread(target=self.find_music_ftp, daemon=True).start() # TODO
         
     def get_songs(self):

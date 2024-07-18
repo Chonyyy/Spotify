@@ -1,5 +1,6 @@
 from server.handlers.file_transfer_handler import FileTransferHandler
 from server.chord_node import ChordNode
+from server.gateway_node import GatewayNode
 from server.utils.my_orm import JSONDatabase
 import logging
 
@@ -21,7 +22,10 @@ def initialize_database(role, filepath):
 def start_server(ip, other_ip=None, role = 'music_info', db_name = 'db'):
     print(f'Launching App on {ip}')
     db, pred_db, succ_db = initialize_database(role, db_name)
-    node = ChordNode(ip, db = db, pred_db = pred_db, succ_db = succ_db, role=role)
+    if role == 'gateway':
+        node = GatewayNode(ip, db = db, pred_db = pred_db, succ_db = succ_db, role=role)
+    else:
+        node = ChordNode(ip, db = db, pred_db = pred_db, succ_db = succ_db, role=role)
         
     # # Add the new handlers to the HTTP server
     # node.httpd.RequestHandlerClass.handlers.update({###TODO: This generates an error, how do i extend the handler ?

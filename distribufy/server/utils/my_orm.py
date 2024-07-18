@@ -50,6 +50,8 @@ class JSONDatabase:
         return [record for record in self.data if cond(record.get(key))]
 
     def get_all(self):
+        if not self.data:
+            return []
         return self.data
         
     def update(self, key, value, update_data):

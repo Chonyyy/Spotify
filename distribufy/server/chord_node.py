@@ -234,12 +234,12 @@ class ChordNode:
             
     def get_songs(self):
         local_songs = self.data.get_all().copy()
-        local_songs.extend(self.succ.songs_iterations)
+        local_songs.extend(self.succ.songs_iterations())
             
     def _get_songs(self, origin_id):
         local_songs = self.data.get_all().copy()
         if self.succ.id != origin_id:
-            local_songs.extend(self.succ.songs_iterations)
+            local_songs.extend(self.succ.songs_iterations(origin_id))
         return local_songs
     
     def start_election(self):
