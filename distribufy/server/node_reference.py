@@ -95,10 +95,18 @@ class ChordNodeReference:
     @property
     def ping(self):
         self._send_request('/ping', {})
+    
+    @property
+    def leader(self):
+        return self._send_request('/get-leader', {})
 
     def notify(self, node: 'ChordNodeReference'):
         """Notify the node of a change."""
         self._send_request('/notify', {'id': node.id, 'ip': node.ip})
+        
+    def songs_iterations(self, origin_id):
+        """Iterate trough all nodes getting all song informations"""
+        return self._send_request('/iterate-songs', {'origin': origin_id})
 
     def check_predecessor(self):
         """Ping the predecessor to check if it is alive."""

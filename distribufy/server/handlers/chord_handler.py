@@ -38,6 +38,14 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):
             if self.path == '/store-data':
                 response = self.handle_store_data(post_data)
                 self.send_json_response(response)
+            elif self.path == '/get-leader':
+                response = self.server.node.leader_info()
+                self.send_json_response(response)
+            elif self.path.startswith('/iterate-songs'):
+                response = self.server.node._get_songs(post_data['origin'])
+                self.send_json_response(response, status=200)
+            elif self.path.startswith('/songs/upload_chunks/{song_id}'):#TODO
+                pass
             elif self.path.startswith('/drop-suc-rep'):
                 response = self.server.node.drop_suc_rep()
                 self.send_json_response(response, status=200)
@@ -74,10 +82,10 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):
                 self.send_json_response(response)
             elif self.path == '/check_predecessor':
                 response = {'status': 'success'}
-                self.send_json_response(response, status=200)#TODO: change this to get request
+                self.send_json_response(response, status=200)
             elif self.path == '/ping':
                 response = {'status': 'success'}
-                self.send_json_response(response, status=200)#TODO: change this to get request
+                self.send_json_response(response, status=200)
             elif self.path == '/closest_preceding_finger':
                 response = self.server.node.closest_preceding_finger(post_data['id'])
                 self.send_json_response(response)
@@ -109,9 +117,24 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):
             self.server.node.print_finger_table()
         elif self.path == '/debug/start-election':
             self.handle_start_election()
-            
+        elif self.path.startswith('/songs/stream/{song_id}'):#TODO sends the song with id
+            pass
+        elif self.path.startswith('/songs/genre/{genre}'):#TODO returns all song with genre
+            pass
+        elif self.path.startswith('/songs'):#TODO returns all songs gateway
+            self.server.node.get_songs()
+        elif self.path.startswith('/songs/{song_title}'):#TODO returns song with title song title
+            pass
         else:
             self.send_json_response(response, error_message='Page not found', status=404)
+            
+    def handle_song(self):
+        query_params = urlparse(self.path).query
+        params = parse_qs(query_params)
+        
+        if 'key' not in self.headers or 'file_name' not in self.headers:
+            self.send_json_response(None, error_message='Missing key or file_name in headers', status=400)
+            return
             
     def handle_upload_file(self):
         """Receives a file sent as a binary stream."""

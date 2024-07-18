@@ -65,7 +65,7 @@ class ChordNode:
         os.makedirs(self.file_storage, exist_ok=True)
         self.replication_lock = threading.Lock()
 
-        logger.info(f'node_addr: {ip}:{port}')
+        logger.info(f'node_addr: {ip}:{port} {self.id}')
         
         self.discover_entry()
 
@@ -228,6 +228,19 @@ class ChordNode:
                 raise e
             logger_le.info('===CHECKING LEADER===')
             time.sleep(10)
+            
+    def leader_info(self):
+        return {'ip': self.leader.ip, 'id': self.leader.id}
+            
+    def get_songs(self):
+        local_songs = self.data.get_all().copy()
+        local_songs.extend(self.succ.songs_iterations)
+            
+    def _get_songs(self, origin_id):
+        local_songs = self.data.get_all().copy()
+        if self.succ.id != origin_id:
+            local_songs.extend(self.succ.songs_iterations)
+        return local_songs
     
     def start_election(self):
         self.election_started = True
