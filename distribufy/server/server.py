@@ -26,11 +26,6 @@ def start_server(ip, other_ip=None, role = 'music_info', db_name = 'db'):
         node = GatewayNode(ip, db = db, pred_db = pred_db, succ_db = succ_db, role=role)
     else:
         node = ChordNode(ip, db = db, pred_db = pred_db, succ_db = succ_db, role=role)
-        
-    # # Add the new handlers to the HTTP server
-    # node.httpd.RequestHandlerClass.handlers.update({###TODO: This generates an error, how do i extend the handler ?
-    #     '/ftp': FileTransferHandler
-    # })
 
     while True:
         pass

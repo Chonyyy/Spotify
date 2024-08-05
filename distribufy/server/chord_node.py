@@ -4,7 +4,8 @@ import requests
 import time
 import logging
 import os
-from http.server import HTTPServer
+# from http.server import HTTPServer
+from server.handlers.base_handler import ChordServer
 from server.utils.my_orm import JSONDatabase
 from server.node_reference import ChordNodeReference
 from server.handlers.chord_handler import ChordNodeRequestHandler
@@ -52,15 +53,16 @@ class ChordNode:
         self.m = m  # Number of bits in the hash/key space
         self.finger = [self.ref] * self.m  # Finger table
         self.next = 0  # Finger table index to fix next
-        self.data = db
+        self.data = db#TODO: si mi predecesor se cae, tengo que coger los datos que eran de el y hacerlos mios, si mi sucesor se cae tengo que darle los datos que antes eran de el y darselos a mi nuevo sucesor
         self.replicated_data_pred = pred_db
         self.replicated_data_succ = succ_db
         self.leader = self.ref
         self.election_started = False#TODO: What happens if the election takes too long
         #TODO: If pred or succ changes, replicate the whole database
         server_address = (self.ip, self.port)
-        self.httpd = HTTPServer(server_address, ChordNodeRequestHandler)
-        self.httpd.node = self
+        # self.httpd = HTTPServer(server_address, ChordNodeRequestHandler)
+        self.httpd = ChordServer(server_address, ChordNodeRequestHandler, node=self)#TODO: debug this
+        # self.httpd.node = self#TODO: Make it so this is set in ititialization
         self.file_storage = f'./databases/node_{self.ip}/files' 
         os.makedirs(self.file_storage, exist_ok=True)
         self.replication_lock = threading.Lock()
@@ -78,6 +80,8 @@ class ChordNode:
         threading.Thread(target=self.check_predecessor, daemon=True).start()  # Start check predecessor thread
         threading.Thread(target=self.check_leader, daemon=True).start()  # Start leader election thread
         threading.Thread(target=self.replication_loop, daemon=True).start()  # Start replication thread
+        self.discovery_thread = threading.Thread(target=send_multicast, args=(self.role), daemon=True)
+        self.discovery_thread.start()
           
     #region Data
     
@@ -320,11 +324,6 @@ class ChordNode:
     def discover_entry(self):
         retries = 4
         retry_interval = 5
-        
-        logger.info(f"Starting multicast discovery for role: {self.role}")
-        discovery_thread = threading.Thread(target=send_multicast, args=(self.role,))
-        discovery_thread.daemon = True
-        discovery_thread.start()
 
         for _ in range(retries):
             discovered_ip = receive_multicast(self.role)
@@ -335,6 +334,10 @@ class ChordNode:
                 return
             time.sleep(retry_interval)
         logger.info(f"No other node node discovered.")
+        
+    def mulicast_send_toggle(self):#TODO: Implement this
+        logger.info(f"Starting multicast discovery for role: {self.role}")
+        self.discovery_thread.start()
 
     def join(self, node: 'ChordNodeReference'):
         """Join a Chord network using 'node' as an entry point."""
@@ -404,7 +407,7 @@ class ChordNode:
 
     def check_predecessor(self):
         """Periodically check if predecessor is alive."""
-        logger_cp.info('Checking Predecessor')
+        logger_cp.info('Checking Predecessor')#TODO: If my predecesor changes i need to share my data with it
         while True:
             try:
                 if self.pred:
