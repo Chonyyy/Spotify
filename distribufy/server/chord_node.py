@@ -361,7 +361,7 @@ class ChordNode:
                     logger_stab.info(f'Current predecessor is: {self.pred.ip}')
                 else:
                     logger_stab.info('Current predecessor is None')
-
+                    
                 x = self.succ.pred
                 if x.id != self.id and x and self._inbetween(x.id, self.id, self.succ.id):#TODO: replicate all database
                     self.succ = x

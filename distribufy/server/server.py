@@ -1,6 +1,6 @@
 from server.handlers.file_transfer_handler import FileTransferHandler
 from server.chord_node import ChordNode
-from server.gateway_node import GatewayNode
+from server.gateway_node import Gateway
 from server.utils.my_orm import JSONDatabase
 import logging
 
@@ -23,7 +23,7 @@ def start_server(ip, other_ip=None, role = 'music_info', db_name = 'db'):
     print(f'Launching App on {ip}')
     db, pred_db, succ_db = initialize_database(role, db_name)
     if role == 'gateway':
-        node = GatewayNode(ip, db = db, pred_db = pred_db, succ_db = succ_db, role=role)
+        node = Gateway(ip)
     else:
         node = ChordNode(ip, db = db, pred_db = pred_db, succ_db = succ_db, role=role)
 
