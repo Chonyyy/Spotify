@@ -1,4 +1,4 @@
-from server.handlers.file_transfer_handler import FileTransferHandler
+# from server.handlers.file_transfer_handler import FileTransferHandler
 from server.chord_node import ChordNode
 from server.gateway_node import Gateway
 from server.utils.my_orm import JSONDatabase

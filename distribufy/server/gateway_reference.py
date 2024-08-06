@@ -30,11 +30,12 @@ class GatewayReference:
             response = None
             try:
                 url = f'http://{self.ip}:{self.port}{path}'
-                logger.info(f'Sending {method} request to {url}\nPayload: {data}')
 
                 if method.upper() == 'POST':
+                    logger.info(f'Sending POST request to {url}\nPayload: {data}')
                     response_raw = requests.post(url, json=data)
                 elif method.upper() == 'GET':
+                    logger.info(f'Sending GET request to {url}')
                     response_raw = requests.get(url, params=data)
                 else:
                     raise ValueError(f"Unsupported HTTP method: {method}")

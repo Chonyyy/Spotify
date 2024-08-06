@@ -80,7 +80,7 @@ class ChordNode:
         threading.Thread(target=self.check_predecessor, daemon=True).start()  # Start check predecessor thread
         threading.Thread(target=self.check_leader, daemon=True).start()  # Start leader election thread
         threading.Thread(target=self.replication_loop, daemon=True).start()  # Start replication thread
-        self.discovery_thread = threading.Thread(target=send_multicast, args=(self.role), daemon=True)
+        self.discovery_thread = threading.Thread(target=send_multicast, args=(self.role,), daemon=True)
         self.discovery_thread.start()
           
     #region Data

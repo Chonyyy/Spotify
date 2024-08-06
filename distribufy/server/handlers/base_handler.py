@@ -2,7 +2,7 @@ import json
 import logging
 import threading
 from server.node_reference import ChordNodeReference
-from server.chord_node import ChordNode
+# from server.chord_node import ChordNode
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
 # Set up logging
@@ -10,7 +10,7 @@ logger = logging.getLogger("__main__")
 logger_rh = logging.getLogger("__main__.rh")
 
 class ChordServer(HTTPServer):
-    def __init__(self, *args, node: ChordNode=None, **kwargs):
+    def __init__(self, *args, node=None, **kwargs):
         super().__init__(*args, **kwargs)
         self.node = node
 

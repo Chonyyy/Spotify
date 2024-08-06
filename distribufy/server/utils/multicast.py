@@ -33,7 +33,7 @@ def send_multicast(role):
 
 def receive_multicast(role):
     multicast_group = MULTICAST_GROUPS.get(role)
-    logger.info(f'Recieving multicas msg in MG {multicast_group}')
+    logger.info(f'Recieving multicast msg in MG {multicast_group}')
     if not multicast_group:
         raise ValueError(f"Invalid role: {role}")
 
@@ -50,6 +50,6 @@ def receive_multicast(role):
             message = json.loads(data.decode('utf-8'))
             if message['message'] == DISCOVERY_MESSAGE and message['role'] == role:
                 logger.info(f"Discovered node: {addr[0]} with role: {message['role']}")
-                return addr[0]  # Return the IP address of the discovered node
+                return addr  # Return the IP address of the discovered node
         except (json.JSONDecodeError, KeyError):
             logger.error(f"Received invalid discovery message: {data}")
