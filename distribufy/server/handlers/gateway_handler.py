@@ -38,9 +38,10 @@ class GatewayRequestHandler(BaseHTTPRequestHandler):
             self.handle_new_leader(post_data)
         elif self.path == '/share_knowledge':
             self.handle_share_knowledge(post_data['nodes'])
+        elif self.path == '/rep_data':
+            self.handle_rep_data(post_data)
         else:
             self.send_json_response(None, error_message='Page not found', status=404)
-
 
         # if self.path == '/get-leader':
         #     response = self.server.node.leader_info()
@@ -115,4 +116,7 @@ class GatewayRequestHandler(BaseHTTPRequestHandler):
             else:
                 self.wfile.write(json.dumps({'id': None, 'ip': None}).encode())
                 
-        
+    def handle_rep_data(self, data):
+        """Update the node's data store with the provided data."""
+        self.server.node.update_rep_data(data)
+        self.send_json_response({'data': data})

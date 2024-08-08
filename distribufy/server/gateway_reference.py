@@ -58,7 +58,7 @@ class GatewayReference:
     def notify(self, node: 'GatewayReference'):
         """Notify the node of a change."""
         self._send_request('/notify', {'id': node.id, 'ip': node.ip})
-        
+
     def new_leader(self, leader: 'GatewayReference'):
         """Notify the node of a leader change."""
         self._send_request('/new_leader', {'id': leader.id, 'ip': leader.ip})
@@ -72,3 +72,11 @@ class GatewayReference:
     
     def ping(self):
         self._send_request('/ping', method='get')
+        
+    def update_data(self, data):
+        """Update the node's data store with the provided data."""
+        try:
+            self._send_request('/rep_data', {'data': data})
+            logger.info(f"Data replication updated with new data: {data}")
+        except Exception as e:
+            logger.error(f'while replicating: {e}')
