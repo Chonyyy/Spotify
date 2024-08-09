@@ -28,28 +28,34 @@ class Gateway:
         self.port = port
         self.role = 'gateway'
         self.ref = GatewayReference(self.id, self.ip, self.port)
-        self.known_nodes = []
+        self.known_nodes = {
+            'gateway': [],
+            'ftp': [],
+            'music-manager': []
+        }
+        self.rep_data = {}
         self.leader = None
+        
         server_address = (self.ip, self.port)
         self.httpd = HTTPServer(server_address, GatewayRequestHandler)
         self.httpd.node = self
+        
         self.discovered_node = None
+        
         self.replication_lock = threading.Lock()
         self.replication_nodes = []
-        self.data = []
-        self.rep_data = []
         
-        
-        logger.info(f'node_addr: {ip}:{port} {self.id}')
+        logger.info(f'node_addr: {ip}:{port}-{self.id}')
         
         threading.Thread(target=self.httpd.serve_forever, daemon=True).start() # Start server
         threading.Thread(target=self.check_leader, daemon=True).start()  # Start leader election thread
-        self.discovery_thread_send = threading.Thread(target=send_multicast, args=(self.role,), daemon=True)
-        self.discovery_thread_receive = threading.Thread(target=self.aux_multicast, args=(self.role,), daemon=True)
-        self.start_multicast_recieve()
+        self.stop_discovery_event_send = threading.Event()
+        self.discovery_thread_send = threading.Thread(target=send_multicast, args=(self.role, self.stop_discovery_event_send), daemon=True)
+        self.stop_discovery_event_rec = threading.Event()
+        self.discovery_thread_receive = threading.Thread(target=self.rec_multicast, args=(self.role,self.stop_discovery_event_send), daemon=True)
         threading.Thread(target=self.ckeck_nodes, daemon=True).start()
-        # threading.Thread(target=self.replication_loop, daemon=True).start()  # Start replication thread
         
+        self.start_multicast_recieve()
         logger.info(f'Threads started')
         
     #region Join Logic
@@ -60,10 +66,10 @@ class Gateway:
     def notify(self, node: 'GatewayReference'):
         """Notify the node of a change."""
         if node.id != self.id:
-            for known_node in self.known_nodes:
+            for known_node in self.known_nodes['gateway']:
                 if known_node.id == node.id:
                     return (False, 'already known')
-            self.known_nodes.append(node)
+            self.known_nodes['gateway'].append(node)
             if self.id == self.leader.id:
                 threading.Thread(target=self.replication, daemon=True).start()
             
@@ -73,12 +79,9 @@ class Gateway:
     
     def join(self, node: 'GatewayReference'):
         """Join a Chord network using 'node' as an entry point."""
-        if node.ip == self.ip:
-            return
-        logger.info(f'Joining to node {node.id}')
-        self.leader = node
-        logger.info(f'New-Leader-join | {node.id} | node {self.id}')
+        logger.info(f'Joining to node network: {node.id}')
         self.leader.notify(self.ref)
+        self.leader = node
         
     def discover_entry(self):
         retries = 4
@@ -90,7 +93,7 @@ class Gateway:
                 logger.info(f"Discovered entry point: {discovered_ip}")
                 discovered_node = GatewayReference(get_sha_repr(discovered_ip), discovered_ip, self.port)
                 self.join(discovered_node)
-                self.known_nodes.append(discovered_node)
+                self.known_nodes['gateway'].append(discovered_node)
                 return
             time.sleep(retry_interval)
         logger.info(f"No other node node discovered.")
@@ -101,7 +104,7 @@ class Gateway:
         self.replicate_to_new_leader(new_leader)
         
     def share_knowledge(self, nodes):
-        self.known_nodes = nodes
+        self.known_nodes['gateway'] = nodes
 
     def check_leader(self):
         while True:
@@ -110,22 +113,23 @@ class Gateway:
             else:    
                 logger_cl.debug("Leader Checking Initialized")
                 try:
-                    self.leader.ping()
+                    if self.leader.id != self.id:
+                        self.leader.ping()
                 except Exception as e: #TODO: Do propper error handling here
                     print(e)
                 time.sleep(10)
 
     def elect_leader(self, leader):
         self.leader = leader
-        for known_node in self.known_nodes:
+        for known_node in self.known_nodes['gateway']:
             known_node.new_leader(leader)
         leader.share_knowledge(self.known_nodes)
-        self.known_nodes = []
+        self.known_nodes['gateway'] = []
 
     def start_election(self):
         current_leader = self.ref
         change_leader = False
-        for known_node in self.known_nodes:
+        for known_node in self.known_nodes['gateway']:
             if known_node.id > current_leader.id:
                 current_leader = known_node
                 change_leader = True
@@ -145,6 +149,7 @@ class Gateway:
         if not self.discovered_node:
             logger.info('Not found leader, i am the leader')
             self.start_multicast_send()
+            self.stop_discovery_event_rec.set()
         else:
             logger.info('Found leader: '+ str(self.discovered_node.ip))
             self.leader = self.discovered_node
@@ -154,20 +159,22 @@ class Gateway:
     def stop_multicast_recieve(self):
         self.discovery_thread_receive.stop()
         
-    def aux_multicast(self, role):
-        addr = receive_multicast(self.role)
+    def rec_multicast(self, role, stop_event):
+        addr = receive_multicast(role, stop_event)
+        if addr[0] == self.ip:
+            return
         self.discovered_node = GatewayReference(0, addr[0], 8001)
-        
-    def ckeck_nodes(self):
+     
+    def ckeck_nodes(self):#TODO: MOve to proper region
         if self.leader.id == self.ref.id: # If i am the leader
             while True:
-                for node in self.known_nodes:
+                for node in self.known_nodes['gateway']:
                     try:
                         node.ping()
                         logger.info(f'Node {node.ip} still connected')
                     except Exception as e: 
                         print(e)
-                        self.known_nodes.remove(node)
+                        self.known_nodes['gateway'].remove(node)
                         logger.info(f'Node {node.ip} is desconected, deleted of the lider known ')
                         threading.Thread(target=self.replication, daemon=True).start()
                 time.sleep(10) 
@@ -183,7 +190,7 @@ class Gateway:
                     logger.error(f"Failed to replicate data to {node.ip}: {e}")
         
     def get_replication_nodes(self):
-        sorted_nodes = sorted(self.known_nodes, key=lambda node: node.id, reverse=True)
+        sorted_nodes = sorted(self.known_nodes['gateway'], key=lambda node: node.id, reverse=True)
         if len(sorted_nodes) >= 2:
             self.replication_nodes = sorted_nodes[:2]
         elif len(sorted_nodes) == 1:
@@ -194,7 +201,7 @@ class Gateway:
     def replicate_data(self, node: 'GatewayReference'):
         """Replicate data to a specific node."""
         with self.replication_lock:
-            data = self.data.copy()  # Make a copy of the in-memory data
+            data = self.known_nodes.copy()  # Make a copy of the in-memory data
             node.update_data(data)  # Suponiendo que el nodo tiene un método `update_data`
             
         logger.info(f"Replicated data to {node.ip}")

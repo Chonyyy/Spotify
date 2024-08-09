@@ -43,17 +43,6 @@ class GatewayRequestHandler(BaseHTTPRequestHandler):
         else:
             self.send_json_response(None, error_message='Page not found', status=404)
 
-        # if self.path == '/get-leader':
-        #     response = self.server.node.leader_info()
-        #     self.send_json_response(response)
-        # elif self.path.startswith('/iterate-songs'):
-        #     response = self.server.node._get_songs(post_data['origin'])
-        #     self.send_json_response(response, status=200)
-        # elif self.path.startswith('/songs/upload_chunks/{song_id}'):#TODO
-        #     pass
-        # else:
-        #     self.send_json_response({}, 'Invalid Endpoint', status=404)
-        
     def do_GET(self):
         """Handle GET requests."""
         logger_rh.debug(f'Request path {self.path}')
@@ -63,18 +52,7 @@ class GatewayRequestHandler(BaseHTTPRequestHandler):
             self.send_json_response({'status':'up'})
         else:
             self.send_json_response(None, error_message='Page not found', status=404)
-        
-        # if self.path.startswith('/get_user'):
-        #     response = self.handle_get_user(self.path)
-        #     self.send_json_response(response, status=200)
-        # elif self.path == '/list_users':
-        #     response = self.server.node.list_users()
-        #     self.send_json_response(response, status=200)
-        # elif self.path.startswith('/songs/stream/{song_id}'):#TODO sends the song with id
-        #     pass
-        # else:
-        #     self.send_json_response(response, error_message='Page not found', status=404)
-           
+
     def handle_notify(self, node_data):
         node = GatewayReference(node_data['id'], node_data['ip'])
         result = self.server.node.notify(node)

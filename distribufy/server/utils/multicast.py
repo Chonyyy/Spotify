@@ -15,7 +15,7 @@ DISCOVERY_MESSAGE = 'CHORD_DISCOVERY'
 
 logger = logging.getLogger("__main__")
 
-def send_multicast(role):
+def send_multicast(role, stop_event = True):
     multicast_group = MULTICAST_GROUPS.get(role)
     logger.info(f'Sending multicas msg in MG {multicast_group}')
     if not multicast_group:
@@ -26,12 +26,12 @@ def send_multicast(role):
 
     message = json.dumps({'message': DISCOVERY_MESSAGE, 'role': role}).encode('utf-8')
 
-    while True:
+    while not stop_event.is_set():
         sock.sendto(message, (multicast_group, MULTICAST_PORT))
         logger.info(f"Multicast discovery message sent for role {role}.")
         time.sleep(10)
 
-def receive_multicast(role):
+def receive_multicast(role, stop_event = True):
     multicast_group = MULTICAST_GROUPS.get(role)
     logger.info(f'Recieving multicast msg in MG {multicast_group}')
     if not multicast_group:
@@ -44,7 +44,7 @@ def receive_multicast(role):
     mreq = struct.pack('4sl', socket.inet_aton(multicast_group), socket.INADDR_ANY)
     sock.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP, mreq)
 
-    while True:
+    while not stop_event.is_set():
         data, addr = sock.recvfrom(1024)
         try:
             message = json.loads(data.decode('utf-8'))

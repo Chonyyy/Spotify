@@ -56,7 +56,7 @@ class GatewayReference:
                 raise e
 
     def notify(self, node: 'GatewayReference'):
-        """Notify the node of a change."""
+        """Notify the node of a join request."""
         self._send_request('/notify', {'id': node.id, 'ip': node.ip})
 
     def new_leader(self, leader: 'GatewayReference'):
@@ -76,7 +76,15 @@ class GatewayReference:
     def update_data(self, data):
         """Update the node's data store with the provided data."""
         try:
-            self._send_request('/rep_data', {'data': data})
-            logger.info(f"Data replication updated with new data: {data}")
+            payload = {
+                'gateway': [],
+                'ftp': [],
+                'music-manager': []
+            }
+            for key in payload.keys():
+                for reference in data[key]:
+                    payload[key].append({'ip':reference.ip, 'port':reference.port})
+            self._send_request('/rep_data', {'data': payload})
+            logger.info(f"Data replication updated with new data: {payload}")
         except Exception as e:
             logger.error(f'while replicating: {e}')

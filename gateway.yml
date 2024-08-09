@@ -1,0 +1,29 @@
+version: '3'
+services:
+  gateway_1:
+    build: ./distribufy
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./distribufy:/app
+
+  gateway_1:
+    build: ./distribufy
+    ports:
+      - "8002:8001"
+    volumes:
+      - ./distribufy:/app
+
+  gateway_1:
+    build: ./distribufy
+    ports:
+      - "8003:8001"
+    volumes:
+      - ./distribufy:/app
+
+  gateway_1:
+    build: ./distribufy
+    ports:
+      - "8004:8001"
+    volumes:
+      - ./distribufy:/app
