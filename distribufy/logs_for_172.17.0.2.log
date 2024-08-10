@@ -1,5 +1,0 @@
-00:23:37 - __main__ - INFO - node_addr: 172.17.0.2:8001
-00:23:37 - __main__ - INFO - Starting multicast discovery for role: music_info
-00:23:37 - __main__ - INFO - Sending multicas msg in MG 224.1.1.1
-00:23:37 - __main__ - INFO - Recieving multicas msg in MG 224.1.1.1
-00:23:37 - __main__ - INFO - Multicast discovery message sent for role music_info.
