@@ -1,9 +1,9 @@
 # Ignore databases and logs folders
-# databases/
-# logs/
+databases/
+logs/
 
 # Ignore Python auxiliary files
-# __pycache__/
-# *.py[cod]
-# *.egg-info/
-# *.pyo
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.pyo
