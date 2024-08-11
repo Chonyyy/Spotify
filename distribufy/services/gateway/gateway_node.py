@@ -3,14 +3,11 @@ import threading
 import time
 import logging
 from http.server import HTTPServer
-from server.utils.my_orm import JSONDatabase
-from server.node_reference import ChordNodeReference
-from server.chord_node import ChordNode
-from server.handlers.chord_handler import ChordNodeRequestHandler
 from server.utils.multicast import send_multicast, receive_multicast
 from typing import List, Tuple
-from server.gateway_reference import GatewayReference
-from server.handlers.gateway_handler import GatewayRequestHandler
+from services.gateway.gateway_reference import GatewayReference
+from services.gateway.gateway_handler import GatewayRequestHandler
+
 
 # Set up logging
 logger = logging.getLogger("__main__")

@@ -4,10 +4,10 @@ import json
 import logging
 import os
 from urllib.parse import urlparse, parse_qs
-from server.chord_node import ChordNode
+from services.common.chord_node import ChordNode
 from server.utils.helper_funcs import get_sha_repr
 from server.handlers.base_handler import BaseHandler
-from server.node_reference import ChordNodeReference
+from services.common.node_reference import ChordNodeReference
 
 # Set up logging
 logger = logging.getLogger("__main__")

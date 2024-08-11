@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  gateway:
+    build:
+      context: ./distribufy
+      dockerfile: Dockerfile
+    command: python app.py gateway
+    volumes:
+      - ./distribufy/services/gateway:/app/gateway
+      - ./distribufy/logs:/app/logs
+    deploy:
+      replicas: ${GATEWAY_REPLICAS:-1}
+    environment:
+      SERVICE_NAME: gateway
+
+  music-service:
+    build:
+      context: ./distribufy
+      dockerfile: Dockerfile
+    command: python app.py music-service
+    volumes:
+      - ./distribufy/services/music_service:/app/music_service
+      - ./distribufy/logs:/app/logs
+    deploy:
+      replicas: ${MUSIC_SERVICE_REPLICAS:-1}
+    environment:
+      SERVICE_NAME: music-service
+
+  storage-service:
+    build:
+      context: ./distribufy
+      dockerfile: Dockerfile
+    command: python app.py storage-service
+    volumes:
+      - ./distribufy/services/storage_service:/app/storage_service
+      - ./distribufy/logs:/app/logs
+    deploy:
+      replicas: ${STORAGE_SERVICE_REPLICAS:-1}
+    environment:
+      SERVICE_NAME: storage-service
+
+volumes:
+  databases:
+  logs:

@@ -1,7 +1,7 @@
 import json
 import logging
 import threading
-from server.node_reference import ChordNodeReference
+from services.common.node_reference import ChordNodeReference
 # from server.chord_node import ChordNode
 from http.server import BaseHTTPRequestHandler, HTTPServer
 

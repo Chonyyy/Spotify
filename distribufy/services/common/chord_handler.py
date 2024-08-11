@@ -5,7 +5,7 @@ import logging
 import os
 from urllib.parse import urlparse, parse_qs
 from http.server import BaseHTTPRequestHandler
-from server.node_reference import ChordNodeReference
+from services.common.node_reference import ChordNodeReference
 
 # Set up logging
 logger = logging.getLogger("__main__")

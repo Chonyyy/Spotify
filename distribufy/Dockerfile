@@ -1,14 +1,15 @@
-# Use the latest Python image as the base
+# Use a base Python image
 FROM python:latest
 
-# Set the working directory in the container
+# Set the working directory
 WORKDIR /app
 
-# Copy the current directory contents into the container at /app
-COPY . .
-
-# Install any needed packages specified in requirements.txt
+# Copy common files and install dependencies
+COPY requirements.txt app.py server.py common/ /app/
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Run app.py when the container launches
+# Copy databases and logs directories
+COPY databases/ /app/databases/
+
+# Command will be overridden by docker-compose.yml
 CMD ["python", "app.py"]

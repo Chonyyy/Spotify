@@ -1,11 +1,9 @@
 import hashlib
-import threading
 import json
 import logging
-import os
 from urllib.parse import urlparse, parse_qs
 from http.server import BaseHTTPRequestHandler
-from server.gateway_reference import GatewayReference
+from services.gateway.gateway_reference import GatewayReference
 
 # Set up logging
 logger = logging.getLogger("__main__")

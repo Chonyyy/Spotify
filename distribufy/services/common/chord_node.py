@@ -1,14 +1,13 @@
-import hashlib
 import threading
 import requests
 import time
 import logging
 import os
-# from http.server import HTTPServer
 from server.handlers.base_handler import ChordServer
 from server.utils.my_orm import JSONDatabase
-from server.node_reference import ChordNodeReference
-from server.handlers.chord_handler import ChordNodeRequestHandler
+from services.common.utils import get_sha_repr
+from services.common.node_reference import ChordNodeReference
+from services.common.chord_handler import ChordNodeRequestHandler
 from server.utils.multicast import send_multicast, receive_multicast
 
 # Set up logging
@@ -19,24 +18,6 @@ logger_cp = logging.getLogger("__main__.cp")
 logger_rh = logging.getLogger("__main__.rh")
 logger_le = logging.getLogger("__main__.le")
 logger_dt = logging.getLogger("__main__.dt")
-
-def initialize_database(role, filepath):
-    columns = None
-    replic_columns = None
-    if role == 'music_info':
-        columns = ['id','title', 'album', 'genre', 'artist']
-        replic_columns = ['id','title', 'album', 'genre', 'artist', 'source']
-    elif role == 'music_ftp':
-        columns = ['id', 'addr']
-        replic_columns = ['id', 'addr', 'columns']
-    elif role == 'gateway':
-        columns  = ['id', 'ip', 'role']
-    return JSONDatabase(filepath, columns), JSONDatabase(filepath + 'pred', replic_columns), JSONDatabase(filepath + 'succ', replic_columns)
-
-
-def get_sha_repr(data: str) -> int:
-    """Return SHA-1 hash representation of a string as an integer."""
-    return int(hashlib.sha1(data.encode()).hexdigest(), 16)
 
 #region ChordNode
 class ChordNode:
@@ -98,7 +79,6 @@ class ChordNode:
     def drop_data(self):
         if self.role == 'music_ftp':
             self.delete_files(self.file_storage)
-        self.data = initialize_database(self.role, self.data.filepath)
         
     def replicate_all_database(self):
         for record in self.data.get_all():
@@ -109,14 +89,12 @@ class ChordNode:
             self.enqueue_replication_operation(record, 'insertion', key)
         
     def drop_suc_rep(self):
-        # if self.role == 'music_ftp':
-            # self.delete_files()
-        self.replicated_data_succ = initialize_database(self.role, self.replicated_data_succ.filepath)
+        if self.role == 'music_ftp':
+            self.delete_files()
     
     def drop_pred_rep(self):
-        # if self.role == 'music_ftp':
-        #     self.delete_files()
-        self.replicated_data_pred = initialize_database(self.role, self.replicated_data_pred.filepath)
+        if self.role == 'music_ftp':
+            self.delete_files()
     
     def delete_files(self, filepath):
          # Lista todos los archivos en el directorio dado

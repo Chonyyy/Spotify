@@ -6,7 +6,7 @@ import os
 from urllib.parse import urlparse, parse_qs
 from server.utils.helper_funcs import get_sha_repr
 from server.handlers.base_handler import BaseHandler
-from server.node_reference import ChordNodeReference
+from services.common.node_reference import ChordNodeReference
 
 logger = logging.getLogger("__main__")
 logger_rh = logging.getLogger("__main__.rh")
