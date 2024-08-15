@@ -4,11 +4,11 @@ import time
 import logging
 import os
 from server.handlers.base_handler import ChordServer
-from server.utils.my_orm import JSONDatabase
+from services.common.my_orm import JSONDatabase
 from services.common.utils import get_sha_repr
 from services.common.node_reference import ChordNodeReference
 from services.common.chord_handler import ChordNodeRequestHandler
-from server.utils.multicast import send_multicast, receive_multicast
+from services.common.multicast import send_multicast, receive_multicast
 
 # Set up logging
 logger = logging.getLogger("__main__")
@@ -50,7 +50,7 @@ class ChordNode:
 
         logger.info(f'node_addr: {ip}:{port} {self.id}')
         
-        self.discover_entry()
+        self.discover_entry()# Fix this
 
         # Start server and background threads
         threading.Thread(target=self.httpd.serve_forever, daemon=True).start()

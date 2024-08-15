@@ -2,6 +2,7 @@ import hashlib
 import requests
 import logging
 from typing import List
+from services.common.utils import get_sha_repr
 
 # Set up logging
 logger = logging.getLogger("__main__")
@@ -11,10 +12,6 @@ logger_cp = logging.getLogger("__main__.cp")
 logger_rh = logging.getLogger("__main__.rh")
 logger_le = logging.getLogger("__main__.le")
 logger_dt = logging.getLogger("__main__.dt")
-
-def get_sha_repr(data: str) -> int:
-    """Return SHA-1 hash representation of a string as an integer."""
-    return int(hashlib.sha1(data.encode()).hexdigest(), 16)
 
 class GatewayReference:
     def __init__(self, id: str, ip: str, port: int = 8001):

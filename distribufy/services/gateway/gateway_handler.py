@@ -14,12 +14,7 @@ logger_rh = logging.getLogger("__main__.rh")
 logger_le = logging.getLogger("__main__.le")
 logger_dt = logging.getLogger("__main__.dt")
 
-def get_sha_repr(data: str) -> int:
-    """Return SHA-1 hash representation of a string as an integer."""
-    return int(hashlib.sha1(data.encode()).hexdigest(), 16)
-
 class GatewayRequestHandler(BaseHTTPRequestHandler):
-
     def do_POST(self):
         logger_rh.debug(f'Request path {self.path}')
         """Handle POST requests."""

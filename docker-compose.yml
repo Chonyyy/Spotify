@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile
     command: python app.py gateway
     volumes:
-      - ./distribufy/services/gateway:/app/gateway
+      - ./distribufy/services:/app/services
       - ./distribufy/logs:/app/logs
     deploy:
       replicas: ${GATEWAY_REPLICAS:-1}
@@ -20,7 +20,7 @@ services:
       dockerfile: Dockerfile
     command: python app.py music-service
     volumes:
-      - ./distribufy/services/music_service:/app/music_service
+      - ./distribufy/services:/app/services
       - ./distribufy/logs:/app/logs
     deploy:
       replicas: ${MUSIC_SERVICE_REPLICAS:-1}
@@ -33,7 +33,7 @@ services:
       dockerfile: Dockerfile
     command: python app.py storage-service
     volumes:
-      - ./distribufy/services/storage_service:/app/storage_service
+      - ./distribufy/services:/app/services
       - ./distribufy/logs:/app/logs
     deploy:
       replicas: ${STORAGE_SERVICE_REPLICAS:-1}

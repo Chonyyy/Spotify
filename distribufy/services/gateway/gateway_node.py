@@ -3,19 +3,16 @@ import threading
 import time
 import logging
 from http.server import HTTPServer
-from server.utils.multicast import send_multicast, receive_multicast
+from services.common.multicast import send_multicast, receive_multicast
 from typing import List, Tuple
 from services.gateway.gateway_reference import GatewayReference
 from services.gateway.gateway_handler import GatewayRequestHandler
+from services.common.utils import get_sha_repr
 
 
 # Set up logging
 logger = logging.getLogger("__main__")
 logger_cl = logging.getLogger("__main__.cl")
-
-def get_sha_repr(data: str) -> int:
-    """Return SHA-1 hash representation of a string as an integer."""
-    return int(hashlib.sha1(data.encode()).hexdigest(), 16)
 
 
 class Gateway:

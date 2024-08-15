@@ -1,9 +1,9 @@
 import socket
 import sys
 import logging
-from server.utils.my_orm import JSONDatabase
+from services.common.my_orm import JSONDatabase
 from server import start_server
-from server.utils.multicast import send_multicast, receive_multicast
+from services.common.multicast import send_multicast, receive_multicast
 
 logger = logging.getLogger(__name__)
 
