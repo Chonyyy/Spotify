@@ -2,6 +2,10 @@
 
 ## Aplicación web
 
+Para el front-end de este proyecto se decidió utilizar JavaScript con CCS y HTML puro. En esta interfaz el usuario puede ver la lista de canciones disponibles de cualquier género o especificar el género que desee escuchar en ese momento y solicitar una para reproducirla en streaming o descargarla sin reproducirse. Además puede parar la reproducción en cualquier momento y volverla a reproducir.  
+
+Cada chunk de las canciones reproducidas se guardan en caché para evitar descargas posteriores. Esto permite que en una descarga posterior solo se solicite a los servidores los chunks no descargados
+
 ## Arquitectura de Microservicios
 
 En la última década, los microservicios han emergido como una arquitectura dominante para el desarrollo de aplicaciones a gran escala. Esta arquitectura se caracteriza por la descomposición de una aplicación en un conjunto de servicios pequeños, independientes y altamente cohesivos, que se comunican entre sí a través de APIs bien definidas.  
@@ -49,8 +53,8 @@ La coordinación abarca varios aspectos, incluyendo la sincronización de datos,
 
 ### Algoritmo Bully
 
- Este algoritmo es utilizado para seleccionar un nodo líder entre un grupo de nodos en un sistema distribuido. El nodo líder es responsable de coordinar las tareas y mantener la consistencia del sistema.  
- La elección de un líder es crucial en sistemas distribuidos porque el líder coordina las operaciones, toma decisiones críticas y gestiona la distribución de tareas entre los nodos. La elección de líderes asegura que el sistema pueda recuperarse de fallos de nodos y continuar operando de manera consistente y eficiente.
+Este algoritmo es utilizado para seleccionar un nodo líder entre un grupo de nodos en un sistema distribuido. El nodo líder es responsable de coordinar las tareas y mantener la consistencia del sistema.  
+La elección de un líder es crucial en sistemas distribuidos porque el líder coordina las operaciones, toma decisiones críticas y gestiona la distribución de tareas entre los nodos. La elección de líderes asegura que el sistema pueda recuperarse de fallos de nodos y continuar operando de manera consistente y eficiente.
 
 #### Funcionamiento del Algoritmo Bully
 
