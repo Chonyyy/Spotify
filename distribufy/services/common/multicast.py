@@ -8,7 +8,8 @@ import json
 MULTICAST_GROUPS = {
     'music_info': '224.1.1.1',
     'music_ftp': '224.1.1.2',
-    'gateway': '224.1.1.3'
+    # 'gateway': '224.1.1.3',
+    'chord_testing': '224.1.1.3',
 }
 MULTICAST_PORT = 5000
 DISCOVERY_MESSAGE = 'CHORD_DISCOVERY'
@@ -16,7 +17,7 @@ DISCOVERY_MESSAGE = 'CHORD_DISCOVERY'
 logger_mc = logging.getLogger("__main__.mc")
 
 
-def send_multicast(role, stop_event = True):
+def send_multicast(role, stop_event):
     multicast_group = MULTICAST_GROUPS.get(role)
     if not multicast_group:
         raise ValueError(f"Invalid role: {role}")

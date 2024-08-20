@@ -1,0 +1,1350 @@
+05:18:42 - __main__ - INFO - node_addr: 172.17.0.2:8001 746391104433116747568177882827823675889216406543
+05:18:42 - __main__.mc - INFO - Receiving multicast messages from 224.1.1.3 for role chord_testing
+05:18:52 - __main__.mc - INFO - No discovery message received within the timeout of 10 seconds.
+05:18:57 - __main__.mc - INFO - Receiving multicast messages from 224.1.1.3 for role chord_testing
+05:19:07 - __main__.mc - INFO - No discovery message received within the timeout of 10 seconds.
+05:19:12 - __main__.mc - INFO - Receiving multicast messages from 224.1.1.3 for role chord_testing
+05:19:22 - __main__.mc - INFO - No discovery message received within the timeout of 10 seconds.
+05:19:27 - __main__.mc - INFO - Receiving multicast messages from 224.1.1.3 for role chord_testing
+05:19:37 - __main__.mc - INFO - No discovery message received within the timeout of 10 seconds.
+05:19:42 - __main__ - INFO - No other node node discovered.
+05:19:42 - __main__ - INFO - HTTP serving commenced
+05:19:42 - __main__.st - INFO - ===STABILIZING===
+05:19:42 - __main__.st - INFO - Current successor is 172.17.0.2
+05:19:42 - __main__.st - INFO - Current predecessor is: 172.17.0.2
+05:19:42 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
+Payload: {}
+05:19:42 - __main__.ff - INFO - Updating The Finger Table
+05:19:42 - __main__ - DEBUG - Inbetween (k = 746391104433116747568177882827823675889216406545, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
+05:19:42 - __main__.cp - INFO - Checking Predecessor
+05:19:42 - __main__ - DEBUG - Pred found 746391104433116747568177882827823675889216406543
+05:19:42 - __main__.le - INFO - ===CHECKING LEADER===
+05:19:42 - __main__ - INFO - Sending request to http://172.17.0.2:8001/check_predecessor
+Payload: {}
+05:19:42 - __main__.ff - INFO - ===Finger Table Updating Done===
+05:19:42 - __main__.rh - DEBUG - Request path /get_predecessor
+05:19:42 - __main__ - INFO - Sending request to http://172.17.0.2:8001/ping
+Payload: {}
+05:19:42 - __main__.mc - INFO - Sending multicas msg in MG 224.1.1.3 for role chord_testing
+05:19:42 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:19:42 - __main__.rh - DEBUG - Response for get_predecessor request:
+746391104433116747568177882827823675889216406543,172.17.0.2,8001
+05:19:42 - __main__.mc - INFO - Multicast discovery message sent for role chord_testing.
+05:19:42 - __main__ - DEBUG - From http://172.17.0.2:8001/get_predecessor received:
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:19:42 - __main__ - DEBUG - Get Predecessor Response:
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:19:42 - __main__ - INFO - Sending request to http://172.17.0.2:8001/notify
+Payload: {'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:19:42 - __main__.rh - DEBUG - Request path /ping
+05:19:42 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:19:42 - __main__ - DEBUG - From http://172.17.0.2:8001/ping received:
+{'status': 'success'}
+05:19:42 - __main__.le - INFO - ===CHECKING LEADER===
+05:19:42 - __main__.rh - DEBUG - Request path /check_predecessor
+05:19:42 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:19:42 - __main__ - DEBUG - From http://172.17.0.2:8001/check_predecessor received:
+{'status': 'success'}
+05:19:42 - __main__.cp - INFO - ===Predecessor Checking Done===
+05:19:42 - __main__.rh - DEBUG - Request path /notify
+05:19:42 - __main__.rh - DEBUG - Handling the following request 
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:19:42 - __main__ - DEBUG - From http://172.17.0.2:8001/notify received:
+{'id': None, 'ip': None}
+05:19:42 - __main__.st - INFO - ===STABILIZING DONE===
+05:19:52 - __main__.ff - INFO - Updating The Finger Table
+05:19:52 - __main__ - DEBUG - Inbetween (k = 746391104433116747568177882827823675889216406547, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
+05:19:52 - __main__ - DEBUG - Pred found 746391104433116747568177882827823675889216406543
+05:19:52 - __main__.ff - INFO - ===Finger Table Updating Done===
+05:19:52 - __main__.mc - INFO - Multicast discovery message sent for role chord_testing.
+05:19:52 - __main__.le - INFO - ===CHECKING LEADER===
+05:19:52 - __main__ - INFO - Sending request to http://172.17.0.2:8001/ping
+Payload: {}
+05:19:52 - __main__.rh - DEBUG - Request path /ping
+05:19:52 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:19:52 - __main__ - INFO - Sending request to http://172.17.0.2:8001/check_predecessor
+Payload: {}
+05:19:52 - __main__.rh - DEBUG - Request path /check_predecessor
+05:19:52 - __main__ - DEBUG - From http://172.17.0.2:8001/ping received:
+{'status': 'success'}
+05:19:52 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:19:52 - __main__.st - INFO - ===STABILIZING===
+05:19:52 - __main__.st - INFO - Current successor is 172.17.0.2
+05:19:52 - __main__.st - INFO - Current predecessor is: 172.17.0.2
+05:19:52 - __main__.le - INFO - ===CHECKING LEADER===
+05:19:52 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
+Payload: {}
+05:19:52 - __main__.rh - DEBUG - Request path /get_predecessor
+05:19:52 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:19:52 - __main__.rh - DEBUG - Response for get_predecessor request:
+746391104433116747568177882827823675889216406543,172.17.0.2,8001
+05:19:52 - __main__ - DEBUG - From http://172.17.0.2:8001/get_predecessor received:
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:19:52 - __main__ - DEBUG - Get Predecessor Response:
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:19:52 - __main__ - INFO - Sending request to http://172.17.0.2:8001/notify
+Payload: {'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:19:52 - __main__ - DEBUG - From http://172.17.0.2:8001/check_predecessor received:
+{'status': 'success'}
+05:19:52 - __main__.cp - INFO - ===Predecessor Checking Done===
+05:19:52 - __main__.rh - DEBUG - Request path /notify
+05:19:52 - __main__.rh - DEBUG - Handling the following request 
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:19:52 - __main__ - DEBUG - From http://172.17.0.2:8001/notify received:
+{'id': None, 'ip': None}
+05:19:52 - __main__.st - INFO - ===STABILIZING DONE===
+05:20:02 - __main__.ff - INFO - Updating The Finger Table
+05:20:02 - __main__ - DEBUG - Inbetween (k = 746391104433116747568177882827823675889216406551, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
+05:20:02 - __main__ - DEBUG - Pred found 746391104433116747568177882827823675889216406543
+05:20:02 - __main__.ff - INFO - ===Finger Table Updating Done===
+05:20:02 - __main__.mc - INFO - Multicast discovery message sent for role chord_testing.
+05:20:02 - __main__.le - INFO - ===CHECKING LEADER===
+05:20:02 - __main__ - INFO - Sending request to http://172.17.0.2:8001/ping
+Payload: {}
+05:20:02 - __main__.rh - DEBUG - Request path /ping
+05:20:02 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:20:02 - __main__ - INFO - Sending request to http://172.17.0.2:8001/check_predecessor
+Payload: {}
+05:20:02 - __main__ - DEBUG - From http://172.17.0.2:8001/ping received:
+{'status': 'success'}
+05:20:02 - __main__.le - INFO - ===CHECKING LEADER===
+05:20:02 - __main__.rh - DEBUG - Request path /check_predecessor
+05:20:02 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:20:02 - __main__ - DEBUG - From http://172.17.0.2:8001/check_predecessor received:
+{'status': 'success'}
+05:20:02 - __main__.cp - INFO - ===Predecessor Checking Done===
+05:20:02 - __main__.st - INFO - ===STABILIZING===
+05:20:02 - __main__.st - INFO - Current successor is 172.17.0.2
+05:20:02 - __main__.st - INFO - Current predecessor is: 172.17.0.2
+05:20:02 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
+Payload: {}
+05:20:02 - __main__.rh - DEBUG - Request path /get_predecessor
+05:20:02 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:20:02 - __main__.rh - DEBUG - Response for get_predecessor request:
+746391104433116747568177882827823675889216406543,172.17.0.2,8001
+05:20:02 - __main__ - DEBUG - From http://172.17.0.2:8001/get_predecessor received:
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:20:02 - __main__ - DEBUG - Get Predecessor Response:
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:20:02 - __main__ - INFO - Sending request to http://172.17.0.2:8001/notify
+Payload: {'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:20:02 - __main__.rh - DEBUG - Request path /notify
+05:20:02 - __main__.rh - DEBUG - Handling the following request 
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:20:02 - __main__ - DEBUG - From http://172.17.0.2:8001/notify received:
+{'id': None, 'ip': None}
+05:20:02 - __main__.st - INFO - ===STABILIZING DONE===
+05:20:12 - __main__.ff - INFO - Updating The Finger Table
+05:20:12 - __main__ - DEBUG - Inbetween (k = 746391104433116747568177882827823675889216406559, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
+05:20:12 - __main__ - DEBUG - Pred found 746391104433116747568177882827823675889216406543
+05:20:12 - __main__.ff - INFO - ===Finger Table Updating Done===
+05:20:12 - __main__.mc - INFO - Multicast discovery message sent for role chord_testing.
+05:20:12 - __main__.le - INFO - ===CHECKING LEADER===
+05:20:12 - __main__ - INFO - Sending request to http://172.17.0.2:8001/ping
+Payload: {}
+05:20:12 - __main__.rh - DEBUG - Request path /ping
+05:20:12 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:20:12 - __main__ - INFO - Sending request to http://172.17.0.2:8001/check_predecessor
+Payload: {}
+05:20:12 - __main__ - DEBUG - From http://172.17.0.2:8001/ping received:
+{'status': 'success'}
+05:20:12 - __main__.le - INFO - ===CHECKING LEADER===
+05:20:12 - __main__.rh - DEBUG - Request path /check_predecessor
+05:20:12 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:20:12 - __main__ - DEBUG - From http://172.17.0.2:8001/check_predecessor received:
+{'status': 'success'}
+05:20:12 - __main__.cp - INFO - ===Predecessor Checking Done===
+05:20:12 - __main__.st - INFO - ===STABILIZING===
+05:20:12 - __main__.st - INFO - Current successor is 172.17.0.2
+05:20:12 - __main__.st - INFO - Current predecessor is: 172.17.0.2
+05:20:12 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
+Payload: {}
+05:20:12 - __main__.rh - DEBUG - Request path /get_predecessor
+05:20:12 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:20:12 - __main__.rh - DEBUG - Response for get_predecessor request:
+746391104433116747568177882827823675889216406543,172.17.0.2,8001
+05:20:12 - __main__ - DEBUG - From http://172.17.0.2:8001/get_predecessor received:
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:20:12 - __main__ - DEBUG - Get Predecessor Response:
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:20:12 - __main__ - INFO - Sending request to http://172.17.0.2:8001/notify
+Payload: {'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:20:12 - __main__.rh - DEBUG - Request path /notify
+05:20:13 - __main__.rh - DEBUG - Handling the following request 
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:20:13 - __main__ - DEBUG - From http://172.17.0.2:8001/notify received:
+{'id': None, 'ip': None}
+05:20:13 - __main__.st - INFO - ===STABILIZING DONE===
+05:20:22 - __main__.ff - INFO - Updating The Finger Table
+05:20:22 - __main__ - DEBUG - Inbetween (k = 746391104433116747568177882827823675889216406575, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
+05:20:22 - __main__ - DEBUG - Pred found 746391104433116747568177882827823675889216406543
+05:20:22 - __main__.ff - INFO - ===Finger Table Updating Done===
+05:20:22 - __main__.mc - INFO - Multicast discovery message sent for role chord_testing.
+05:20:22 - __main__.le - INFO - ===CHECKING LEADER===
+05:20:22 - __main__ - INFO - Sending request to http://172.17.0.2:8001/ping
+Payload: {}
+05:20:22 - __main__.rh - DEBUG - Request path /ping
+05:20:22 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:20:22 - __main__ - INFO - Sending request to http://172.17.0.2:8001/check_predecessor
+Payload: {}
+05:20:22 - __main__ - DEBUG - From http://172.17.0.2:8001/ping received:
+{'status': 'success'}
+05:20:22 - __main__.le - INFO - ===CHECKING LEADER===
+05:20:22 - __main__.rh - DEBUG - Request path /check_predecessor
+05:20:22 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:20:22 - __main__ - DEBUG - From http://172.17.0.2:8001/check_predecessor received:
+{'status': 'success'}
+05:20:22 - __main__.cp - INFO - ===Predecessor Checking Done===
+05:20:23 - __main__.st - INFO - ===STABILIZING===
+05:20:23 - __main__.st - INFO - Current successor is 172.17.0.2
+05:20:23 - __main__.st - INFO - Current predecessor is: 172.17.0.2
+05:20:23 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
+Payload: {}
+05:20:23 - __main__.rh - DEBUG - Request path /get_predecessor
+05:20:23 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:20:23 - __main__.rh - DEBUG - Response for get_predecessor request:
+746391104433116747568177882827823675889216406543,172.17.0.2,8001
+05:20:23 - __main__ - DEBUG - From http://172.17.0.2:8001/get_predecessor received:
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:20:23 - __main__ - DEBUG - Get Predecessor Response:
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:20:23 - __main__ - INFO - Sending request to http://172.17.0.2:8001/notify
+Payload: {'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:20:23 - __main__.rh - DEBUG - Request path /notify
+05:20:23 - __main__.rh - DEBUG - Handling the following request 
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:20:23 - __main__ - DEBUG - From http://172.17.0.2:8001/notify received:
+{'id': None, 'ip': None}
+05:20:23 - __main__.st - INFO - ===STABILIZING DONE===
+05:20:32 - __main__.ff - INFO - Updating The Finger Table
+05:20:32 - __main__ - DEBUG - Inbetween (k = 746391104433116747568177882827823675889216406607, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
+05:20:32 - __main__ - DEBUG - Pred found 746391104433116747568177882827823675889216406543
+05:20:32 - __main__.mc - INFO - Multicast discovery message sent for role chord_testing.
+05:20:32 - __main__.ff - INFO - ===Finger Table Updating Done===
+05:20:32 - __main__.le - INFO - ===CHECKING LEADER===
+05:20:32 - __main__ - INFO - Sending request to http://172.17.0.2:8001/ping
+Payload: {}
+05:20:32 - __main__ - INFO - Sending request to http://172.17.0.2:8001/check_predecessor
+Payload: {}
+05:20:32 - __main__.rh - DEBUG - Request path /ping
+05:20:32 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:20:32 - __main__ - DEBUG - From http://172.17.0.2:8001/ping received:
+{'status': 'success'}
+05:20:32 - __main__.le - INFO - ===CHECKING LEADER===
+05:20:32 - __main__.rh - DEBUG - Request path /check_predecessor
+05:20:32 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:20:32 - __main__ - DEBUG - From http://172.17.0.2:8001/check_predecessor received:
+{'status': 'success'}
+05:20:32 - __main__.cp - INFO - ===Predecessor Checking Done===
+05:20:33 - __main__.st - INFO - ===STABILIZING===
+05:20:33 - __main__.st - INFO - Current successor is 172.17.0.2
+05:20:33 - __main__.st - INFO - Current predecessor is: 172.17.0.2
+05:20:33 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
+Payload: {}
+05:20:33 - __main__.rh - DEBUG - Request path /get_predecessor
+05:20:33 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:20:33 - __main__.rh - DEBUG - Response for get_predecessor request:
+746391104433116747568177882827823675889216406543,172.17.0.2,8001
+05:20:33 - __main__ - DEBUG - From http://172.17.0.2:8001/get_predecessor received:
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:20:33 - __main__ - DEBUG - Get Predecessor Response:
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:20:33 - __main__ - INFO - Sending request to http://172.17.0.2:8001/notify
+Payload: {'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:20:33 - __main__.rh - DEBUG - Request path /notify
+05:20:33 - __main__.rh - DEBUG - Handling the following request 
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:20:33 - __main__ - DEBUG - From http://172.17.0.2:8001/notify received:
+{'id': None, 'ip': None}
+05:20:33 - __main__.st - INFO - ===STABILIZING DONE===
+05:20:42 - __main__.mc - INFO - Multicast discovery message sent for role chord_testing.
+05:20:42 - __main__.ff - INFO - Updating The Finger Table
+05:20:42 - __main__ - DEBUG - Inbetween (k = 746391104433116747568177882827823675889216406671, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
+05:20:42 - __main__ - DEBUG - Pred found 746391104433116747568177882827823675889216406543
+05:20:42 - __main__.ff - INFO - ===Finger Table Updating Done===
+05:20:42 - __main__.le - INFO - ===CHECKING LEADER===
+05:20:42 - __main__ - INFO - Sending request to http://172.17.0.2:8001/ping
+Payload: {}
+05:20:42 - __main__.rh - DEBUG - Request path /ping
+05:20:42 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:20:42 - __main__ - DEBUG - From http://172.17.0.2:8001/ping received:
+{'status': 'success'}
+05:20:42 - __main__ - INFO - Sending request to http://172.17.0.2:8001/check_predecessor
+Payload: {}
+05:20:42 - __main__.le - INFO - ===CHECKING LEADER===
+05:20:42 - __main__.rh - DEBUG - Request path /check_predecessor
+05:20:42 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:20:43 - __main__ - DEBUG - From http://172.17.0.2:8001/check_predecessor received:
+{'status': 'success'}
+05:20:43 - __main__.cp - INFO - ===Predecessor Checking Done===
+05:20:43 - __main__.st - INFO - ===STABILIZING===
+05:20:43 - __main__.st - INFO - Current successor is 172.17.0.2
+05:20:43 - __main__.st - INFO - Current predecessor is: 172.17.0.2
+05:20:43 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
+Payload: {}
+05:20:43 - __main__.rh - DEBUG - Request path /get_predecessor
+05:20:43 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:20:43 - __main__.rh - DEBUG - Response for get_predecessor request:
+746391104433116747568177882827823675889216406543,172.17.0.2,8001
+05:20:43 - __main__ - DEBUG - From http://172.17.0.2:8001/get_predecessor received:
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:20:43 - __main__ - DEBUG - Get Predecessor Response:
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:20:43 - __main__ - INFO - Sending request to http://172.17.0.2:8001/notify
+Payload: {'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:20:43 - __main__.rh - DEBUG - Request path /notify
+05:20:43 - __main__.rh - DEBUG - Handling the following request 
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:20:43 - __main__ - DEBUG - From http://172.17.0.2:8001/notify received:
+{'id': None, 'ip': None}
+05:20:43 - __main__.st - INFO - ===STABILIZING DONE===
+05:20:52 - __main__.mc - INFO - Multicast discovery message sent for role chord_testing.
+05:20:52 - __main__.ff - INFO - Updating The Finger Table
+05:20:52 - __main__ - DEBUG - Inbetween (k = 746391104433116747568177882827823675889216406799, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
+05:20:52 - __main__ - DEBUG - Pred found 746391104433116747568177882827823675889216406543
+05:20:52 - __main__.ff - INFO - ===Finger Table Updating Done===
+05:20:52 - __main__.le - INFO - ===CHECKING LEADER===
+05:20:52 - __main__ - INFO - Sending request to http://172.17.0.2:8001/ping
+Payload: {}
+05:20:52 - __main__.rh - DEBUG - Request path /ping
+05:20:53 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:20:53 - __main__ - INFO - Sending request to http://172.17.0.2:8001/check_predecessor
+Payload: {}
+05:20:53 - __main__ - DEBUG - From http://172.17.0.2:8001/ping received:
+{'status': 'success'}
+05:20:53 - __main__.le - INFO - ===CHECKING LEADER===
+05:20:53 - __main__.rh - DEBUG - Request path /check_predecessor
+05:20:53 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:20:53 - __main__ - DEBUG - From http://172.17.0.2:8001/check_predecessor received:
+{'status': 'success'}
+05:20:53 - __main__.cp - INFO - ===Predecessor Checking Done===
+05:20:53 - __main__.st - INFO - ===STABILIZING===
+05:20:53 - __main__.st - INFO - Current successor is 172.17.0.2
+05:20:53 - __main__.st - INFO - Current predecessor is: 172.17.0.2
+05:20:53 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
+Payload: {}
+05:20:53 - __main__.rh - DEBUG - Request path /get_predecessor
+05:20:53 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:20:53 - __main__.rh - DEBUG - Response for get_predecessor request:
+746391104433116747568177882827823675889216406543,172.17.0.2,8001
+05:20:53 - __main__ - DEBUG - From http://172.17.0.2:8001/get_predecessor received:
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:20:53 - __main__ - DEBUG - Get Predecessor Response:
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:20:53 - __main__ - INFO - Sending request to http://172.17.0.2:8001/notify
+Payload: {'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:20:53 - __main__.rh - DEBUG - Request path /notify
+05:20:53 - __main__.rh - DEBUG - Handling the following request 
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:20:53 - __main__ - DEBUG - From http://172.17.0.2:8001/notify received:
+{'id': None, 'ip': None}
+05:20:53 - __main__.st - INFO - ===STABILIZING DONE===
+05:21:02 - __main__.mc - INFO - Multicast discovery message sent for role chord_testing.
+05:21:02 - __main__.ff - INFO - Updating The Finger Table
+05:21:02 - __main__ - DEBUG - Inbetween (k = 746391104433116747568177882827823675889216407055, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
+05:21:02 - __main__ - DEBUG - Pred found 746391104433116747568177882827823675889216406543
+05:21:02 - __main__.ff - INFO - ===Finger Table Updating Done===
+05:21:03 - __main__.le - INFO - ===CHECKING LEADER===
+05:21:03 - __main__ - INFO - Sending request to http://172.17.0.2:8001/ping
+Payload: {}
+05:21:03 - __main__.rh - DEBUG - Request path /ping
+05:21:03 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:21:03 - __main__ - DEBUG - From http://172.17.0.2:8001/ping received:
+{'status': 'success'}
+05:21:03 - __main__.le - INFO - ===CHECKING LEADER===
+05:21:03 - __main__ - INFO - Sending request to http://172.17.0.2:8001/check_predecessor
+Payload: {}
+05:21:03 - __main__.rh - DEBUG - Request path /check_predecessor
+05:21:03 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:21:03 - __main__ - DEBUG - From http://172.17.0.2:8001/check_predecessor received:
+{'status': 'success'}
+05:21:03 - __main__.cp - INFO - ===Predecessor Checking Done===
+05:21:03 - __main__.st - INFO - ===STABILIZING===
+05:21:03 - __main__.st - INFO - Current successor is 172.17.0.2
+05:21:03 - __main__.st - INFO - Current predecessor is: 172.17.0.2
+05:21:03 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
+Payload: {}
+05:21:03 - __main__.rh - DEBUG - Request path /get_predecessor
+05:21:03 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:21:03 - __main__.rh - DEBUG - Response for get_predecessor request:
+746391104433116747568177882827823675889216406543,172.17.0.2,8001
+05:21:03 - __main__ - DEBUG - From http://172.17.0.2:8001/get_predecessor received:
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:21:03 - __main__ - DEBUG - Get Predecessor Response:
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:21:03 - __main__ - INFO - Sending request to http://172.17.0.2:8001/notify
+Payload: {'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:21:03 - __main__.rh - DEBUG - Request path /notify
+05:21:03 - __main__.rh - DEBUG - Handling the following request 
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:21:03 - __main__ - DEBUG - From http://172.17.0.2:8001/notify received:
+{'id': None, 'ip': None}
+05:21:03 - __main__.st - INFO - ===STABILIZING DONE===
+05:21:12 - __main__.mc - INFO - Multicast discovery message sent for role chord_testing.
+05:21:12 - __main__.ff - INFO - Updating The Finger Table
+05:21:12 - __main__ - DEBUG - Inbetween (k = 746391104433116747568177882827823675889216407567, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
+05:21:12 - __main__ - DEBUG - Pred found 746391104433116747568177882827823675889216406543
+05:21:12 - __main__.ff - INFO - ===Finger Table Updating Done===
+05:21:13 - __main__.le - INFO - ===CHECKING LEADER===
+05:21:13 - __main__ - INFO - Sending request to http://172.17.0.2:8001/ping
+Payload: {}
+05:21:13 - __main__.rh - DEBUG - Request path /ping
+05:21:13 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:21:13 - __main__ - DEBUG - From http://172.17.0.2:8001/ping received:
+{'status': 'success'}
+05:21:13 - __main__.le - INFO - ===CHECKING LEADER===
+05:21:13 - __main__ - INFO - Sending request to http://172.17.0.2:8001/check_predecessor
+Payload: {}
+05:21:13 - __main__.rh - DEBUG - Request path /check_predecessor
+05:21:13 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:21:13 - __main__ - DEBUG - From http://172.17.0.2:8001/check_predecessor received:
+{'status': 'success'}
+05:21:13 - __main__.cp - INFO - ===Predecessor Checking Done===
+05:21:13 - __main__.st - INFO - ===STABILIZING===
+05:21:13 - __main__.st - INFO - Current successor is 172.17.0.2
+05:21:13 - __main__.st - INFO - Current predecessor is: 172.17.0.2
+05:21:13 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
+Payload: {}
+05:21:13 - __main__.rh - DEBUG - Request path /get_predecessor
+05:21:13 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:21:13 - __main__.rh - DEBUG - Response for get_predecessor request:
+746391104433116747568177882827823675889216406543,172.17.0.2,8001
+05:21:13 - __main__ - DEBUG - From http://172.17.0.2:8001/get_predecessor received:
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:21:13 - __main__ - DEBUG - Get Predecessor Response:
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:21:13 - __main__ - INFO - Sending request to http://172.17.0.2:8001/notify
+Payload: {'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:21:13 - __main__.rh - DEBUG - Request path /notify
+05:21:13 - __main__.rh - DEBUG - Handling the following request 
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:21:13 - __main__ - DEBUG - From http://172.17.0.2:8001/notify received:
+{'id': None, 'ip': None}
+05:21:13 - __main__.st - INFO - ===STABILIZING DONE===
+05:21:22 - __main__.mc - INFO - Multicast discovery message sent for role chord_testing.
+05:21:22 - __main__.ff - INFO - Updating The Finger Table
+05:21:22 - __main__ - DEBUG - Inbetween (k = 746391104433116747568177882827823675889216408591, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
+05:21:22 - __main__ - DEBUG - Pred found 746391104433116747568177882827823675889216406543
+05:21:22 - __main__.ff - INFO - ===Finger Table Updating Done===
+05:21:23 - __main__.le - INFO - ===CHECKING LEADER===
+05:21:23 - __main__ - INFO - Sending request to http://172.17.0.2:8001/ping
+Payload: {}
+05:21:23 - __main__.rh - DEBUG - Request path /ping
+05:21:23 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:21:23 - __main__ - DEBUG - From http://172.17.0.2:8001/ping received:
+{'status': 'success'}
+05:21:23 - __main__ - INFO - Sending request to http://172.17.0.2:8001/check_predecessor
+Payload: {}
+05:21:23 - __main__.le - INFO - ===CHECKING LEADER===
+05:21:23 - __main__.rh - DEBUG - Request path /check_predecessor
+05:21:23 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:21:23 - __main__ - DEBUG - From http://172.17.0.2:8001/check_predecessor received:
+{'status': 'success'}
+05:21:23 - __main__.cp - INFO - ===Predecessor Checking Done===
+05:21:23 - __main__.st - INFO - ===STABILIZING===
+05:21:23 - __main__.st - INFO - Current successor is 172.17.0.2
+05:21:23 - __main__.st - INFO - Current predecessor is: 172.17.0.2
+05:21:23 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
+Payload: {}
+05:21:24 - __main__.rh - DEBUG - Request path /get_predecessor
+05:21:24 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:21:24 - __main__.rh - DEBUG - Response for get_predecessor request:
+746391104433116747568177882827823675889216406543,172.17.0.2,8001
+05:21:24 - __main__ - DEBUG - From http://172.17.0.2:8001/get_predecessor received:
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:21:24 - __main__ - DEBUG - Get Predecessor Response:
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:21:24 - __main__ - INFO - Sending request to http://172.17.0.2:8001/notify
+Payload: {'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:21:24 - __main__.rh - DEBUG - Request path /notify
+05:21:24 - __main__.rh - DEBUG - Handling the following request 
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:21:24 - __main__ - DEBUG - From http://172.17.0.2:8001/notify received:
+{'id': None, 'ip': None}
+05:21:24 - __main__.st - INFO - ===STABILIZING DONE===
+05:21:32 - __main__.mc - INFO - Multicast discovery message sent for role chord_testing.
+05:21:32 - __main__.ff - INFO - Updating The Finger Table
+05:21:32 - __main__ - DEBUG - Inbetween (k = 746391104433116747568177882827823675889216410639, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
+05:21:32 - __main__ - DEBUG - Pred found 746391104433116747568177882827823675889216406543
+05:21:32 - __main__.ff - INFO - ===Finger Table Updating Done===
+05:21:33 - __main__.le - INFO - ===CHECKING LEADER===
+05:21:33 - __main__ - INFO - Sending request to http://172.17.0.2:8001/ping
+Payload: {}
+05:21:33 - __main__.rh - DEBUG - Request path /ping
+05:21:33 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:21:33 - __main__ - DEBUG - From http://172.17.0.2:8001/ping received:
+{'status': 'success'}
+05:21:33 - __main__.le - INFO - ===CHECKING LEADER===
+05:21:33 - __main__ - INFO - Sending request to http://172.17.0.2:8001/check_predecessor
+Payload: {}
+05:21:33 - __main__.rh - DEBUG - Request path /check_predecessor
+05:21:33 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:21:33 - __main__ - DEBUG - From http://172.17.0.2:8001/check_predecessor received:
+{'status': 'success'}
+05:21:33 - __main__.cp - INFO - ===Predecessor Checking Done===
+05:21:34 - __main__.st - INFO - ===STABILIZING===
+05:21:34 - __main__.st - INFO - Current successor is 172.17.0.2
+05:21:34 - __main__.st - INFO - Current predecessor is: 172.17.0.2
+05:21:34 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
+Payload: {}
+05:21:34 - __main__.rh - DEBUG - Request path /get_predecessor
+05:21:34 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:21:34 - __main__.rh - DEBUG - Response for get_predecessor request:
+746391104433116747568177882827823675889216406543,172.17.0.2,8001
+05:21:34 - __main__ - DEBUG - From http://172.17.0.2:8001/get_predecessor received:
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:21:34 - __main__ - DEBUG - Get Predecessor Response:
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:21:34 - __main__ - INFO - Sending request to http://172.17.0.2:8001/notify
+Payload: {'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:21:34 - __main__.rh - DEBUG - Request path /notify
+05:21:34 - __main__.rh - DEBUG - Handling the following request 
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:21:34 - __main__ - DEBUG - From http://172.17.0.2:8001/notify received:
+{'id': None, 'ip': None}
+05:21:34 - __main__.st - INFO - ===STABILIZING DONE===
+05:21:42 - __main__.mc - INFO - Multicast discovery message sent for role chord_testing.
+05:21:42 - __main__.ff - INFO - Updating The Finger Table
+05:21:42 - __main__ - DEBUG - Inbetween (k = 746391104433116747568177882827823675889216414735, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
+05:21:42 - __main__ - DEBUG - Pred found 746391104433116747568177882827823675889216406543
+05:21:42 - __main__.ff - INFO - ===Finger Table Updating Done===
+05:21:43 - __main__.le - INFO - ===CHECKING LEADER===
+05:21:43 - __main__ - INFO - Sending request to http://172.17.0.2:8001/ping
+Payload: {}
+05:21:43 - __main__.rh - DEBUG - Request path /ping
+05:21:43 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:21:43 - __main__ - DEBUG - From http://172.17.0.2:8001/ping received:
+{'status': 'success'}
+05:21:43 - __main__ - INFO - Sending request to http://172.17.0.2:8001/check_predecessor
+Payload: {}
+05:21:43 - __main__.le - INFO - ===CHECKING LEADER===
+05:21:43 - __main__.rh - DEBUG - Request path /check_predecessor
+05:21:43 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:21:43 - __main__ - DEBUG - From http://172.17.0.2:8001/check_predecessor received:
+{'status': 'success'}
+05:21:43 - __main__.cp - INFO - ===Predecessor Checking Done===
+05:21:44 - __main__.st - INFO - ===STABILIZING===
+05:21:44 - __main__.st - INFO - Current successor is 172.17.0.2
+05:21:44 - __main__.st - INFO - Current predecessor is: 172.17.0.2
+05:21:44 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
+Payload: {}
+05:21:44 - __main__.rh - DEBUG - Request path /get_predecessor
+05:21:44 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:21:44 - __main__.rh - DEBUG - Response for get_predecessor request:
+746391104433116747568177882827823675889216406543,172.17.0.2,8001
+05:21:44 - __main__ - DEBUG - From http://172.17.0.2:8001/get_predecessor received:
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:21:44 - __main__ - DEBUG - Get Predecessor Response:
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:21:44 - __main__ - INFO - Sending request to http://172.17.0.2:8001/notify
+Payload: {'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:21:44 - __main__.rh - DEBUG - Request path /notify
+05:21:44 - __main__.rh - DEBUG - Handling the following request 
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:21:44 - __main__ - DEBUG - From http://172.17.0.2:8001/notify received:
+{'id': None, 'ip': None}
+05:21:44 - __main__.st - INFO - ===STABILIZING DONE===
+05:21:52 - __main__.mc - INFO - Multicast discovery message sent for role chord_testing.
+05:21:52 - __main__.ff - INFO - Updating The Finger Table
+05:21:52 - __main__ - DEBUG - Inbetween (k = 746391104433116747568177882827823675889216422927, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
+05:21:52 - __main__ - DEBUG - Pred found 746391104433116747568177882827823675889216406543
+05:21:52 - __main__.ff - INFO - ===Finger Table Updating Done===
+05:21:53 - __main__.le - INFO - ===CHECKING LEADER===
+05:21:53 - __main__ - INFO - Sending request to http://172.17.0.2:8001/ping
+Payload: {}
+05:21:53 - __main__.rh - DEBUG - Request path /ping
+05:21:53 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:21:53 - __main__ - INFO - Sending request to http://172.17.0.2:8001/check_predecessor
+Payload: {}
+05:21:53 - __main__.rh - DEBUG - Request path /check_predecessor
+05:21:53 - __main__ - DEBUG - From http://172.17.0.2:8001/ping received:
+{'status': 'success'}
+05:21:53 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:21:53 - __main__.le - INFO - ===CHECKING LEADER===
+05:21:53 - __main__ - DEBUG - From http://172.17.0.2:8001/check_predecessor received:
+{'status': 'success'}
+05:21:53 - __main__.cp - INFO - ===Predecessor Checking Done===
+05:21:54 - __main__.st - INFO - ===STABILIZING===
+05:21:54 - __main__.st - INFO - Current successor is 172.17.0.2
+05:21:54 - __main__.st - INFO - Current predecessor is: 172.17.0.2
+05:21:54 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
+Payload: {}
+05:21:54 - __main__.rh - DEBUG - Request path /get_predecessor
+05:21:54 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:21:54 - __main__.rh - DEBUG - Response for get_predecessor request:
+746391104433116747568177882827823675889216406543,172.17.0.2,8001
+05:21:54 - __main__ - DEBUG - From http://172.17.0.2:8001/get_predecessor received:
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:21:54 - __main__ - DEBUG - Get Predecessor Response:
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:21:54 - __main__ - INFO - Sending request to http://172.17.0.2:8001/notify
+Payload: {'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:21:54 - __main__.rh - DEBUG - Request path /notify
+05:21:54 - __main__.rh - DEBUG - Handling the following request 
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:21:54 - __main__ - DEBUG - From http://172.17.0.2:8001/notify received:
+{'id': None, 'ip': None}
+05:21:54 - __main__.st - INFO - ===STABILIZING DONE===
+05:22:02 - __main__.mc - INFO - Multicast discovery message sent for role chord_testing.
+05:22:02 - __main__.ff - INFO - Updating The Finger Table
+05:22:02 - __main__ - DEBUG - Inbetween (k = 746391104433116747568177882827823675889216439311, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
+05:22:02 - __main__ - DEBUG - Pred found 746391104433116747568177882827823675889216406543
+05:22:02 - __main__.ff - INFO - ===Finger Table Updating Done===
+05:22:03 - __main__.le - INFO - ===CHECKING LEADER===
+05:22:03 - __main__ - INFO - Sending request to http://172.17.0.2:8001/ping
+Payload: {}
+05:22:03 - __main__ - INFO - Sending request to http://172.17.0.2:8001/check_predecessor
+Payload: {}
+05:22:03 - __main__.rh - DEBUG - Request path /ping
+05:22:03 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:22:03 - __main__.rh - DEBUG - Request path /check_predecessor
+05:22:03 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:22:03 - __main__ - DEBUG - From http://172.17.0.2:8001/ping received:
+{'status': 'success'}
+05:22:03 - __main__.le - INFO - ===CHECKING LEADER===
+05:22:03 - __main__ - DEBUG - From http://172.17.0.2:8001/check_predecessor received:
+{'status': 'success'}
+05:22:03 - __main__.cp - INFO - ===Predecessor Checking Done===
+05:22:04 - __main__.st - INFO - ===STABILIZING===
+05:22:04 - __main__.st - INFO - Current successor is 172.17.0.2
+05:22:04 - __main__.st - INFO - Current predecessor is: 172.17.0.2
+05:22:04 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
+Payload: {}
+05:22:04 - __main__.rh - DEBUG - Request path /get_predecessor
+05:22:04 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:22:04 - __main__.rh - DEBUG - Response for get_predecessor request:
+746391104433116747568177882827823675889216406543,172.17.0.2,8001
+05:22:04 - __main__ - DEBUG - From http://172.17.0.2:8001/get_predecessor received:
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:22:04 - __main__ - DEBUG - Get Predecessor Response:
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:22:04 - __main__ - INFO - Sending request to http://172.17.0.2:8001/notify
+Payload: {'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:22:04 - __main__.rh - DEBUG - Request path /notify
+05:22:04 - __main__.rh - DEBUG - Handling the following request 
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:22:04 - __main__ - DEBUG - From http://172.17.0.2:8001/notify received:
+{'id': None, 'ip': None}
+05:22:04 - __main__.st - INFO - ===STABILIZING DONE===
+05:22:12 - __main__.mc - INFO - Multicast discovery message sent for role chord_testing.
+05:22:12 - __main__.ff - INFO - Updating The Finger Table
+05:22:12 - __main__ - DEBUG - Inbetween (k = 746391104433116747568177882827823675889216472079, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
+05:22:12 - __main__ - DEBUG - Pred found 746391104433116747568177882827823675889216406543
+05:22:12 - __main__.ff - INFO - ===Finger Table Updating Done===
+05:22:13 - __main__.le - INFO - ===CHECKING LEADER===
+05:22:13 - __main__ - INFO - Sending request to http://172.17.0.2:8001/ping
+Payload: {}
+05:22:13 - __main__.rh - DEBUG - Request path /ping
+05:22:13 - __main__ - INFO - Sending request to http://172.17.0.2:8001/check_predecessor
+Payload: {}
+05:22:13 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:22:13 - __main__ - DEBUG - From http://172.17.0.2:8001/ping received:
+{'status': 'success'}
+05:22:13 - __main__.le - INFO - ===CHECKING LEADER===
+05:22:13 - __main__.rh - DEBUG - Request path /check_predecessor
+05:22:13 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:22:13 - __main__ - DEBUG - From http://172.17.0.2:8001/check_predecessor received:
+{'status': 'success'}
+05:22:13 - __main__.cp - INFO - ===Predecessor Checking Done===
+05:22:14 - __main__.st - INFO - ===STABILIZING===
+05:22:14 - __main__.st - INFO - Current successor is 172.17.0.2
+05:22:14 - __main__.st - INFO - Current predecessor is: 172.17.0.2
+05:22:14 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
+Payload: {}
+05:22:14 - __main__.rh - DEBUG - Request path /get_predecessor
+05:22:14 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:22:14 - __main__.rh - DEBUG - Response for get_predecessor request:
+746391104433116747568177882827823675889216406543,172.17.0.2,8001
+05:22:14 - __main__ - DEBUG - From http://172.17.0.2:8001/get_predecessor received:
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:22:14 - __main__ - DEBUG - Get Predecessor Response:
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:22:14 - __main__ - INFO - Sending request to http://172.17.0.2:8001/notify
+Payload: {'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:22:14 - __main__.rh - DEBUG - Request path /notify
+05:22:14 - __main__.rh - DEBUG - Handling the following request 
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:22:14 - __main__ - DEBUG - From http://172.17.0.2:8001/notify received:
+{'id': None, 'ip': None}
+05:22:14 - __main__.st - INFO - ===STABILIZING DONE===
+05:22:22 - __main__.mc - INFO - Multicast discovery message sent for role chord_testing.
+05:22:22 - __main__.ff - INFO - Updating The Finger Table
+05:22:22 - __main__ - DEBUG - Inbetween (k = 746391104433116747568177882827823675889216537615, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
+05:22:22 - __main__ - DEBUG - Pred found 746391104433116747568177882827823675889216406543
+05:22:22 - __main__.ff - INFO - ===Finger Table Updating Done===
+05:22:23 - __main__.le - INFO - ===CHECKING LEADER===
+05:22:23 - __main__ - INFO - Sending request to http://172.17.0.2:8001/ping
+Payload: {}
+05:22:23 - __main__.rh - DEBUG - Request path /ping
+05:22:23 - __main__ - INFO - Sending request to http://172.17.0.2:8001/check_predecessor
+Payload: {}
+05:22:23 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:22:23 - __main__.rh - DEBUG - Request path /check_predecessor
+05:22:23 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:22:23 - __main__ - DEBUG - From http://172.17.0.2:8001/ping received:
+{'status': 'success'}
+05:22:23 - __main__.le - INFO - ===CHECKING LEADER===
+05:22:23 - __main__ - DEBUG - From http://172.17.0.2:8001/check_predecessor received:
+{'status': 'success'}
+05:22:23 - __main__.cp - INFO - ===Predecessor Checking Done===
+05:22:24 - __main__.st - INFO - ===STABILIZING===
+05:22:24 - __main__.st - INFO - Current successor is 172.17.0.2
+05:22:24 - __main__.st - INFO - Current predecessor is: 172.17.0.2
+05:22:24 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
+Payload: {}
+05:22:24 - __main__.rh - DEBUG - Request path /get_predecessor
+05:22:24 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:22:24 - __main__.rh - DEBUG - Response for get_predecessor request:
+746391104433116747568177882827823675889216406543,172.17.0.2,8001
+05:22:24 - __main__ - DEBUG - From http://172.17.0.2:8001/get_predecessor received:
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:22:24 - __main__ - DEBUG - Get Predecessor Response:
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:22:24 - __main__ - INFO - Sending request to http://172.17.0.2:8001/notify
+Payload: {'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:22:24 - __main__.rh - DEBUG - Request path /notify
+05:22:24 - __main__.rh - DEBUG - Handling the following request 
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:22:24 - __main__ - DEBUG - From http://172.17.0.2:8001/notify received:
+{'id': None, 'ip': None}
+05:22:24 - __main__.st - INFO - ===STABILIZING DONE===
+05:22:32 - __main__.mc - INFO - Multicast discovery message sent for role chord_testing.
+05:22:32 - __main__.ff - INFO - Updating The Finger Table
+05:22:32 - __main__ - DEBUG - Inbetween (k = 746391104433116747568177882827823675889216668687, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
+05:22:32 - __main__ - DEBUG - Pred found 746391104433116747568177882827823675889216406543
+05:22:32 - __main__.ff - INFO - ===Finger Table Updating Done===
+05:22:33 - __main__.le - INFO - ===CHECKING LEADER===
+05:22:33 - __main__ - INFO - Sending request to http://172.17.0.2:8001/ping
+Payload: {}
+05:22:33 - __main__ - INFO - Sending request to http://172.17.0.2:8001/check_predecessor
+Payload: {}
+05:22:34 - __main__.rh - DEBUG - Request path /ping
+05:22:34 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:22:34 - __main__ - DEBUG - From http://172.17.0.2:8001/ping received:
+{'status': 'success'}
+05:22:34 - __main__.le - INFO - ===CHECKING LEADER===
+05:22:34 - __main__.rh - DEBUG - Request path /check_predecessor
+05:22:34 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:22:34 - __main__ - DEBUG - From http://172.17.0.2:8001/check_predecessor received:
+{'status': 'success'}
+05:22:34 - __main__.cp - INFO - ===Predecessor Checking Done===
+05:22:34 - __main__.st - INFO - ===STABILIZING===
+05:22:34 - __main__.st - INFO - Current successor is 172.17.0.2
+05:22:34 - __main__.st - INFO - Current predecessor is: 172.17.0.2
+05:22:34 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
+Payload: {}
+05:22:34 - __main__.rh - DEBUG - Request path /get_predecessor
+05:22:34 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:22:34 - __main__.rh - DEBUG - Response for get_predecessor request:
+746391104433116747568177882827823675889216406543,172.17.0.2,8001
+05:22:35 - __main__ - DEBUG - From http://172.17.0.2:8001/get_predecessor received:
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:22:35 - __main__ - DEBUG - Get Predecessor Response:
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:22:35 - __main__ - INFO - Sending request to http://172.17.0.2:8001/notify
+Payload: {'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:22:35 - __main__.rh - DEBUG - Request path /notify
+05:22:35 - __main__.rh - DEBUG - Handling the following request 
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:22:35 - __main__ - DEBUG - From http://172.17.0.2:8001/notify received:
+{'id': None, 'ip': None}
+05:22:35 - __main__.st - INFO - ===STABILIZING DONE===
+05:22:42 - __main__.mc - INFO - Multicast discovery message sent for role chord_testing.
+05:22:42 - __main__.ff - INFO - Updating The Finger Table
+05:22:42 - __main__ - DEBUG - Inbetween (k = 746391104433116747568177882827823675889216930831, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
+05:22:42 - __main__ - DEBUG - Pred found 746391104433116747568177882827823675889216406543
+05:22:42 - __main__.ff - INFO - ===Finger Table Updating Done===
+05:22:44 - __main__.le - INFO - ===CHECKING LEADER===
+05:22:44 - __main__ - INFO - Sending request to http://172.17.0.2:8001/ping
+Payload: {}
+05:22:44 - __main__.rh - DEBUG - Request path /ping
+05:22:44 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:22:44 - __main__ - INFO - Sending request to http://172.17.0.2:8001/check_predecessor
+Payload: {}
+05:22:44 - __main__ - DEBUG - From http://172.17.0.2:8001/ping received:
+{'status': 'success'}
+05:22:44 - __main__.le - INFO - ===CHECKING LEADER===
+05:22:44 - __main__.rh - DEBUG - Request path /check_predecessor
+05:22:44 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:22:44 - __main__ - DEBUG - From http://172.17.0.2:8001/check_predecessor received:
+{'status': 'success'}
+05:22:44 - __main__.cp - INFO - ===Predecessor Checking Done===
+05:22:45 - __main__.st - INFO - ===STABILIZING===
+05:22:45 - __main__.st - INFO - Current successor is 172.17.0.2
+05:22:45 - __main__.st - INFO - Current predecessor is: 172.17.0.2
+05:22:45 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
+Payload: {}
+05:22:45 - __main__.rh - DEBUG - Request path /get_predecessor
+05:22:45 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:22:45 - __main__.rh - DEBUG - Response for get_predecessor request:
+746391104433116747568177882827823675889216406543,172.17.0.2,8001
+05:22:45 - __main__ - DEBUG - From http://172.17.0.2:8001/get_predecessor received:
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:22:45 - __main__ - DEBUG - Get Predecessor Response:
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:22:45 - __main__ - INFO - Sending request to http://172.17.0.2:8001/notify
+Payload: {'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:22:45 - __main__.rh - DEBUG - Request path /notify
+05:22:45 - __main__.rh - DEBUG - Handling the following request 
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:22:45 - __main__ - DEBUG - From http://172.17.0.2:8001/notify received:
+{'id': None, 'ip': None}
+05:22:45 - __main__.st - INFO - ===STABILIZING DONE===
+05:22:52 - __main__.mc - INFO - Multicast discovery message sent for role chord_testing.
+05:22:52 - __main__.rh - DEBUG - Request path /find_successor
+05:22:52 - __main__.rh - DEBUG - Handling the following request 
+{'id': '685966170926969970295131996809687121594286967556'}
+05:22:52 - __main__ - DEBUG - Inbetween (k = 685966170926969970295131996809687121594286967556, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
+05:22:52 - __main__ - DEBUG - Pred found 746391104433116747568177882827823675889216406543
+05:22:52 - __main__.rh - DEBUG - Request path /notify
+05:22:52 - __main__.rh - DEBUG - Handling the following request 
+{'id': 685966170926969970295131996809687121594286967556, 'ip': '172.17.0.3'}
+05:22:52 - __main__ - DEBUG - Inbetween (k = 685966170926969970295131996809687121594286967556, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
+05:22:52 - __main__.ff - INFO - Updating The Finger Table
+05:22:52 - __main__ - DEBUG - Inbetween (k = 746391104433116747568177882827823675889217455119, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
+05:22:52 - __main__ - DEBUG - Pred found 746391104433116747568177882827823675889216406543
+05:22:52 - __main__.ff - INFO - ===Finger Table Updating Done===
+05:22:54 - __main__.le - INFO - ===CHECKING LEADER===
+05:22:54 - __main__ - INFO - Sending request to http://172.17.0.2:8001/ping
+Payload: {}
+05:22:54 - __main__.rh - DEBUG - Request path /ping
+05:22:54 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:22:54 - __main__ - DEBUG - From http://172.17.0.2:8001/ping received:
+{'status': 'success'}
+05:22:54 - __main__.le - INFO - ===CHECKING LEADER===
+05:22:54 - __main__ - INFO - Sending request to http://172.17.0.3:8001/check_predecessor
+Payload: {}
+05:22:55 - __main__.st - INFO - ===STABILIZING===
+05:22:55 - __main__.st - INFO - Current successor is 172.17.0.2
+05:22:55 - __main__.st - INFO - Current predecessor is: 172.17.0.3
+05:22:55 - __main__ - INFO - Sending request to http://172.17.0.2:8001/get_predecessor
+Payload: {}
+05:22:55 - __main__.rh - DEBUG - Request path /get_predecessor
+05:22:55 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:22:55 - __main__.rh - DEBUG - Response for get_predecessor request:
+685966170926969970295131996809687121594286967556,172.17.0.3,8001
+05:22:55 - __main__ - DEBUG - From http://172.17.0.2:8001/get_predecessor received:
+{'id': 685966170926969970295131996809687121594286967556, 'ip': '172.17.0.3'}
+05:22:55 - __main__ - DEBUG - Get Predecessor Response:
+{'id': 685966170926969970295131996809687121594286967556, 'ip': '172.17.0.3'}
+05:22:55 - __main__ - DEBUG - Inbetween (k = 685966170926969970295131996809687121594286967556, start = 746391104433116747568177882827823675889216406543, end = 746391104433116747568177882827823675889216406543)
+05:22:55 - __main__ - INFO - New-Succ-Stabilize | 172.17.0.3,685966170926969970295131996809687121594286967556  | node 172.17.0.2, 172.17.0.2
+05:22:55 - __main__ - INFO - enqueuing all database
+05:22:55 - __main__ - INFO - Full replication comenced
+05:22:55 - __main__ - INFO - Sending request to http://172.17.0.3:8001/notify
+Payload: {'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:23:02 - __main__.mc - INFO - Multicast discovery message sent for role chord_testing.
+05:23:02 - __main__.rh - DEBUG - Request path /election
+05:23:02 - __main__.rh - DEBUG - Handling the following request 
+{'candidates': [[685966170926969970295131996809687121594286967556, '172.17.0.3']], 'initiator': [685966170926969970295131996809687121594286967556, '172.17.0.3']}
+05:23:02 - __main__ - INFO - Sending request to http://172.17.0.3:8001/election
+Payload: {'candidates': [[685966170926969970295131996809687121594286967556, '172.17.0.3'], (746391104433116747568177882827823675889216406543, '172.17.0.2')], 'initiator': [685966170926969970295131996809687121594286967556, '172.17.0.3']}
+05:23:02 - __main__ - DEBUG - From http://172.17.0.3:8001/check_predecessor received:
+{'status': 'success'}
+05:23:02 - __main__.cp - INFO - ===Predecessor Checking Done===
+05:23:02 - __main__.rh - DEBUG - Request path /get_predecessor
+05:23:02 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:23:02 - __main__.rh - DEBUG - Response for get_predecessor request:
+685966170926969970295131996809687121594286967556,172.17.0.3,8001
+05:23:02 - __main__.ff - INFO - Updating The Finger Table
+05:23:02 - __main__ - DEBUG - Inbetween (k = 746391104433116747568177882827823675889218503695, start = 746391104433116747568177882827823675889216406543, end = 685966170926969970295131996809687121594286967556)
+05:23:02 - __main__ - DEBUG - Pred found 746391104433116747568177882827823675889216406543
+05:23:02 - __main__ - DEBUG - From http://172.17.0.3:8001/notify received:
+{'id': None, 'ip': None}
+05:23:02 - __main__.ff - INFO - ===Finger Table Updating Done===
+05:23:02 - __main__.st - INFO - ===STABILIZING DONE===
+05:23:02 - __main__.rh - DEBUG - Request path /notify
+05:23:02 - __main__.rh - DEBUG - Handling the following request 
+{'id': 685966170926969970295131996809687121594286967556, 'ip': '172.17.0.3'}
+05:23:02 - __main__ - DEBUG - Inbetween (k = 685966170926969970295131996809687121594286967556, start = 685966170926969970295131996809687121594286967556, end = 746391104433116747568177882827823675889216406543)
+05:23:02 - __main__ - DEBUG - From http://172.17.0.3:8001/election received:
+{'status': 'success'}
+05:23:02 - __main__.rh - DEBUG - Request path /coordinator
+05:23:02 - __main__.rh - DEBUG - Handling the following request 
+{'leader': [746391104433116747568177882827823675889216406543, '172.17.0.2'], 'initiator': [685966170926969970295131996809687121594286967556, '172.17.0.3']}
+05:23:02 - __main__.le - INFO - Node 746391104433116747568177882827823675889216406543 acknowledges new leader: (746391104433116747568177882827823675889216406543, '172.17.0.2')
+05:23:02 - __main__ - INFO - Sending request to http://172.17.0.3:8001/coordinator
+Payload: {'leader': [746391104433116747568177882827823675889216406543, '172.17.0.2'], 'initiator': [685966170926969970295131996809687121594286967556, '172.17.0.3']}
+05:23:03 - __main__ - DEBUG - From http://172.17.0.3:8001/coordinator received:
+{'status': 'success'}
+05:23:04 - __main__.le - INFO - ===CHECKING LEADER===
+05:23:04 - __main__ - INFO - Sending request to http://172.17.0.2:8001/ping
+Payload: {}
+05:23:04 - __main__.rh - DEBUG - Request path /ping
+05:23:04 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:23:04 - __main__ - DEBUG - From http://172.17.0.2:8001/ping received:
+{'status': 'success'}
+05:23:04 - __main__.le - INFO - ===CHECKING LEADER===
+05:23:12 - __main__.mc - INFO - Multicast discovery message sent for role chord_testing.
+05:23:12 - __main__ - INFO - Sending request to http://172.17.0.3:8001/check_predecessor
+Payload: {}
+05:23:12 - __main__ - DEBUG - From http://172.17.0.3:8001/check_predecessor received:
+{'status': 'success'}
+05:23:12 - __main__.cp - INFO - ===Predecessor Checking Done===
+05:23:12 - __main__.ff - INFO - Updating The Finger Table
+05:23:12 - __main__ - DEBUG - Inbetween (k = 746391104433116747568177882827823675889220600847, start = 746391104433116747568177882827823675889216406543, end = 685966170926969970295131996809687121594286967556)
+05:23:12 - __main__.st - INFO - ===STABILIZING===
+05:23:12 - __main__ - DEBUG - Pred found 746391104433116747568177882827823675889216406543
+05:23:12 - __main__.st - INFO - Current successor is 172.17.0.3
+05:23:12 - __main__.ff - INFO - ===Finger Table Updating Done===
+05:23:12 - __main__.st - INFO - Current predecessor is: 172.17.0.3
+05:23:12 - __main__.rh - DEBUG - Request path /check_predecessor
+05:23:13 - __main__ - INFO - Sending request to http://172.17.0.3:8001/get_predecessor
+Payload: {}
+05:23:13 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:23:13 - __main__.rh - DEBUG - Request path /get_predecessor
+05:23:13 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:23:13 - __main__.rh - DEBUG - Response for get_predecessor request:
+685966170926969970295131996809687121594286967556,172.17.0.3,8001
+05:23:13 - __main__ - DEBUG - From http://172.17.0.3:8001/get_predecessor received:
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:23:13 - __main__ - DEBUG - Get Predecessor Response:
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:23:13 - __main__ - INFO - Sending request to http://172.17.0.3:8001/notify
+Payload: {'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:23:13 - __main__.rh - DEBUG - Request path /notify
+05:23:13 - __main__ - DEBUG - From http://172.17.0.3:8001/notify received:
+{'id': None, 'ip': None}
+05:23:13 - __main__.st - INFO - ===STABILIZING DONE===
+05:23:13 - __main__.rh - DEBUG - Handling the following request 
+{'id': 685966170926969970295131996809687121594286967556, 'ip': '172.17.0.3'}
+05:23:13 - __main__ - DEBUG - Inbetween (k = 685966170926969970295131996809687121594286967556, start = 685966170926969970295131996809687121594286967556, end = 746391104433116747568177882827823675889216406543)
+05:23:14 - __main__.le - INFO - ===CHECKING LEADER===
+05:23:14 - __main__ - INFO - Sending request to http://172.17.0.2:8001/ping
+Payload: {}
+05:23:14 - __main__.rh - DEBUG - Request path /ping
+05:23:14 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:23:14 - __main__ - DEBUG - From http://172.17.0.2:8001/ping received:
+{'status': 'success'}
+05:23:14 - __main__.le - INFO - ===CHECKING LEADER===
+05:23:22 - __main__.mc - INFO - Multicast discovery message sent for role chord_testing.
+05:23:22 - __main__ - INFO - Sending request to http://172.17.0.3:8001/check_predecessor
+Payload: {}
+05:23:22 - __main__ - DEBUG - From http://172.17.0.3:8001/check_predecessor received:
+{'status': 'success'}
+05:23:22 - __main__.cp - INFO - ===Predecessor Checking Done===
+05:23:22 - __main__.ff - INFO - Updating The Finger Table
+05:23:23 - __main__ - DEBUG - Inbetween (k = 746391104433116747568177882827823675889224795151, start = 746391104433116747568177882827823675889216406543, end = 685966170926969970295131996809687121594286967556)
+05:23:23 - __main__ - DEBUG - Pred found 746391104433116747568177882827823675889216406543
+05:23:23 - __main__.ff - INFO - ===Finger Table Updating Done===
+05:23:23 - __main__.rh - DEBUG - Request path /check_predecessor
+05:23:23 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:23:23 - __main__.st - INFO - ===STABILIZING===
+05:23:23 - __main__.st - INFO - Current successor is 172.17.0.3
+05:23:23 - __main__.st - INFO - Current predecessor is: 172.17.0.3
+05:23:23 - __main__ - INFO - Sending request to http://172.17.0.3:8001/get_predecessor
+Payload: {}
+05:23:23 - __main__ - DEBUG - From http://172.17.0.3:8001/get_predecessor received:
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:23:23 - __main__ - DEBUG - Get Predecessor Response:
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:23:23 - __main__ - INFO - Sending request to http://172.17.0.3:8001/notify
+Payload: {'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:23:23 - __main__.rh - DEBUG - Request path /get_predecessor
+05:23:23 - __main__ - DEBUG - From http://172.17.0.3:8001/notify received:
+{'id': None, 'ip': None}
+05:23:23 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:23:23 - __main__.rh - DEBUG - Response for get_predecessor request:
+685966170926969970295131996809687121594286967556,172.17.0.3,8001
+05:23:23 - __main__.st - INFO - ===STABILIZING DONE===
+05:23:23 - __main__.rh - DEBUG - Request path /notify
+05:23:23 - __main__.rh - DEBUG - Handling the following request 
+{'id': 685966170926969970295131996809687121594286967556, 'ip': '172.17.0.3'}
+05:23:23 - __main__ - DEBUG - Inbetween (k = 685966170926969970295131996809687121594286967556, start = 685966170926969970295131996809687121594286967556, end = 746391104433116747568177882827823675889216406543)
+05:23:24 - __main__.le - INFO - ===CHECKING LEADER===
+05:23:24 - __main__ - INFO - Sending request to http://172.17.0.2:8001/ping
+Payload: {}
+05:23:24 - __main__.rh - DEBUG - Request path /ping
+05:23:24 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:23:24 - __main__ - DEBUG - From http://172.17.0.2:8001/ping received:
+{'status': 'success'}
+05:23:24 - __main__.le - INFO - ===CHECKING LEADER===
+05:23:32 - __main__.mc - INFO - Multicast discovery message sent for role chord_testing.
+05:23:32 - __main__ - INFO - Sending request to http://172.17.0.3:8001/check_predecessor
+Payload: {}
+05:23:33 - __main__.ff - INFO - Updating The Finger Table
+05:23:33 - __main__ - DEBUG - Inbetween (k = 746391104433116747568177882827823675889233183759, start = 746391104433116747568177882827823675889216406543, end = 685966170926969970295131996809687121594286967556)
+05:23:33 - __main__ - DEBUG - Pred found 746391104433116747568177882827823675889216406543
+05:23:33 - __main__.ff - INFO - ===Finger Table Updating Done===
+05:23:33 - __main__ - DEBUG - From http://172.17.0.3:8001/check_predecessor received:
+{'status': 'success'}
+05:23:33 - __main__.cp - INFO - ===Predecessor Checking Done===
+05:23:33 - __main__.rh - DEBUG - Request path /check_predecessor
+05:23:33 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:23:33 - __main__.st - INFO - ===STABILIZING===
+05:23:33 - __main__.st - INFO - Current successor is 172.17.0.3
+05:23:33 - __main__.st - INFO - Current predecessor is: 172.17.0.3
+05:23:33 - __main__ - INFO - Sending request to http://172.17.0.3:8001/get_predecessor
+Payload: {}
+05:23:33 - __main__ - DEBUG - From http://172.17.0.3:8001/get_predecessor received:
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:23:33 - __main__ - DEBUG - Get Predecessor Response:
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:23:33 - __main__ - INFO - Sending request to http://172.17.0.3:8001/notify
+Payload: {'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:23:33 - __main__ - DEBUG - From http://172.17.0.3:8001/notify received:
+{'id': None, 'ip': None}
+05:23:33 - __main__.st - INFO - ===STABILIZING DONE===
+05:23:33 - __main__.rh - DEBUG - Request path /get_predecessor
+05:23:33 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:23:33 - __main__.rh - DEBUG - Response for get_predecessor request:
+685966170926969970295131996809687121594286967556,172.17.0.3,8001
+05:23:33 - __main__.rh - DEBUG - Request path /notify
+05:23:33 - __main__.rh - DEBUG - Handling the following request 
+{'id': 685966170926969970295131996809687121594286967556, 'ip': '172.17.0.3'}
+05:23:33 - __main__ - DEBUG - Inbetween (k = 685966170926969970295131996809687121594286967556, start = 685966170926969970295131996809687121594286967556, end = 746391104433116747568177882827823675889216406543)
+05:23:34 - __main__.le - INFO - ===CHECKING LEADER===
+05:23:34 - __main__ - INFO - Sending request to http://172.17.0.2:8001/ping
+Payload: {}
+05:23:34 - __main__.rh - DEBUG - Request path /ping
+05:23:34 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:23:34 - __main__ - DEBUG - From http://172.17.0.2:8001/ping received:
+{'status': 'success'}
+05:23:34 - __main__.le - INFO - ===CHECKING LEADER===
+05:23:42 - __main__.mc - INFO - Multicast discovery message sent for role chord_testing.
+05:23:43 - __main__.ff - INFO - Updating The Finger Table
+05:23:43 - __main__ - DEBUG - Inbetween (k = 746391104433116747568177882827823675889249960975, start = 746391104433116747568177882827823675889216406543, end = 685966170926969970295131996809687121594286967556)
+05:23:43 - __main__ - DEBUG - Pred found 746391104433116747568177882827823675889216406543
+05:23:43 - __main__.ff - INFO - ===Finger Table Updating Done===
+05:23:43 - __main__ - INFO - Sending request to http://172.17.0.3:8001/check_predecessor
+Payload: {}
+05:23:43 - __main__ - DEBUG - From http://172.17.0.3:8001/check_predecessor received:
+{'status': 'success'}
+05:23:43 - __main__.cp - INFO - ===Predecessor Checking Done===
+05:23:43 - __main__.rh - DEBUG - Request path /check_predecessor
+05:23:43 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:23:43 - __main__.st - INFO - ===STABILIZING===
+05:23:43 - __main__.st - INFO - Current successor is 172.17.0.3
+05:23:43 - __main__.st - INFO - Current predecessor is: 172.17.0.3
+05:23:43 - __main__ - INFO - Sending request to http://172.17.0.3:8001/get_predecessor
+Payload: {}
+05:23:43 - __main__ - DEBUG - From http://172.17.0.3:8001/get_predecessor received:
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:23:43 - __main__ - DEBUG - Get Predecessor Response:
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:23:43 - __main__ - INFO - Sending request to http://172.17.0.3:8001/notify
+Payload: {'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:23:43 - __main__ - DEBUG - From http://172.17.0.3:8001/notify received:
+{'id': None, 'ip': None}
+05:23:43 - __main__.st - INFO - ===STABILIZING DONE===
+05:23:43 - __main__.rh - DEBUG - Request path /get_predecessor
+05:23:43 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:23:43 - __main__.rh - DEBUG - Response for get_predecessor request:
+685966170926969970295131996809687121594286967556,172.17.0.3,8001
+05:23:43 - __main__.rh - DEBUG - Request path /notify
+05:23:43 - __main__.rh - DEBUG - Handling the following request 
+{'id': 685966170926969970295131996809687121594286967556, 'ip': '172.17.0.3'}
+05:23:43 - __main__ - DEBUG - Inbetween (k = 685966170926969970295131996809687121594286967556, start = 685966170926969970295131996809687121594286967556, end = 746391104433116747568177882827823675889216406543)
+05:23:44 - __main__.le - INFO - ===CHECKING LEADER===
+05:23:44 - __main__ - INFO - Sending request to http://172.17.0.2:8001/ping
+Payload: {}
+05:23:44 - __main__.rh - DEBUG - Request path /ping
+05:23:44 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:23:44 - __main__ - DEBUG - From http://172.17.0.2:8001/ping received:
+{'status': 'success'}
+05:23:44 - __main__.le - INFO - ===CHECKING LEADER===
+05:23:52 - __main__.mc - INFO - Multicast discovery message sent for role chord_testing.
+05:23:53 - __main__.ff - INFO - Updating The Finger Table
+05:23:53 - __main__ - DEBUG - Inbetween (k = 746391104433116747568177882827823675889283515407, start = 746391104433116747568177882827823675889216406543, end = 685966170926969970295131996809687121594286967556)
+05:23:53 - __main__ - DEBUG - Pred found 746391104433116747568177882827823675889216406543
+05:23:53 - __main__.ff - INFO - ===Finger Table Updating Done===
+05:23:53 - __main__ - INFO - Sending request to http://172.17.0.3:8001/check_predecessor
+Payload: {}
+05:23:53 - __main__ - DEBUG - From http://172.17.0.3:8001/check_predecessor received:
+{'status': 'success'}
+05:23:53 - __main__.cp - INFO - ===Predecessor Checking Done===
+05:23:53 - __main__.rh - DEBUG - Request path /check_predecessor
+05:23:53 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:23:53 - __main__.st - INFO - ===STABILIZING===
+05:23:53 - __main__.st - INFO - Current successor is 172.17.0.3
+05:23:53 - __main__.st - INFO - Current predecessor is: 172.17.0.3
+05:23:53 - __main__ - INFO - Sending request to http://172.17.0.3:8001/get_predecessor
+Payload: {}
+05:23:53 - __main__ - DEBUG - From http://172.17.0.3:8001/get_predecessor received:
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:23:53 - __main__ - DEBUG - Get Predecessor Response:
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:23:53 - __main__ - INFO - Sending request to http://172.17.0.3:8001/notify
+Payload: {'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:23:53 - __main__ - DEBUG - From http://172.17.0.3:8001/notify received:
+{'id': None, 'ip': None}
+05:23:53 - __main__.st - INFO - ===STABILIZING DONE===
+05:23:53 - __main__.rh - DEBUG - Request path /get_predecessor
+05:23:53 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:23:53 - __main__.rh - DEBUG - Response for get_predecessor request:
+685966170926969970295131996809687121594286967556,172.17.0.3,8001
+05:23:53 - __main__.rh - DEBUG - Request path /notify
+05:23:53 - __main__.rh - DEBUG - Handling the following request 
+{'id': 685966170926969970295131996809687121594286967556, 'ip': '172.17.0.3'}
+05:23:53 - __main__ - DEBUG - Inbetween (k = 685966170926969970295131996809687121594286967556, start = 685966170926969970295131996809687121594286967556, end = 746391104433116747568177882827823675889216406543)
+05:23:54 - __main__.le - INFO - ===CHECKING LEADER===
+05:23:54 - __main__ - INFO - Sending request to http://172.17.0.2:8001/ping
+Payload: {}
+05:23:54 - __main__.rh - DEBUG - Request path /ping
+05:23:54 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:23:54 - __main__ - DEBUG - From http://172.17.0.2:8001/ping received:
+{'status': 'success'}
+05:23:54 - __main__.le - INFO - ===CHECKING LEADER===
+05:24:02 - __main__.mc - INFO - Multicast discovery message sent for role chord_testing.
+05:24:03 - __main__.ff - INFO - Updating The Finger Table
+05:24:03 - __main__ - DEBUG - Inbetween (k = 746391104433116747568177882827823675889350624271, start = 746391104433116747568177882827823675889216406543, end = 685966170926969970295131996809687121594286967556)
+05:24:03 - __main__ - DEBUG - Pred found 746391104433116747568177882827823675889216406543
+05:24:03 - __main__.ff - INFO - ===Finger Table Updating Done===
+05:24:03 - __main__ - INFO - Sending request to http://172.17.0.3:8001/check_predecessor
+Payload: {}
+05:24:03 - __main__ - DEBUG - From http://172.17.0.3:8001/check_predecessor received:
+{'status': 'success'}
+05:24:03 - __main__.cp - INFO - ===Predecessor Checking Done===
+05:24:03 - __main__.rh - DEBUG - Request path /check_predecessor
+05:24:03 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:24:03 - __main__.st - INFO - ===STABILIZING===
+05:24:03 - __main__.st - INFO - Current successor is 172.17.0.3
+05:24:03 - __main__.st - INFO - Current predecessor is: 172.17.0.3
+05:24:03 - __main__ - INFO - Sending request to http://172.17.0.3:8001/get_predecessor
+Payload: {}
+05:24:03 - __main__ - DEBUG - From http://172.17.0.3:8001/get_predecessor received:
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:24:03 - __main__ - DEBUG - Get Predecessor Response:
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:24:03 - __main__ - INFO - Sending request to http://172.17.0.3:8001/notify
+Payload: {'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:24:03 - __main__ - DEBUG - From http://172.17.0.3:8001/notify received:
+{'id': None, 'ip': None}
+05:24:03 - __main__.st - INFO - ===STABILIZING DONE===
+05:24:03 - __main__.rh - DEBUG - Request path /get_predecessor
+05:24:03 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:24:03 - __main__.rh - DEBUG - Response for get_predecessor request:
+685966170926969970295131996809687121594286967556,172.17.0.3,8001
+05:24:03 - __main__.rh - DEBUG - Request path /notify
+05:24:03 - __main__.rh - DEBUG - Handling the following request 
+{'id': 685966170926969970295131996809687121594286967556, 'ip': '172.17.0.3'}
+05:24:03 - __main__ - DEBUG - Inbetween (k = 685966170926969970295131996809687121594286967556, start = 685966170926969970295131996809687121594286967556, end = 746391104433116747568177882827823675889216406543)
+05:24:04 - __main__.le - INFO - ===CHECKING LEADER===
+05:24:04 - __main__ - INFO - Sending request to http://172.17.0.2:8001/ping
+Payload: {}
+05:24:04 - __main__.rh - DEBUG - Request path /ping
+05:24:04 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:24:04 - __main__ - DEBUG - From http://172.17.0.2:8001/ping received:
+{'status': 'success'}
+05:24:04 - __main__.le - INFO - ===CHECKING LEADER===
+05:24:12 - __main__.mc - INFO - Multicast discovery message sent for role chord_testing.
+05:24:13 - __main__.ff - INFO - Updating The Finger Table
+05:24:13 - __main__ - DEBUG - Inbetween (k = 746391104433116747568177882827823675889484841999, start = 746391104433116747568177882827823675889216406543, end = 685966170926969970295131996809687121594286967556)
+05:24:13 - __main__ - DEBUG - Pred found 746391104433116747568177882827823675889216406543
+05:24:13 - __main__.ff - INFO - ===Finger Table Updating Done===
+05:24:13 - __main__ - INFO - Sending request to http://172.17.0.3:8001/check_predecessor
+Payload: {}
+05:24:13 - __main__ - DEBUG - From http://172.17.0.3:8001/check_predecessor received:
+{'status': 'success'}
+05:24:13 - __main__.cp - INFO - ===Predecessor Checking Done===
+05:24:13 - __main__.rh - DEBUG - Request path /check_predecessor
+05:24:13 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:24:13 - __main__.st - INFO - ===STABILIZING===
+05:24:13 - __main__.st - INFO - Current successor is 172.17.0.3
+05:24:13 - __main__.st - INFO - Current predecessor is: 172.17.0.3
+05:24:13 - __main__ - INFO - Sending request to http://172.17.0.3:8001/get_predecessor
+Payload: {}
+05:24:13 - __main__ - DEBUG - From http://172.17.0.3:8001/get_predecessor received:
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:24:13 - __main__ - DEBUG - Get Predecessor Response:
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:24:13 - __main__ - INFO - Sending request to http://172.17.0.3:8001/notify
+Payload: {'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:24:13 - __main__ - DEBUG - From http://172.17.0.3:8001/notify received:
+{'id': None, 'ip': None}
+05:24:13 - __main__.st - INFO - ===STABILIZING DONE===
+05:24:14 - __main__.rh - DEBUG - Request path /get_predecessor
+05:24:14 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:24:14 - __main__.rh - DEBUG - Response for get_predecessor request:
+685966170926969970295131996809687121594286967556,172.17.0.3,8001
+05:24:14 - __main__.rh - DEBUG - Request path /notify
+05:24:14 - __main__.rh - DEBUG - Handling the following request 
+{'id': 685966170926969970295131996809687121594286967556, 'ip': '172.17.0.3'}
+05:24:14 - __main__ - DEBUG - Inbetween (k = 685966170926969970295131996809687121594286967556, start = 685966170926969970295131996809687121594286967556, end = 746391104433116747568177882827823675889216406543)
+05:24:14 - __main__.le - INFO - ===CHECKING LEADER===
+05:24:14 - __main__ - INFO - Sending request to http://172.17.0.2:8001/ping
+Payload: {}
+05:24:14 - __main__.rh - DEBUG - Request path /ping
+05:24:14 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:24:14 - __main__ - DEBUG - From http://172.17.0.2:8001/ping received:
+{'status': 'success'}
+05:24:14 - __main__.le - INFO - ===CHECKING LEADER===
+05:24:22 - __main__.mc - INFO - Multicast discovery message sent for role chord_testing.
+05:24:23 - __main__.ff - INFO - Updating The Finger Table
+05:24:23 - __main__ - DEBUG - Inbetween (k = 746391104433116747568177882827823675889753277455, start = 746391104433116747568177882827823675889216406543, end = 685966170926969970295131996809687121594286967556)
+05:24:23 - __main__ - DEBUG - Pred found 746391104433116747568177882827823675889216406543
+05:24:23 - __main__.ff - INFO - ===Finger Table Updating Done===
+05:24:23 - __main__ - INFO - Sending request to http://172.17.0.3:8001/check_predecessor
+Payload: {}
+05:24:23 - __main__ - DEBUG - From http://172.17.0.3:8001/check_predecessor received:
+{'status': 'success'}
+05:24:23 - __main__.cp - INFO - ===Predecessor Checking Done===
+05:24:23 - __main__.rh - DEBUG - Request path /check_predecessor
+05:24:23 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:24:23 - __main__.st - INFO - ===STABILIZING===
+05:24:23 - __main__.st - INFO - Current successor is 172.17.0.3
+05:24:23 - __main__.st - INFO - Current predecessor is: 172.17.0.3
+05:24:23 - __main__ - INFO - Sending request to http://172.17.0.3:8001/get_predecessor
+Payload: {}
+05:24:23 - __main__ - DEBUG - From http://172.17.0.3:8001/get_predecessor received:
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:24:23 - __main__ - DEBUG - Get Predecessor Response:
+{'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:24:23 - __main__ - INFO - Sending request to http://172.17.0.3:8001/notify
+Payload: {'id': 746391104433116747568177882827823675889216406543, 'ip': '172.17.0.2'}
+05:24:24 - __main__ - DEBUG - From http://172.17.0.3:8001/notify received:
+{'id': None, 'ip': None}
+05:24:24 - __main__.st - INFO - ===STABILIZING DONE===
+05:24:24 - __main__.rh - DEBUG - Request path /get_predecessor
+05:24:24 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:24:24 - __main__.rh - DEBUG - Response for get_predecessor request:
+685966170926969970295131996809687121594286967556,172.17.0.3,8001
+05:24:24 - __main__.rh - DEBUG - Request path /notify
+05:24:24 - __main__.rh - DEBUG - Handling the following request 
+{'id': 685966170926969970295131996809687121594286967556, 'ip': '172.17.0.3'}
+05:24:24 - __main__ - DEBUG - Inbetween (k = 685966170926969970295131996809687121594286967556, start = 685966170926969970295131996809687121594286967556, end = 746391104433116747568177882827823675889216406543)
+05:24:24 - __main__.le - INFO - ===CHECKING LEADER===
+05:24:24 - __main__ - INFO - Sending request to http://172.17.0.2:8001/ping
+Payload: {}
+05:24:24 - __main__.rh - DEBUG - Request path /ping
+05:24:24 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:24:24 - __main__ - DEBUG - From http://172.17.0.2:8001/ping received:
+{'status': 'success'}
+05:24:24 - __main__.le - INFO - ===CHECKING LEADER===
+05:24:32 - __main__.mc - INFO - Multicast discovery message sent for role chord_testing.
+05:24:33 - __main__.ff - INFO - Updating The Finger Table
+05:24:33 - __main__ - DEBUG - Inbetween (k = 746391104433116747568177882827823675890290148367, start = 746391104433116747568177882827823675889216406543, end = 685966170926969970295131996809687121594286967556)
+05:24:33 - __main__ - DEBUG - Pred found 746391104433116747568177882827823675889216406543
+05:24:33 - __main__.ff - INFO - ===Finger Table Updating Done===
+05:24:33 - __main__ - INFO - Sending request to http://172.17.0.3:8001/check_predecessor
+Payload: {}
+05:24:33 - __main__ - ERROR - Connection Error in IP 172.17.0.3
+05:24:33 - __main__ - ERROR - HTTPConnectionPool(host='172.17.0.3', port=8001): Max retries exceeded with url: /check_predecessor (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x70421134ac60>: Failed to establish a new connection: [Errno 111] Connection refused'))
+05:24:33 - __main__ - INFO - Sending request to http://172.17.0.3:8001/check_predecessor
+Payload: {}
+05:24:33 - __main__ - ERROR - Connection Error in IP 172.17.0.3
+05:24:33 - __main__ - ERROR - HTTPConnectionPool(host='172.17.0.3', port=8001): Max retries exceeded with url: /check_predecessor (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x70421134a000>: Failed to establish a new connection: [Errno 111] Connection refused'))
+05:24:33 - __main__ - INFO - Sending request to http://172.17.0.3:8001/check_predecessor
+Payload: {}
+05:24:33 - __main__ - ERROR - Connection Error in IP 172.17.0.3
+05:24:33 - __main__ - ERROR - HTTPConnectionPool(host='172.17.0.3', port=8001): Max retries exceeded with url: /check_predecessor (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x704211349100>: Failed to establish a new connection: [Errno 111] Connection refused'))
+05:24:33 - __main__ - INFO - Sending request to http://172.17.0.3:8001/check_predecessor
+Payload: {}
+05:24:33 - __main__ - ERROR - Connection Error in IP 172.17.0.3
+05:24:33 - __main__ - ERROR - HTTPConnectionPool(host='172.17.0.3', port=8001): Max retries exceeded with url: /check_predecessor (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x70421134b800>: Failed to establish a new connection: [Errno 111] Connection refused'))
+05:24:33 - __main__.cp - INFO - ===Predecessor Checking Done===
+05:24:34 - __main__.st - INFO - ===STABILIZING===
+05:24:34 - __main__.st - INFO - Current successor is 172.17.0.3
+05:24:34 - __main__.st - INFO - Current predecessor is: 172.17.0.2
+05:24:34 - __main__ - INFO - Sending request to http://172.17.0.3:8001/get_predecessor
+Payload: {}
+05:24:34 - __main__ - ERROR - Connection Error in IP 172.17.0.3
+05:24:34 - __main__ - ERROR - HTTPConnectionPool(host='172.17.0.3', port=8001): Max retries exceeded with url: /get_predecessor (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7042111681a0>: Failed to establish a new connection: [Errno 111] Connection refused'))
+05:24:34 - __main__ - INFO - Sending request to http://172.17.0.3:8001/get_predecessor
+Payload: {}
+05:24:34 - __main__ - ERROR - Connection Error in IP 172.17.0.3
+05:24:34 - __main__ - ERROR - HTTPConnectionPool(host='172.17.0.3', port=8001): Max retries exceeded with url: /get_predecessor (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x704211168b60>: Failed to establish a new connection: [Errno 111] Connection refused'))
+05:24:34 - __main__ - INFO - Sending request to http://172.17.0.3:8001/get_predecessor
+Payload: {}
+05:24:34 - __main__ - ERROR - Connection Error in IP 172.17.0.3
+05:24:34 - __main__ - ERROR - HTTPConnectionPool(host='172.17.0.3', port=8001): Max retries exceeded with url: /get_predecessor (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x70421134b800>: Failed to establish a new connection: [Errno 111] Connection refused'))
+05:24:34 - __main__ - INFO - Sending request to http://172.17.0.3:8001/get_predecessor
+Payload: {}
+05:24:34 - __main__ - ERROR - Connection Error in IP 172.17.0.3
+05:24:34 - __main__ - ERROR - HTTPConnectionPool(host='172.17.0.3', port=8001): Max retries exceeded with url: /get_predecessor (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x704211349100>: Failed to establish a new connection: [Errno 111] Connection refused'))
+05:24:34 - __main__ - INFO - New-Succ-Stabilize | self | node 746391104433116747568177882827823675889216406543
+05:24:34 - __main__.st - INFO - ===STABILIZING DONE===
+05:24:34 - __main__.le - INFO - ===CHECKING LEADER===
+05:24:34 - __main__ - INFO - Sending request to http://172.17.0.2:8001/ping
+Payload: {}
+05:24:34 - __main__.rh - DEBUG - Request path /ping
+05:24:34 - __main__.rh - DEBUG - Handling the following request 
+{}
+05:24:34 - __main__ - DEBUG - From http://172.17.0.2:8001/ping received:
+{'status': 'success'}
+05:24:34 - __main__.le - INFO - ===CHECKING LEADER===

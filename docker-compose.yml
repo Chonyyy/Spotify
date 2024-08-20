@@ -40,6 +40,14 @@ services:
     environment:
       SERVICE_NAME: storage-service
 
-volumes:
-  databases:
-  logs:
+  full-dev:
+    build:
+      context: ./distribufy
+      dockerfile: Dockerfile
+    command: /bin/bash
+    volumes:
+      - ./distribufy:/app
+    deploy:
+      replicas: ${FULL_DEV_REPLICAS:-1}
+    environment:
+      SERVICE_NAME: full-dev
