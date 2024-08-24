@@ -12,17 +12,21 @@ def initialize_database(role, filepath):
     columns = None
     replic_columns = None
     if role == 'music_info':
-        columns = ['id','title', 'album', 'genre', 'artist']
-        replic_columns = ['id','title', 'album', 'genre', 'artist', 'source']
+        columns = ['key','title', 'album', 'genre', 'artist']
+        replic_columns = ['key','title', 'album', 'genre', 'artist', 'source']
+        key_values = ['value']
     elif role == 'music_ftp':
-        columns = ['id', 'addr']
-        replic_columns = ['id', 'addr', 'columns']
+        columns = ['key', 'addr']
+        replic_columns = ['key', 'addr', 'columns']
+        key_values = ['value']
     elif role == 'gateway':
-        columns  = ['id', 'ip', 'port', 'role']
+        columns  = ['key', 'ip', 'port', 'role']
+        key_values = ['value']
     elif role == 'chord_testing':
-        columns  = ['key', 'value']
-        replic_columns = ['key', 'value']
-    return JSONDatabase(filepath, columns), JSONDatabase(filepath + 'pred', replic_columns), JSONDatabase(filepath + 'succ', replic_columns)
+        columns  = ['key', 'value', 'last_update', 'deleted']
+        replic_columns = ['key', 'value', 'last_update', 'deleted']
+        key_values = ['value']
+    return JSONDatabase(filepath, columns, key_values), JSONDatabase(filepath + 'pred', replic_columns, key_values), JSONDatabase(filepath + 'succ', replic_columns, key_values)
 
 
 if __name__ == "__main__":
