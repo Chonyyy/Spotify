@@ -108,9 +108,9 @@ class ChordNodeReference:
         """Iterate trough all nodes getting all song informations"""
         return self._send_request('/iterate-songs', {'origin': origin_id})
 
-    def check_predecessor(self):
+    def ping_predecessor(self):
         """Ping the predecessor to check if it is alive."""
-        self._send_request('/check_predecessor', {})
+        self._send_request('/ping_predecessor', {})
 
     def closest_preceding_finger(self, id: int) -> 'ChordNodeReference':
         """Find the closest preceding finger for a given id."""

@@ -42,7 +42,6 @@ class ChordNode:
         #TODO: If pred or succ changes, replicate the whole database
         server_address = (self.ip, self.port)
         self.httpd = HTTPServer(server_address, ChordNodeRequestHandler)
-        # self.httpd = ChordServer(server_address, ChordNodeRequestHandler, node=self)#TODO: debug this
         self.httpd.node = self#TODO: Make it so this is set in ititialization
         self.file_storage = f'./databases/node_{self.ip}/files' 
         os.makedirs(self.file_storage, exist_ok=True)
@@ -78,8 +77,7 @@ class ChordNode:
                     self.prev_pred = self.pred.id
     
     def drop_data(self):
-        if self.role == 'music_ftp':
-            self.delete_files(self.file_storage)
+        self.delete_files(self.file_storage)
         
     def replicate_all_database(self):
         for record in self.data.get_all():
@@ -90,12 +88,10 @@ class ChordNode:
             self.enqueue_replication_operation(record, 'insertion', key)
         
     def drop_suc_rep(self):
-        if self.role == 'music_ftp':
-            self.delete_files()
+        self.delete_files()
     
     def drop_pred_rep(self):
-        if self.role == 'music_ftp':
-            self.delete_files()
+        self.delete_files()
     
     def delete_files(self, filepath):
          # Lista todos los archivos en el directorio dado
@@ -143,7 +139,7 @@ class ChordNode:
         self.data.insert(d)
         logger.info(f'Data {(key, file_name)} stored at node {self.ip}')
         self.enqueue_replication_operation(d, 'file_insertion', key)
-            
+
     def get_data(self, key, callback):#TODO: While testing sending to an invalid url, the url seemed fine but got an error
         logger_dt.info(f'Getting item by key {key}')
         target_node = self.find_succ(key)
@@ -390,8 +386,9 @@ class ChordNode:
         while True:
             try:
                 if self.pred:
-                    self.pred.check_predecessor()
+                    self.pred.ping_predecessor()
             except requests.ConnectionError:
+                logger_cp.info('Predecesor Down')
                 self.pred = self.ref
             logger_cp.info('===Predecessor Checking Done===')
             time.sleep(10)

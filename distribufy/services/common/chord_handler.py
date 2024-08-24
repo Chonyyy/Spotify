@@ -80,7 +80,7 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):
             elif self.path == '/notify':
                 response = self.handle_notify(post_data)
                 self.send_json_response(response)
-            elif self.path == '/check_predecessor':
+            elif self.path == '/ping_predecessor':
                 response = {'status': 'success'}
                 self.send_json_response(response, status=200)
             elif self.path == '/ping':
