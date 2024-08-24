@@ -19,9 +19,9 @@ def initialize_database(role, filepath):
         replic_columns = ['id', 'addr', 'columns']
     elif role == 'gateway':
         columns  = ['id', 'ip', 'port', 'role']
-    elif role == 'chord-testing':
-        columns  = ['id', 'ip', 'port', 'role']
-        replic_columns = ['id', 'addr', 'columns']
+    elif role == 'chord_testing':
+        columns  = ['key', 'value']
+        replic_columns = ['key', 'value']
     return JSONDatabase(filepath, columns), JSONDatabase(filepath + 'pred', replic_columns), JSONDatabase(filepath + 'succ', replic_columns)
 
 
