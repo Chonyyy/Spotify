@@ -28,9 +28,9 @@ class ChordNode:
         self.role = role
         self.ref = ChordNodeReference(self.id, self.ip, self.port)
         self.succ = self.ref
-        self.prev_succ = self.id  
+        self.rep_succ = self.id  
         self.pred = self.ref
-        self.prev_pred = self.id 
+        self.rep_pred = self.id 
         self.m = m  # Number of bits in the hash/key space
         self.finger = [self.ref] * self.m  # Finger table
         self.next = 0  # Finger table index to fix next
@@ -73,9 +73,9 @@ class ChordNode:
             if self.pred.replication_queue:
                 with self.replication_lock:
                     self.succ.apply_rep_operations()
-                    self.prev_succ = self.succ.id
+                    self.rep_succ = self.succ.id
                     self.pred.apply_rep_operations()
-                    self.prev_pred = self.pred.id
+                    self.rep_pred = self.pred.id
     
     def drop_data(self):
         if self.role == 'music_ftp':
@@ -346,7 +346,7 @@ class ChordNode:
                     self.succ = x
                     logger.info(f'New-Succ-Stabilize | {x.ip},{x.id}  | node {self.ip}, {self.ip}')
                     logger.info(f'enqueuing all database')
-                    if self.succ.id != self.prev_succ and self.succ.id != self.id:
+                    if self.succ.id != self.rep_succ and self.succ.id != self.id:
                         logger.info(f'Full replication comenced')
                         threading.Thread(target=self.succ.drop_suc_rep, daemon=True)
                         self.replicate_all_database()
@@ -365,7 +365,7 @@ class ChordNode:
         """Notify the node of a change."""
         if node.id != self.id and (not self.pred or self._inbetween(node.id, self.pred.id, self.id)):
             self.pred = node
-            if self.pred.id != self.prev_succ and self.pred.id != self.id:
+            if self.pred.id != self.rep_succ and self.pred.id != self.id:
                 threading.Thread(target=self.succ.drop_pred_rep, daemon=True)
                 self.replicate_all_database()
 

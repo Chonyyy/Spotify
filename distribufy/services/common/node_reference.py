@@ -26,10 +26,10 @@ class ChordNodeReference:
         
     #region Coordination
     def drop_suc_rep(self):
-        self._send_request('/drop-suc-rep', {})
+        self._send_request('/drop-suc-rep', method='get')
         
     def drop_pred_rep(self):
-        self._send_request('/drop-pred-rep', {})
+        self._send_request('/drop-pred-rep', method='get')
     
     def send_election_message(self, election_message):
         self._send_request('/election', election_message)
@@ -81,24 +81,24 @@ class ChordNodeReference:
     @property
     def succ(self) -> 'ChordNodeReference':
         """Get successor node."""
-        response = self._send_request('/get_successor', {})
+        response = self._send_request('/get_successor', method='get')
         logger.debug(f'Get Successor Response:\n{response}')
         return ChordNodeReference(response['id'], response['ip'], self.port)
 
     @property
     def pred(self) -> 'ChordNodeReference':
         """Get predecessor node."""
-        response = self._send_request('/get_predecessor', {})
+        response = self._send_request('/get_predecessor', method='get')
         logger.debug(f'Get Predecessor Response:\n{response}')
         return ChordNodeReference(response['id'], response['ip'], self.port)
 
     @property
     def ping(self):
-        self._send_request('/ping', {})
+        self._send_request('/ping', method='get')
     
     @property
     def leader(self):
-        return self._send_request('/get-leader', {})
+        return self._send_request('/get-leader', method='get')
 
     def notify(self, node: 'ChordNodeReference'):
         """Notify the node of a change."""
@@ -108,27 +108,30 @@ class ChordNodeReference:
         """Iterate trough all nodes getting all song informations"""
         return self._send_request('/iterate-songs', {'origin': origin_id})
 
-    def ping_predecessor(self):
-        """Ping the predecessor to check if it is alive."""
-        self._send_request('/ping_predecessor', {})
-
     def closest_preceding_finger(self, id: int) -> 'ChordNodeReference':
         """Find the closest preceding finger for a given id."""
         response = self._send_request('/closest_preceding_finger', {'id': id})
         return ChordNodeReference(response['id'], response['ip'], self.port)
 
     #region Utils
-    
-    def _send_request(self, path: str, data: dict) -> dict:
+        
+    def _send_request(self, path: str, data: dict = None, method: str = 'POST', query_params = None) -> dict:
         """Send a request and handle retries."""
         max_retries = 4
         for i in range(max_retries):
             response = None
             try:
                 url = f'http://{self.ip}:{self.port}{path}'
-                logger.info(f'Sending request to {url}\nPayload: {data}')
 
-                response_raw = requests.post(url, json=data)
+                if method.upper() == 'POST':
+                    logger.info(f'Sending POST request to {url}\nPayload: {data}')
+                    response_raw = requests.post(url, json=data)
+                elif method.upper() == 'GET':
+                    logger.info(f'Sending GET request to {url}')
+                    response_raw = requests.get(url, params=query_params)
+                else:
+                    raise ValueError(f"Unsupported HTTP method: {method}")
+
                 response = response_raw.json()
                 logger.debug(f'From {url} received:\n{response}')
                 return response
@@ -140,6 +143,7 @@ class ChordNodeReference:
             except requests.exceptions.JSONDecodeError as e:
                 logger.error(f'JSON Decode Error: {e}')
                 logger.error(f'Response text: {response_raw.text}')  # Log the response body
+                raise e
             except Exception as e:
                 logger.error(f"Error sending data to {path}: {data}\n{e}")
                 raise e

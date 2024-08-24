@@ -4,7 +4,8 @@ from prettytable import PrettyTable
 logger = logging.getLogger("__main__")
 
 class JSONDatabase:
-    def __init__(self, filepath, columns):
+    def __init__(self, filepath, columns, key_values):
+        self.key_values = key_values
         self.filepath = filepath
         self.columns = columns
         try:

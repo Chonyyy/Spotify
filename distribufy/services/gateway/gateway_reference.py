@@ -20,7 +20,7 @@ class GatewayReference:
         self.port = port
         self.replication_queue = []
         
-    def _send_request(self, path: str, data: dict = None, method: str = 'POST') -> dict:
+    def _send_request(self, path: str, data: dict = None, method: str = 'POST', query_params = None) -> dict:
         """Send a request and handle retries."""
         max_retries = 4
         for i in range(max_retries):
@@ -33,7 +33,7 @@ class GatewayReference:
                     response_raw = requests.post(url, json=data)
                 elif method.upper() == 'GET':
                     logger.info(f'Sending GET request to {url}')
-                    response_raw = requests.get(url, params=data)
+                    response_raw = requests.get(url, params=query_params)
                 else:
                     raise ValueError(f"Unsupported HTTP method: {method}")
 
@@ -48,6 +48,7 @@ class GatewayReference:
             except requests.exceptions.JSONDecodeError as e:
                 logger.error(f'JSON Decode Error: {e}')
                 logger.error(f'Response text: {response_raw.text}')  # Log the response body
+                raise e
             except Exception as e:
                 logger.error(f"Error sending data to {path}: {data}\n{e}")
                 raise e

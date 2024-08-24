@@ -26,107 +26,72 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):
     def do_POST(self):
         logger_rh.debug(f'Request path {self.path}')
         """Handle POST requests."""
-        if self.path == '/upload-file':
-            self.handle_upload_file()#TODO: Try to divide this into different handlers ?
-        else:
-            content_length = int(self.headers['Content-Length'])
-            post_data = json.loads(self.rfile.read(content_length))
-            logger_rh.debug(f'Handling the following request \n{post_data}')
-            
-            response = None
+        content_length = int(self.headers['Content-Length'])
+        post_data = json.loads(self.rfile.read(content_length))
+        logger_rh.debug(f'Handling the following request \n{post_data}')
+        
+        response = None
 
-            if self.path == '/store-data':
-                response = self.handle_store_data(post_data)
-                self.send_json_response(response)
-            elif self.path == '/get-leader':
-                response = self.server.node.leader_info()
-                self.send_json_response(response)
-            elif self.path.startswith('/iterate-songs'):
-                response = self.server.node._get_songs(post_data['origin'])
-                self.send_json_response(response, status=200)
-            elif self.path.startswith('/songs/upload_chunks/{song_id}'):#TODO
-                pass
-            elif self.path.startswith('/drop-suc-rep'):
-                response = self.server.node.drop_suc_rep()
-                self.send_json_response(response, status=200)
-            elif self.path.startswith('/drop-pred-rep'):
-                response = self.server.node.drop_pred_rep()
-                self.send_json_response(response, status=200)
-            elif self.path == '/get-data':
-                response = self.handle_get_data(post_data)
-                self.send_json_response(response)
-            elif self.path == '/store-replic':
-                print('store replication')
-                # threading.Thread(target=self.handle_store_replic, args=[post_data], daemon=True)
-                self.handle_store_replic(post_data)
-                self.send_json_response({'status':'recieved'})
-            elif self.path == '/election':
-                response = self.handle_election(post_data)
-            elif self.path == '/coordinator':
-                response = self.handle_coordinator(post_data)
-            elif self.path == '/find_successor':
-                response = self.server.node.find_succ(post_data['id'])
-                self.send_json_response(response)
-            elif self.path == '/find_predecessor':
-                response = self.server.node.find_pred(post_data['id'])
-                self.send_json_response(response)
-            elif self.path == '/get_successor':
-                response = self.server.node.succ
-                self.send_json_response(response)
-            elif self.path == '/get_predecessor':
-                response = self.server.node.pred
-                logger_rh.debug(f'Response for get_predecessor request:\n{response}')
-                self.send_json_response(response)
-            elif self.path == '/notify':
-                response = self.handle_notify(post_data)
-                self.send_json_response(response)
-            elif self.path == '/ping_predecessor':
-                response = {'status': 'success'}
-                self.send_json_response(response, status=200)
-            elif self.path == '/ping':
-                response = {'status': 'success'}
-                self.send_json_response(response, status=200)
-            elif self.path == '/closest_preceding_finger':
-                response = self.server.node.closest_preceding_finger(post_data['id'])
-                self.send_json_response(response)
-            elif self.path == '/debug-node-data':
-                self.server.node._debug_log_data()
-                self.send_json_response({"status": "success"})
-            else:
-                self.send_json_response({}, 'Invalid Endpoint', status=404)
+        if self.path == '/store-data':
+            response = self.handle_store_data(post_data)
+            self.send_json_response(response)
+        elif self.path.startswith('/iterate-songs'):
+            response = self.server.node._get_songs(post_data['origin'])
+            self.send_json_response(response, status=200)
+        elif self.path == '/get-data':
+            response = self.handle_get_data(post_data)
+            self.send_json_response(response)
+        elif self.path == '/store-replic':
+            print('store replication')
+            self.handle_store_replic(post_data)
+            self.send_json_response({'status':'recieved'})
+        elif self.path == '/election':
+            response = self.handle_election(post_data)
+        elif self.path == '/coordinator':
+            response = self.handle_coordinator(post_data)
+        elif self.path == '/notify':
+            response = self.handle_notify(post_data)
+            self.send_json_response(response)
+        elif self.path == '/find_successor':
+            response = self.server.node.find_succ(post_data['id'])
+            self.send_json_response(response)
+        elif self.path == '/find_predecessor':
+            response = self.server.node.find_pred(post_data['id'])
+            self.send_json_response(response)
+        elif self.path == '/closest_preceding_finger':
+            response = self.server.node.closest_preceding_finger(post_data['id'])
+            self.send_json_response(response)
+        else:
+            self.send_json_response({}, 'Invalid Endpoint', status=404)
         
     def do_GET(self):
         """Handle GET requests."""
         logger_rh.debug(f'Request path {self.path}')
         response = None
         
-        if self.path.startswith('/get_user'):
-            response = self.handle_get_user(self.path)
+        if self.path == '/ping':
+            self.send_json_response({'status':'up'})
+        elif self.path == '/get_predecessor':
+            response = self.server.node.pred
+            logger_rh.debug(f'Response for get_predecessor request:\n{response}')
+            self.send_json_response(response)
+        elif self.path == '/get_successor':
+            response = self.server.node.succ
+            self.send_json_response(response)
+        elif self.path.startswith('/drop-suc-rep'):
+            response = self.server.node.drop_suc_rep()
             self.send_json_response(response, status=200)
-        elif self.path.startswith('/download-file'):
-            self.handle_download_file()
-        elif self.path == '/list_users':
-            response = self.server.node.list_users()
+        elif self.path.startswith('/drop-pred-rep'):
+            response = self.server.node.drop_pred_rep()
             self.send_json_response(response, status=200)
-        elif self.path == '/election_failed':
-            self.send_json_response({'status':'Accepted'}, status=202)
-            self.handle_start_election()
-        elif self.path == '/debug/discover':
-            logger.info(f'Discovery Debug Not Implemented')#TODO: Fix discovery
-        elif self.path == '/debug/finger_table':
-            self.server.node.print_finger_table()
-        elif self.path == '/debug/start-election':
-            self.handle_start_election()
-        elif self.path.startswith('/songs/stream/{song_id}'):#TODO sends the song with id
-            pass
-        elif self.path.startswith('/songs/genre/{genre}'):#TODO returns all song with genre
-            pass
-        elif self.path.startswith('/songs'):#TODO returns all songs gateway
-            self.server.node.get_songs()
-        elif self.path.startswith('/songs/{song_title}'):#TODO returns song with title song title
-            pass
+        elif self.path == '/get-leader':
+            response = self.server.node.leader_info()
+            self.send_json_response(response)
+        elif self.path == '/debug-node-data':
+            self.server.node._debug_log_data()
+            self.send_json_response({"status": "success"})
         else:
-            self.send_json_response(response, error_message='Page not found', status=404)
+            self.send_json_response(None, error_message='Resource not found', status=404)
             
     def handle_song(self):
         query_params = urlparse(self.path).query

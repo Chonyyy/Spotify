@@ -22,35 +22,47 @@ logger_dt = logging.getLogger("__main__.dt")
 #region ChordNode
 class ChordNode:
     def __init__(self, ip: str, db: JSONDatabase, pred_db: JSONDatabase, succ_db: JSONDatabase, role: str, port: int = 8001, m: int = 160):
+        # Node Information
         self.id = get_sha_repr(ip)
         self.ip = ip
         self.port = port
         self.role = role
         self.ref = ChordNodeReference(self.id, self.ip, self.port)
+
+        # Succ and Pred init
         self.succ = self.ref
-        self.prev_succ = self.id  
+        self.rep_succ = self.id #replicated_pred
         self.pred = self.ref
-        self.prev_pred = self.id 
+        self.rep_pred = self.id #replicated_pred
+
+        # Finger table
         self.m = m  # Number of bits in the hash/key space
         self.finger = [self.ref] * self.m  # Finger table
         self.next = 0  # Finger table index to fix next
-        self.data = db#TODO: si mi predecesor se cae, tengo que coger los datos que eran de el y hacerlos mios, si mi sucesor se cae tengo que darle los datos que antes eran de el y darselos a mi nuevo sucesor
+
+        # Data and Replication
+        self.data = db
         self.replicated_data_pred = pred_db
         self.replicated_data_succ = succ_db
-        self.leader = self.ref
-        self.election_started = False#TODO: What happens if the election takes too long
-        #TODO: If pred or succ changes, replicate the whole database
-        server_address = (self.ip, self.port)
-        self.httpd = HTTPServer(server_address, ChordNodeRequestHandler)
-        self.httpd.node = self#TODO: Make it so this is set in ititialization
         self.file_storage = f'./databases/node_{self.ip}/files' 
         os.makedirs(self.file_storage, exist_ok=True)
         self.replication_lock = threading.Lock()
-        self.multicast_msg_event = threading.Event()
+
+        # Coordination
+        self.leader = self.ref
+        self.election_started = False#TODO: What happens if the election takes too long
+
+        # Handler Init
+        server_address = (self.ip, self.port)
+        self.httpd = HTTPServer(server_address, ChordNodeRequestHandler)
+        self.httpd.node = self#TODO: Make it so this is set in ititialization
+        
 
         logger.info(f'node_addr: {ip}:{port} {self.id}')
         
-        self.discover_entry()# Fix this
+        # Discovery
+        self.multicast_msg_event = threading.Event()
+        self.discover_entry()
 
         # Start server and background threads
         threading.Thread(target=self.httpd.serve_forever, daemon=True).start()
@@ -72,9 +84,9 @@ class ChordNode:
             if self.pred.replication_queue:
                 with self.replication_lock:
                     self.succ.apply_rep_operations()
-                    self.prev_succ = self.succ.id
+                    self.rep_succ = self.succ.id
                     self.pred.apply_rep_operations()
-                    self.prev_pred = self.pred.id
+                    self.rep_pred = self.pred.id
     
     def drop_data(self):
         self.delete_files(self.file_storage)
@@ -342,7 +354,7 @@ class ChordNode:
                     self.succ = x
                     logger.info(f'New-Succ-Stabilize | {x.ip},{x.id}  | node {self.ip}, {self.ip}')
                     logger.info(f'enqueuing all database')
-                    if self.succ.id != self.prev_succ and self.succ.id != self.id:
+                    if self.succ.id != self.rep_succ and self.succ.id != self.id:
                         logger.info(f'Full replication comenced')
                         threading.Thread(target=self.succ.drop_suc_rep, daemon=True)
                         self.replicate_all_database()
@@ -361,7 +373,7 @@ class ChordNode:
         """Notify the node of a change."""
         if node.id != self.id and (not self.pred or self._inbetween(node.id, self.pred.id, self.id)):
             self.pred = node
-            if self.pred.id != self.prev_succ and self.pred.id != self.id:
+            if self.pred.id != self.rep_succ and self.pred.id != self.id:
                 threading.Thread(target=self.succ.drop_pred_rep, daemon=True)
                 self.replicate_all_database()
 
@@ -386,7 +398,7 @@ class ChordNode:
         while True:
             try:
                 if self.pred:
-                    self.pred.ping_predecessor()
+                    self.pred.ping
             except requests.ConnectionError:
                 logger_cp.info('Predecesor Down')
                 self.pred = self.ref
