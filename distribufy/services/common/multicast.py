@@ -62,6 +62,6 @@ def receive_multicast(role, timeout=10):
                 logger_mc.error(f"Received invalid discovery message: {data}")
     except socket.timeout:
         logger_mc.info(f"No discovery message received within the timeout of {timeout} seconds.")
-        return None
+        return [None]
     finally:
         sock.close()
