@@ -14,19 +14,19 @@ def initialize_database(role, filepath):
     if role == 'music_info':
         columns = ['key','title', 'album', 'genre', 'artist']
         replic_columns = ['key','title', 'album', 'genre', 'artist', 'source']
-        key_values = ['value']
+        key_fields = ['value']
     elif role == 'music_ftp':
         columns = ['key', 'addr']
         replic_columns = ['key', 'addr', 'columns']
-        key_values = ['value']
+        key_fields = ['value']
     elif role == 'gateway':
         columns  = ['key', 'ip', 'port', 'role']
-        key_values = ['value']
+        key_fields = ['value']
     elif role == 'chord_testing':
-        columns  = ['key', 'value', 'last_update', 'deleted']
-        replic_columns = ['key', 'value', 'last_update', 'deleted']
-        key_values = ['value']
-    return JSONDatabase(filepath, columns, key_values), JSONDatabase(filepath + 'pred', replic_columns, key_values), JSONDatabase(filepath + 'succ', replic_columns, key_values)
+        columns  = ['key', 'value']
+        replic_columns = ['key', 'value']
+        key_fields = ['value']
+    return JSONDatabase(filepath, columns, key_fields), JSONDatabase(filepath + 'pred', replic_columns, key_fields), JSONDatabase(filepath + 'succ', replic_columns, key_fields)
 
 
 if __name__ == "__main__":
