@@ -4,10 +4,10 @@ from prettytable import PrettyTable
 logger = logging.getLogger("__main__")
 
 class JSONDatabase:
-    def __init__(self, filepath, columns, key_values):
-        self.key_values = key_values
+    def __init__(self, filepath, columns, key_fields):
+        self.key_fields = key_fields
         self.filepath = filepath
-        self.columns = columns
+        self.columns = columns + ['last_update', 'deleted']
         try:
             with open(filepath + '.json', 'r') as file:
                 self.data = json.load(file)
@@ -31,7 +31,7 @@ class JSONDatabase:
     def validate_record(self, record):
         for column in self.columns:
             if column not in record:
-                raise ValueError(f"Missing required column: {column}")
+                raise KeyError(f"Missing required column: {column}")
         for key in record:
             if key not in self.columns:
                 raise ValueError(f"Invalid column: {key}")
