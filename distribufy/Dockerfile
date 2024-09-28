@@ -11,5 +11,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy databases and logs directories
 COPY databases/ /app/databases/
 
-# Command will be overridden by docker-compose.yml
-CMD ["python", "app.py"]
+# Set default command to bash
+CMD ["bash"]

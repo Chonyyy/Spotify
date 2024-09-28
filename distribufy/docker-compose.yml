@@ -1,0 +1,55 @@
+services:
+  first_container:
+    build: .
+    container_name: first_container
+    ports:
+      - "8001:8001"
+    volumes:
+      - .:/app
+    stdin_open: true
+    tty: true
+    command: bash
+
+  second_container:
+    build: .
+    container_name: second_container
+    ports:
+      - "8002:8001"
+    volumes:
+      - .:/app
+    stdin_open: true
+    tty: true
+    command: bash
+
+  third_container:
+    build: .
+    container_name: third_container
+    ports:
+      - "8003:8001"
+    volumes:
+      - .:/app
+    stdin_open: true
+    tty: true
+    command: bash
+
+  fourth_container:
+    build: .
+    container_name: fourth_container
+    ports:
+      - "8004:8001"
+    volumes:
+      - .:/app
+    stdin_open: true
+    tty: true
+    command: bash
+
+  fifth_container:
+    build: .
+    container_name: fifth_container
+    ports:
+      - "8005:8001"
+    volumes:
+      - .:/app
+    stdin_open: true
+    tty: true
+    command: bash
