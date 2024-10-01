@@ -67,14 +67,13 @@ class ChordNode:
         # Start server and background threads
         threading.Thread(target=self.httpd.serve_forever, daemon=True).start()
         logger.info(f'HTTP serving commenced')
+        self.discovery_thread = threading.Thread(target=send_multicast, args=(self.role, self.multicast_msg_event, {'ip':self.leader.ip, 'id':self.leader.id}), daemon=True)
 
         threading.Thread(target=self.stabilize, daemon=True).start()  # Start stabilize thread
         threading.Thread(target=self.fix_fingers, daemon=True).start()  # Start fix fingers thread
         threading.Thread(target=self.check_predecessor, daemon=True).start()  # Start check predecessor thread
         threading.Thread(target=self.check_leader, daemon=True).start()  # Start leader election thread
         threading.Thread(target=self.replication_loop, daemon=True).start()  # Start replication thread
-        self.discovery_thread = threading.Thread(target=send_multicast, args=(self.role, self.multicast_msg_event), daemon=True)
-        self.discovery_thread.start()
           
     #region Data
     
@@ -121,25 +120,30 @@ class ChordNode:
         
     #TODO: Respond to the callback once the data is actually stored
     def store_data(self, key_fields, data, callback = None):
-        key_information = ''
-        for element in [str(data[k]) for k in key_fields]:
-            key_information += element
+        key_information = ''.join([str(data[k]) for k in key_fields])
         key = get_sha_repr(key_information)
+
         logger_dt.info(f'Storing information: {key_information}; key: {key}')
+
         target_node = self.find_succ(key)
         logger.info(f'Asking for key {key}, to node {target_node.ip}|{target_node.id}')
+
         if target_node.id == self.id:
-            d = {}
-            d["id"] = key
-            for clave, valor in data.items():
-                d[clave] = valor 
+            record = {"id": key}
+            record.update(data)
+            self.data.insert(record)
                 
-            self.data.insert(d)
             logger.info(f'Data {key_information} stored at node {self.ip}')
-            self.enqueue_replication_operation(data, 'insertion', key)
+            
+            # Optionally respond to the callback if provided
+            if callback:
+                self._send_request(callback, {"status": "success", "key": key})
         else:
+            # Forward the request to the responsible node
             data['key_fields'] = key_fields
-            threading.Thread(target=target_node.send_store_data, args= [data, callback, key_fields], daemon=True).start()
+            if callback:
+                data['callback'] = callback
+            threading.Thread(target=target_node.send_store_data, args=(data, callback, key_fields), daemon=True).start()
             
     def store_file(self, file_key, file_name):#TODO: A request asking for the addr of the node to store the information should come first
         key = file_key
@@ -205,20 +209,67 @@ class ChordNode:
 
     #region Coordination
 
+    #TODO: Review this
+    def merge_rings(self, other_leader_info):
+        """Merge the current ring with another ring."""
+        logger.info(f"Initiating merge with leader {other_leader_info['leader_ip']}")
+        other_leader = ChordNodeReference(other_leader_info['leader_id'], other_leader_info['leader_ip'])
+        
+        # Notify successor to update the ring structure
+        self.succ = other_leader.find_successor(self.id)
+        self.succ.notify(self.ref)
+        
+        # Update predecessor as well
+        self.pred = other_leader.find_predecessor(self.id)
+        self.pred.notify(self.ref)
+        
+        logger.info(f"Rings merged with new successor: {self.succ.ip} and new predecessor: {self.pred.ip}")
+        
+        # Replicate data across the new ring
+        self.replicate_all_database()
+        threading.Thread(target=self.start_election, daemon=True).start()
+
     def check_leader(self):
-        """Regularly check the leader availability."""
-        while True and not self.election_started:
+        """Regularly check the leader availability and manage multicast based on leader status."""
+        while True:
             logger_le.info('===CHECKING LEADER===')
             try:
-                self.leader.ping
+                if self.leader.id == self.id:
+                    # This node is the leader, ensure multicast discovery is running
+                    self.multicast_send_toggle(True)
+
+                    # Check for other leaders (only when this node is a leader)
+                    other_leader_info = self.discover_other_leader()
+                    if other_leader_info and other_leader_info['leader_ip'] != self.ip:
+                        logger_le.info(f"Detected another leader: {other_leader_info['leader_ip']}")
+                        self.merge_rings(other_leader_info)
+
+                else:
+                    # This node is not the leader, stop multicast discovery
+                    self.multicast_send_toggle(False)
+
+                    # Check if the current leader is still alive
+                    self.leader.ping
+                    logger_le.info(f'Leader ping succesfull: {self.leader.ip}')
+
             except requests.ConnectionError:
-                logger_le.info('Connection with leader ended')
+                # Leader is down, start a new election
+                logger_le.info('Connection with leader ended, starting election.')
                 self.start_election()
+
             except Exception as e:
-                logger_le.error(f"in checking leader: {e}")
-                raise e
-            logger_le.info('===CHECKING LEADER===')
+                logger_le.error(f"Error in leader check: {e}")
+                # raise e
+            
+            logger_le.info('===LEADER CHECK DONE===')
             time.sleep(10)
+
+    def discover_other_leader(self):
+        """Listen for other leader nodes using multicast."""
+        _, other_leader_info = receive_multicast(self.role)
+        if other_leader_info and other_leader_info['leader_ip'] != self.ip:
+            return other_leader_info
+        return None
             
     def leader_info(self):
         return {'ip': self.leader.ip, 'id': self.leader.id}
@@ -236,7 +287,7 @@ class ChordNode:
     def start_election(self):
         self.election_started = True
         logger_le.info(f'Node {self.id} starting an election.')
-        self.leader = None  # Clear current leader
+        # self.leader = None  # Clear current leader #FIXME
         election_message = {'candidates': [(self.id, self.ip)], 'initiator': (self.id, self.ip)}
         self.succ.send_election_message(election_message)
         
@@ -303,28 +354,44 @@ class ChordNode:
     def closest_preceding_finger(self, id: int) -> 'ChordNodeReference':
         """Find the closest preceding finger for a given id."""
         for i in range(self.m - 1, -1, -1):
-            print(i)
+            # print(i) TODO: Why ?
             if self.finger[i] and self._inbetween(self.finger[i].id, self.id, id):
                 return self.finger[i]
         return self.ref
 
     def discover_entry(self):
-        retries = 4
+        retries = 2
         retry_interval = 5
 
         for _ in range(retries):
-            discovered_ip = receive_multicast(self.role)[0]
+            multi_response = receive_multicast(self.role)
+            discovered_ip = multi_response[0][0] if multi_response[0] else None
             if discovered_ip and discovered_ip != self.ip:
                 logger.info(f"Discovered entry point: {discovered_ip}")
                 discovered_node = ChordNodeReference(get_sha_repr(discovered_ip), discovered_ip, self.port)
+                self.leader = discovered_node
                 self.join(discovered_node)
                 return
             time.sleep(retry_interval)
         logger.info(f"No other node node discovered.")
-        
-    def mulicast_send_toggle(self):#TODO: Implement this
-        logger.info(f"Starting multicast discovery for role: {self.role}")
-        self.discovery_thread.start()
+    
+    def multicast_send_toggle(self, enable: bool):
+        """Toggle the multicast discovery for the leader node."""
+        if enable:
+            if not self.discovery_thread.is_alive():
+                logger.info(f"Starting multicast discovery for role: {self.role}")
+                self.multicast_msg_event.clear()  # Ensure the stop event is cleared
+                self.discovery_thread = threading.Thread(
+                    target=send_multicast, 
+                    args=(self.role, self.multicast_msg_event, {'ip': self.ip, 'id': self.id}), 
+                    daemon=True
+                )
+                self.discovery_thread.start()
+            else:
+                logger.info("Multicast discovery is already running.")
+        else:
+            logger.info("Stopping multicast discovery.")
+            self.multicast_msg_event.set()  # Trigger the stop event
 
     def join(self, node: 'ChordNodeReference'):
         """Join a Chord network using 'node' as an entry point."""
