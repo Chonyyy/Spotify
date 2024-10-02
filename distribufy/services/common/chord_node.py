@@ -33,7 +33,7 @@ class ChordNode:
         self.succ = self.ref
         self.rep_succ = self.id #replicated_pred
         self.pred = self.ref
-        self.rep_pred = self.id #replicated_pred
+        self.rep_seccond_succ = self.id #replicated_pred
 
         # Finger table
         self.m = m  # Number of bits in the hash/key space
@@ -43,7 +43,9 @@ class ChordNode:
         # Data and Replication
         self.data = db
         self.replicated_data_pred = pred_db
-        self.replicated_data_succ = succ_db
+        self.replicated_data_pred_source = self.id
+        self.replicated_data_sec_pred = succ_db
+        self.replicated_data_sec_pred_source = self.id
         self.file_storage = f'./databases/node_{self.ip}/files' 
         os.makedirs(self.file_storage, exist_ok=True)
         self.replication_lock = threading.Lock()
@@ -80,12 +82,13 @@ class ChordNode:
     def replication_loop(self):
         while True:
             time.sleep(30)
-            if self.pred.replication_queue:
-                with self.replication_lock:
-                    self.succ.apply_rep_operations()
-                    self.rep_succ = self.succ.id
-                    self.pred.apply_rep_operations()
-                    self.rep_pred = self.pred.id
+            try:
+                if self.succ.replication_queue:
+                    with self.replication_lock:
+                        self.succ.apply_rep_operations()
+                        self.rep_succ = self.succ.id
+            except Exception as e:
+                print("ERROR IN REPLICATION LOOP")
     
     def drop_data(self):
         self.delete_files(self.file_storage)
@@ -122,18 +125,19 @@ class ChordNode:
     def store_data(self, key_fields, data, callback = None):
         key_information = ''.join([str(data[k]) for k in key_fields])
         key = get_sha_repr(key_information)
-
         logger_dt.info(f'Storing information: {key_information}; key: {key}')
 
         target_node = self.find_succ(key)
         logger.info(f'Asking for key {key}, to node {target_node.ip}|{target_node.id}')
 
         if target_node.id == self.id:
-            record = {"id": key}
+            record = {"key": key, "last_update": "testing", "deleted": False}
             record.update(data)
             self.data.insert(record)
                 
             logger.info(f'Data {key_information} stored at node {self.ip}')
+
+            self.enqueue_replication_operation(record, 'insertion', key)
             
             # Optionally respond to the callback if provided
             if callback:
@@ -144,14 +148,21 @@ class ChordNode:
             if callback:
                 data['callback'] = callback
             threading.Thread(target=target_node.send_store_data, args=(data, callback, key_fields), daemon=True).start()
-            
+
+    def send_requested_data(self, source_id):
+        requested_data = self.data.query('key', ' ', lambda key: int(key) < source_id)
+        for entry in requested_data:
+            self.data.delete('key', entry['key'])
+        logger.debug(f'Sending {requested_data} to node {source_id}')
+        return requested_data
+    
     def store_file(self, file_key, file_name):#TODO: A request asking for the addr of the node to store the information should come first
         key = file_key
         logger_dt.info(f'Storing information to file: {file_name}; key: {key}')
         d = {}
-        d["id"] = key
+        d["key"] = key
         d['addr'] = self.file_storage + '/' + file_name
-        
+        logger.debug(f'Trying tp insert {d} in db')
         self.data.insert(d)
         logger.info(f'Data {(key, file_name)} stored at node {self.ip}')
         self.enqueue_replication_operation(d, 'file_insertion', key)
@@ -172,20 +183,20 @@ class ChordNode:
         if source == self.pred.id:
             logger.info(f'Storing replic information: {data} in from pred node {source}')
             d = {}
-            d["id"] = key
+            d["key"] = key
             for clave, valor in data.items():
                 d[clave] = valor 
-            d["source"] = source
+            self.replicated_data_pred_source = source
             self.replicated_data_pred.insert(d)
             logger.info(f'Replicated data stored')
-        if source == self.succ.id:
-            logger.info(f'Storing replic information: {data} in from succ node {source}')
+        if source == self.pred.pred.id:
+            logger.info(f'Storing replic information: {data} in from seccond-pred node {source}')
             d = {}
-            d["id"] = key
+            d["key"] = key
             for clave, valor in data.items():
                 d[clave] = valor 
-            d["source"] = source
-            self.replicated_data_succ.insert(d)
+            self.replicated_data_sec_pred_source = source
+            self.replicated_data_sec_pred.insert(d)
             logger.info(f'Replicated data stored')
             
     def enqueue_replication_operation(self, data, operation, key):
@@ -193,19 +204,19 @@ class ChordNode:
         retry_interval = 2  # seconds
         
         for _ in range(max_retries):
-            if self.succ.id == self.id or self.pred.id == self.id:
+            if self.succ.id == self.id or self.succ.succ == self.id:
                 logger.info('Stabilization in progress. Retrying...')
                 time.sleep(retry_interval)
             else:
                 with self.replication_lock:#TODO: Synch should be implemented so i cant delete something that havent been created ?
-                    self.pred.enqueue_rep_operation(self.id, data, operation, key)
+                    logger.debug(f'Enqueuing rep op {operation}:{key}')
                     self.succ.enqueue_rep_operation(self.id, data, operation, key)
                 break
         else:
             logger.error('Failed to enqueue replication operation after multiple retries.')
         
     def _debug_log_data(self):
-        logger.debug(f'Data in node {self.ip}\n{self.data}\nReplic succ\n{self.replicated_data_succ}\nReplic pred:\n{self.replicated_data_pred}')
+        logger.debug(f'Data in node {self.ip}\n{self.data}\nReplic succ\n{self.replicated_data_sec_pred}\nReplic pred:\n{self.replicated_data_pred}')
 
     #region Coordination
 
@@ -226,7 +237,7 @@ class ChordNode:
         logger.info(f"Rings merged with new successor: {self.succ.ip} and new predecessor: {self.pred.ip}")
         
         # Replicate data across the new ring
-        self.replicate_all_database()
+        # self.replicate_all_database()
         threading.Thread(target=self.start_election, daemon=True).start()
 
     def check_leader(self):
@@ -400,9 +411,16 @@ class ChordNode:
         logger.info(f'Joining to node {node.id}')
         self.pred = self.ref
         self.succ = node.find_successor(self.id)
+
         logger.info(f'New-Succ-join | {node.id} | node {self.id}')
         self.succ.notify(self.ref)
+
         time.sleep(10) #To wait a bit for the ring to stabilize
+        data_from_succ = self.succ.request_data(self.id)
+        logger.debug(f'Requested data from succ {data_from_succ}')
+        for record in data_from_succ:
+            self.data.insert(record)
+            self.enqueue_replication_operation(record, 'file_insertion', record['key'])
         self.start_election()
 
     def stabilize(self):
@@ -424,7 +442,7 @@ class ChordNode:
                     if self.succ.id != self.rep_succ and self.succ.id != self.id:
                         logger.info(f'Full replication comenced')
                         threading.Thread(target=self.succ.drop_suc_rep, daemon=True)
-                        self.replicate_all_database()
+                        # self.replicate_all_database()
                     
                 self.succ.notify(self.ref)
             # except ConnectionRefusedError:
@@ -442,7 +460,7 @@ class ChordNode:
             self.pred = node
             if self.pred.id != self.rep_succ and self.pred.id != self.id:
                 threading.Thread(target=self.succ.drop_pred_rep, daemon=True)
-                self.replicate_all_database()
+                # self.replicate_all_database()
 
     def fix_fingers(self):
         """Periodically update finger table entries."""

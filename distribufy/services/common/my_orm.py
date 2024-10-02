@@ -24,6 +24,9 @@ class JSONDatabase:
 
         return f'Filepath: {self.filepath}\nColumns: {self.columns}\nData:\n{table}'
 
+    def drop(self):
+        self.data = []
+
     def save(self):
         with open(self.filepath, 'w') as file:
             json.dump(self.data, file, indent=4)
@@ -68,21 +71,3 @@ class JSONDatabase:
         
     def _log_database(self, logger):
         logger.info(self.data)
-
-# # # Usage
-# db = JSONDatabase('db.json',['name', 'age'])
-
-# # Insert a record
-# db.insert({'name': 'John', 'age': 22})
-
-# print(db.__str__())
-# # Query the database
-# results = db.query('name', 'John')
-# print(results)
-
-# # Update a record
-# db.update('name', 'John', {'age': 23})
-
-
-# # Delete a record
-# db.delete('name', 'John')

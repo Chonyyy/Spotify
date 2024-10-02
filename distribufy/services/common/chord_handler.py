@@ -35,6 +35,9 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):
         if self.path == '/store-data':
             response = self.handle_store_data(post_data)
             self.send_json_response(response)
+        elif self.path == '/request_data':
+            response = self.handle_request_data(post_data)
+            self.send_json_response(response)
         elif self.path.startswith('/iterate-songs'):
             response = self.server.node._get_songs(post_data['origin'])
             self.send_json_response(response, status=200)
@@ -42,7 +45,6 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):
             response = self.handle_get_data(post_data)
             self.send_json_response(response)
         elif self.path == '/store-replic':
-            print('store replication')
             self.handle_store_replic(post_data)
             self.send_json_response({'status':'recieved'})
         elif self.path == '/election':
@@ -160,8 +162,6 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):
         #TODO: Add validations
         if 'source' not in post_data:
             self.send_json_response(None, error_message='Provided data must contain a source id', status=400)
-        if post_data['source'] != self.server.node.succ.id or post_data['source'] != self.server.node.pred.id:
-            self.send_json_response(None, error_message='Data must belong to predecesor or succesor', status=400)
         source = post_data['source']
         key = post_data['key']
         del post_data['key']
@@ -172,7 +172,8 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):
 
     def handle_store_data(self, post_data):
         if 'callback' not in post_data:
-            self.send_json_response(None, error_message='Provided data must contain a callback addr', status=400)
+            # self.send_json_response(None, error_message='Provided data must contain a callback addr', status=400)
+            post_data['callback'] = None
         if 'key_fields' not in post_data or not isinstance(post_data['key_fields'], list):
             self.send_json_response(None, error_message='Provided data must contain a key_fields list')
         callback = post_data['callback']
@@ -181,6 +182,12 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):
         self.server.node.store_data(key_fields, post_data, callback)
         return {"status": "success"}
     
+    def handle_request_data(self, post_data):
+        if 'id' not in post_data:
+            self.send_json_response(None, error_message='Provided data must contain an id')
+        id = post_data['id']
+        return self.server.node.send_requested_data(id)
+
     def handle_get_data(self, post_data):
         if 'callback' not in post_data:
             self.send_json_response(None, error_message='Provided data must contain a callback addr', status=400)

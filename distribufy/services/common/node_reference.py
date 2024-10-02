@@ -53,14 +53,17 @@ class ChordNodeReference:
         
     def enqueue_rep_operation(self, source_id, data, operation='insertion', key=None):
         self.replication_queue.append((source_id, data, operation, key))
+        print(f'{self.ip}{self.id} {self.replication_queue}')
     
     def apply_rep_operations(self):
+            logger_dt.debug("Apliying rep operations")
             while self.replication_queue:
                 source, data, operation, key = self.replication_queue.pop()
                 if operation == 'insertion':
                     data['source'] = source
                     data['key'] = key
                     self._send_request('/store-replic', data)
+                    self.succ._send_request('/store-replic', data)#TODO: implement a new endpoint for this
                 else:
                     logger.error('Operation not suported')#TODO: implement other operations
 
@@ -112,6 +115,14 @@ class ChordNodeReference:
         """Find the closest preceding finger for a given id."""
         response = self._send_request('/closest_preceding_finger', {'id': id})
         return ChordNodeReference(response['id'], response['ip'], self.port)
+
+    #region Data Management
+    def request_data(self, id: str):
+        """Request data after a new join"""
+        requested_data = self._send_request('/request_data', {'id': id})
+        if 'id' in requested_data:
+            return []
+        return requested_data
 
     #region Utils
         
