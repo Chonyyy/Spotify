@@ -21,7 +21,7 @@ logger_dt = logging.getLogger("__main__.dt")
 
 #region ChordNode
 class ChordNode:
-    def __init__(self, ip: str, db: JSONDatabase, pred_db: JSONDatabase, succ_db: JSONDatabase, role: str, port: int = 8001, m: int = 160):
+    def __init__(self, ip: str, db: JSONDatabase, sec_succ_db: JSONDatabase, succ_db: JSONDatabase, role: str, port: int = 8001, m: int = 160):
         # Node Information
         self.id = get_sha_repr(ip)
         self.ip = ip
@@ -31,9 +31,9 @@ class ChordNode:
 
         # Succ and Pred init
         self.succ = self.ref
-        self.rep_succ = self.id #replicated_pred
+        self.rep_succ = self.id #last replicated succ
+        self.rep_seccond_succ = self.id #last replicated sec suc
         self.pred = self.ref
-        self.rep_seccond_succ = self.id #replicated_pred
 
         # Finger table
         self.m = m  # Number of bits in the hash/key space
@@ -42,7 +42,7 @@ class ChordNode:
 
         # Data and Replication
         self.data = db
-        self.replicated_data_pred = pred_db
+        self.replicated_data_pred = sec_succ_db
         self.replicated_data_pred_source = self.id
         self.replicated_data_sec_pred = succ_db
         self.replicated_data_sec_pred_source = self.id
@@ -94,32 +94,17 @@ class ChordNode:
         self.delete_files(self.file_storage)
         
     def replicate_all_database(self):
+        self.rep_succ = self.succ.id
         for record in self.data.get_all():
             record = record.copy()
-            print('record copied')
-            key = record['id']
-            del record['id']
+            key = record['key']
             self.enqueue_replication_operation(record, 'insertion', key)
         
+    def drop_sec_suc_rep(self):
+        self.replicated_data_sec_pred.drop()
+    
     def drop_suc_rep(self):
-        self.delete_files()
-    
-    def drop_pred_rep(self):
-        self.delete_files()
-    
-    def delete_files(self, filepath):
-         # Lista todos los archivos en el directorio dado
-        files = os.listdir(filepath)
-        
-        # Itera sobre cada archivo en el directorio
-        for file in files:
-            # Construye la ruta completa del archivo
-            complete_rute = os.path.join(filepath, file)
-            
-            # Verifica si es un archivo y lo elimina
-            if os.path.isfile(complete_rute):
-                os.remove(complete_rute)
-                logger.info(f'Archivo eliminado: {complete_rute}')
+        self.replicated_data_pred.drop()
         
     #TODO: Respond to the callback once the data is actually stored
     def store_data(self, key_fields, data, callback = None):
@@ -155,17 +140,6 @@ class ChordNode:
             self.data.delete('key', entry['key'])
         logger.debug(f'Sending {requested_data} to node {source_id}')
         return requested_data
-    
-    def store_file(self, file_key, file_name):#TODO: A request asking for the addr of the node to store the information should come first
-        key = file_key
-        logger_dt.info(f'Storing information to file: {file_name}; key: {key}')
-        d = {}
-        d["key"] = key
-        d['addr'] = self.file_storage + '/' + file_name
-        logger.debug(f'Trying tp insert {d} in db')
-        self.data.insert(d)
-        logger.info(f'Data {(key, file_name)} stored at node {self.ip}')
-        self.enqueue_replication_operation(d, 'file_insertion', key)
 
     def get_data(self, key, callback):#TODO: While testing sending to an invalid url, the url seemed fine but got an error
         logger_dt.info(f'Getting item by key {key}')
@@ -435,14 +409,15 @@ class ChordNode:
                     logger_stab.info('Current predecessor is None')
                     
                 x = self.succ.pred
-                if x.id != self.id and x and self._inbetween(x.id, self.id, self.succ.id):#TODO: replicate all database
+                if x and x.id != self.id and self._inbetween(x.id, self.id, self.succ.id):#TODO: replicate all database
                     self.succ = x
                     logger.info(f'New-Succ-Stabilize | {x.ip},{x.id}  | node {self.ip}, {self.ip}')
                     logger.info(f'enqueuing all database')
                     if self.succ.id != self.rep_succ and self.succ.id != self.id:
                         logger.info(f'Full replication comenced')
-                        threading.Thread(target=self.succ.drop_suc_rep, daemon=True)
-                        # self.replicate_all_database()
+                        self.succ.drop_suc_rep()
+                        self.succ.succ.drop_sec_suc_rep()
+                        self.replicate_all_database()
                     
                 self.succ.notify(self.ref)
             # except ConnectionRefusedError:

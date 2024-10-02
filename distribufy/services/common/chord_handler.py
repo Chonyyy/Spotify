@@ -83,8 +83,8 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):
         elif self.path.startswith('/drop-suc-rep'):
             response = self.server.node.drop_suc_rep()
             self.send_json_response(response, status=200)
-        elif self.path.startswith('/drop-pred-rep'):
-            response = self.server.node.drop_pred_rep()
+        elif self.path.startswith('/drop-sec-suc-rep'):
+            response = self.server.node.drop_sec_suc_rep()
             self.send_json_response(response, status=200)
         elif self.path == '/get-leader':
             response = self.server.node.leader_info()

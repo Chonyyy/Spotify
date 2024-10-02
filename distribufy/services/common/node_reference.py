@@ -28,8 +28,8 @@ class ChordNodeReference:
     def drop_suc_rep(self):
         self._send_request('/drop-suc-rep', method='get')
         
-    def drop_pred_rep(self):
-        self._send_request('/drop-pred-rep', method='get')
+    def drop_sec_suc_rep(self):
+        self._send_request('/drop-sec-suc-rep', method='get')
     
     def send_election_message(self, election_message):
         self._send_request('/election', election_message)
