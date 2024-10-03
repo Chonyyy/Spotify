@@ -36,6 +36,9 @@ class ChordNodeReference:
 
     def send_coordinator_message(self, coordinator_message):
         self._send_request('/coordinator', coordinator_message)
+        
+    def get_songs(self):
+        self._send_request('/get-songs', method='get')
     
     def send_store_data(self, data, callback, key_fields):
         """Send request to store a user."""
@@ -164,3 +167,7 @@ class ChordNodeReference:
 
     def __repr__(self) -> str:
         return str(self)
+
+    # hacer request al nodo original
+    # en el handler hacer un endpoit pa lo q yo quiero y ded ese endpoint llamar a self.server.node hacer una funcion ahi
+    # y llamar a esa funcion pa q m devuelva los datos que quiero

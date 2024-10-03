@@ -11,9 +11,9 @@ logger = logging.getLogger(__name__)
 def initialize_database(role, filepath):
     columns = None
     replic_columns = None
-    if role == 'music_info':
+    if role == 'music_service':
         columns = ['key','title', 'album', 'genre', 'artist']
-        replic_columns = ['key','title', 'album', 'genre', 'artist', 'source']
+        replic_columns = ['key','title', 'album', 'genre', 'artist']
         key_fields = ['value']
     elif role == 'music_ftp':
         columns = ['key', 'addr']
