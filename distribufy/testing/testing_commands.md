@@ -1,4 +1,6 @@
-//Store Data
+# Comandos de CHordNode
+
+## Store Data
 Invoke-WebRequest -Uri http://localhost:8001/store-data -Method POST -Body '{"key_fields":["title"],"title":"t", "album":"a", "genre":"g", "artist":"a", "callback": "http://a.com"}' -ContentType "application/json"
 curl -X POST http://localhost:8001/store-data \
      -H "Content-Type: application/json" \
@@ -10,14 +12,13 @@ curl -X POST http://localhost:8002/store-data ^
      -d "{\"key_fields\":[\"title\"],\"title\":\"t\", \"album\":\"a\", \"genre\":\"g\", \"artist\":\"a\", \"callback\": \"http://a.com\"}"
 
 
-
-//Getting Data
+## Getting Data
 Invoke-WebRequest -Uri http://localhost:8002/get-data -Method POST -Body '{"callback":"https://warever.com", "key":922182856952740759111154525263473632235391720628}' -ContentType "application/json"
 curl -X POST http://localhost:8002/get-data ^
      -H "Content-Type: application/json" ^
      -d '{"callback":"https://warever.com", "key":922182856952740759111154525263473632235391720628}'
 
-//Debug Data
+## Debug Data
 Invoke-WebRequest -Uri http://localhost:8001/debug-node-data -Method POST -Body '{}' -ContentType "application/json"
 curl -X POST http://localhost:8001/debug-node-data \
      -H "Content-Type: application/json" \
@@ -29,21 +30,21 @@ curl -X GET http://localhost:8004/debug-node-data ^
      -d "{}"
 
 
-//Getting an specific user
+## Getting an specific user
 Invoke-WebRequest -Uri http://localhost:8001/get_user?user=user1 -Method GET -ContentType "application/json"
 curl -X GET http://localhost:8001/get_user?user=user1 \
      -H "Content-Type: application/json"
 
-//Getting all Users
+## Getting all Users
 Invoke-WebRequest -Uri http://localhost:8001/list_users -Method GET -ContentType "application/json"
 curl -X GET http://localhost:8001/list_users \
      -H "Content-Type: application/json"
 
-//Printing the Finger table
+## Printing the Finger table
 Invoke-WebRequest -Uri http://localhost:8001/debug/finger_table -Method GET -ContentType "application/json"
 curl -X GET http://localhost:8001/debug/finger_table \-H "Content-Type: application/json"
 
-//Running a container instance
+## Running a container instance
 //exposing port -p 8001:8001 
 docker run -it --rm --name first_container -p 8001:8001 -v .\:/app distribufy
 docker run -it --rm --name second_container -p 8002:8001 -v .\:/app distribufy
@@ -59,3 +60,9 @@ curl -X POST http://localhost:8001/store-data \
 
 curl -X GET http://localhost:8001/debug/finger_table \
      -H "Content-Type: application/json"
+
+
+# Comandos de MusicNode
+
+curl -X GET http://localhost:8002/get-db ^
+     -H "Content-Type: application/json" 

@@ -13,8 +13,6 @@ logger_dt = logging.getLogger("__main__.dt")
 
 
 class MusicNodePresentation(ChordNodeRequestHandler):
-    def __init__():
-        pass
     
     def do_POST(self):
         logger_rh.debug(f'Request path {self.path}')
@@ -47,6 +45,7 @@ class MusicNodePresentation(ChordNodeRequestHandler):
         response = None
         if self.path == '/get-db':
             response = self.server.node.get_db()
+            print(response)
             self.send_json_response(response)
         elif self.path == '/get-songs':
             response = self.server.node.get_all_songs()
