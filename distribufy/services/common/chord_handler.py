@@ -61,10 +61,7 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):
             response = self.server.node.find_pred(post_data['id'])
             self.send_json_response(response)
         elif self.path == '/closest_preceding_finger':
-            response = self.server.node.get_db()
-            self.send_json_response(response)
-        elif self.path == '/get-songs':
-            response = self.server.node.find_pred(post_data['id'])
+            response = self.server.node.closest_preceding_finger(post_data['id'])
             self.send_json_response(response)
         else:
             self.send_json_response({}, 'Invalid Endpoint', status=404)
