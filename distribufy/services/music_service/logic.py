@@ -18,10 +18,11 @@ class MusicNode(ChordNode):
         self.role = role 
         self.ip = ip
         self.port = port
+        print("Vine a logic")
         # Handler Init
-        server_address = (self.ip, self.port)
-        self.httpd = HTTPServer(server_address, MusicNodePresentation)
-        self.httpd.node = self#TODO: Make it so this is set in ititialization
+        # server_address = (self.ip, self.port)
+        # self.httpd = HTTPServer(server_address, MusicNodePresentation)
+        # self.httpd.node = self#TODO: Make it so this is set in ititialization
          
         
     def get_db(self):

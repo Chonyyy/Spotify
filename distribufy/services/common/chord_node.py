@@ -9,6 +9,7 @@ from services.common.utils import get_sha_repr
 from services.common.node_reference import ChordNodeReference
 from services.common.chord_handler import ChordNodeRequestHandler
 from services.common.multicast import send_multicast, receive_multicast
+from services.music_service.presentation import MusicNodePresentation
 
 # Set up logging
 logger = logging.getLogger("__main__")
@@ -28,7 +29,6 @@ class ChordNode:
         self.port = port
         self.role = role
         self.ref = ChordNodeReference(self.id, self.ip, self.port)
-
         # Succ and Pred init
         self.succ = self.ref
         self.rep_succ = self.id #replicated_pred
@@ -55,17 +55,29 @@ class ChordNode:
         self.election_started = False#TODO: What happens if the election takes too long
 
         # Handler Init
-        server_address = (self.ip, self.port)
-        self.httpd = HTTPServer(server_address, ChordNodeRequestHandler)
-        self.httpd.node = self#TODO: Make it so this is set in ititialization
+        # server_address = (self.ip, self.port)
+        # self.httpd = HTTPServer(server_address, ChordNodeRequestHandler)
+        # self.httpd.node = self#TODO: Make it so this is set in ititialization
         
+        # Condicionar la inicialización del HTTPServer
+        if type(self).__name__ == 'ChordNode':  # Solo inicializa httpd si no es clase hija
+            server_address = (self.ip, self.port)
+            self.httpd = HTTPServer(server_address, ChordNodeRequestHandler)
+            self.httpd.node = self
+        
+        if type(self).__name__ == 'MusicNode':  # Solo inicializa httpd si no es clase hija
+            print("Inicialice music node")
+            server_address = (self.ip, self.port)
+            self.httpd = HTTPServer(server_address, MusicNodePresentation)
+            self.httpd.node = self
+        print("sali de inicializar")
 
         logger.info(f'node_addr: {ip}:{port} {self.id}')
         
         # Discovery
         self.multicast_msg_event = threading.Event()
         self.discover_entry()
-
+        print("Estoy en los threads")
         # Start server and background threads
         threading.Thread(target=self.httpd.serve_forever, daemon=True).start()
         logger.info(f'HTTP serving commenced')
