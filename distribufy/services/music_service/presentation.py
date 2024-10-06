@@ -16,36 +16,31 @@ class MusicNodePresentation(ChordNodeRequestHandler):
     
     def do_POST(self):
         super().do_POST()
-        logger_rh.debug(f'Request path {self.path}')
-        """Handle POST requests."""
-        content_length = int(self.headers['Content-Length'])
-        post_data = json.loads(self.rfile.read(content_length))
-        logger_rh.debug(f'Handling the following request \n{post_data}')
-        
-        response = None
-        
-        if self.path == 'get_song':
-            response = self.server.get_song(post_data)
+
+        if self.path == 'get-song':
+            response = self.server.get_song(self.post_data)  # Utilizar el post_data de la clase padre
             self.send_json_response(response)
         elif self.path == 'save-song':
-            response = self.server.node.save_song(post_data)
+            response = self.server.node.save_song(self.post_data)
             self.send_json_response(response)
         elif self.path == '/get-songs-by-title':
-            response = self.server.node.get_songs_by_title(post_data)
+            response = self.server.node.get_songs_by_title(self.post_data)
             self.send_json_response(response)
         elif self.path == '/get-songs-by-author':
-            response = self.server.node.get_songs_by_author(post_data)
+            response = self.server.node.get_songs_by_author(self.post_data)
             self.send_json_response(response)
         elif self.path == '/get_songs_by_gender':
-            response = self.server.node.get_songs_by_gender(post_data)
+            response = self.server.node.get_songs_by_gender(self.post_data)
             self.send_json_response(response)
+        
+        print("Sali de los if de post")
 
     
     def do_GET(self):
         super().do_GET()
+        
         """Handle GET requests."""
         logger_rh.debug(f'Request path {self.path}')
-        response = None
         
         if self.path == '/get-db':
             response = self.server.node.get_db()

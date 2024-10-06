@@ -35,7 +35,7 @@ curl -X POST http://localhost:8001/debug-node-data \
      -d '{}'
 
 windows
-curl -X GET http://localhost:8002/debug-node-data ^
+curl -X GET http://localhost:8004/debug-node-data ^
      -H "Content-Type: application/json" ^
      -d "{}"
 
