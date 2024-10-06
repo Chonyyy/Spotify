@@ -38,6 +38,9 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):
         elif self.path == '/request_data':
             response = self.handle_request_data(post_data)
             self.send_json_response(response)
+        elif self.path == '/update-sec-succ':
+            self.handle_update_sec_succ(post_data)
+            self.send_json_response(response)
         elif self.path.startswith('/iterate-songs'):
             response = self.server.node._get_songs(post_data['origin'])
             self.send_json_response(response, status=200)
@@ -190,6 +193,9 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):
             self.send_json_response(None, error_message='Provided data must contain an id')
         id = post_data['id']
         return self.server.node.send_requested_data(id)
+    
+    def handle_update_sec_succ(self, post_data):
+        self.server.node.update_sec_succ(post_data['id'], post_data['ip'])
 
     def handle_get_data(self, post_data):
         if 'callback' not in post_data:

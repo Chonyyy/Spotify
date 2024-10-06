@@ -94,8 +94,13 @@ class ChordNode:
             try:
                 if self.succ.replication_queue:
                     with self.replication_lock:
+                        logger.info(f'Succesor rep apply{self.succ.ip}')
                         self.succ.apply_rep_operations()
                     with self.replication_lock:
+                        logger.info(f'Seccond succesor rep apply{self.sec_succ.ip}')
+                        self.sec_succ.apply_rep_operations()
+                if self.sec_succ.replication_queue:
+                        logger.info(f'Seccond succesor rep apply{self.sec_succ.ip}')
                         self.sec_succ.apply_rep_operations()
             except Exception as e:
                 logger.error(f'ERROR IN REPLICATION LOOP: {e}')
@@ -443,7 +448,14 @@ class ChordNode:
                         logger.info(f'Full replication comenced')
                         self.succ.drop_suc_rep()
                         self.replicate_all_database_succ()
-                        self.pred.replicate_sec_succ()
+                        second_succ = self.succ.succ
+                        logger.debug(f'succ succ = {second_succ.ip}')
+                        if second_succ.id != self.id:
+                            self.succ.drop_sec_suc_rep()
+                            self.pred.update_sec_succ(self.succ.id, self.succ.ip)
+                            self.pred.replicate_sec_succ()
+                        else:
+                            self.sec_succ = self.id
                     
             # except ConnectionRefusedError:
             except requests.ConnectionError:
@@ -455,11 +467,13 @@ class ChordNode:
             time.sleep(10)
 
     def replicate_sec_succ(self):
-        if self.sec_succ.id != self.id:
-            self.sec_succ.drop_sec_suc_rep()
-        else:
-            self.replicated_data_sec_pred.drop()
         self.replicate_all_database_sec_succ()
+
+    def update_sec_succ(self, id, ip):
+        logger.info(f'updating sec-succ to {ip}')
+        logger.info(f'updating sec-succ to {id}')
+        self.sec_succ = ChordNodeReference(id, ip, self.port)#TODO: get also the port
+        logger.info(f'updated sec-succ to {ip}')
 
     def notify(self, node: 'ChordNodeReference'):
         """Notify the node of a change."""
