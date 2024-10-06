@@ -4,6 +4,7 @@ import logging
 from urllib.parse import urlparse, parse_qs
 from http.server import BaseHTTPRequestHandler
 from services.gateway.gateway_reference import GatewayReference
+from services.common.chord_handler import ChordNodeRequestHandler
 
 # Set up logging
 logger = logging.getLogger("__main__")
@@ -14,80 +15,45 @@ logger_rh = logging.getLogger("__main__.rh")
 logger_le = logging.getLogger("__main__.le")
 logger_dt = logging.getLogger("__main__.dt")
 
-class GatewayRequestHandler(BaseHTTPRequestHandler):
+import json
+import logging
+from http.server import BaseHTTPRequestHandler
+
+# Setup logging
+logger = logging.getLogger("__main__")
+
+class GatewayRequestHandler(ChordNodeRequestHandler):
     def do_POST(self):
-        logger_rh.debug(f'Request path {self.path}')
-        """Handle POST requests."""
-        
+        """Manejar solicitudes POST."""
         content_length = int(self.headers['Content-Length'])
         post_data = json.loads(self.rfile.read(content_length))
-        logger_rh.debug(f'Handling the following request \n{post_data}')
+        logger.debug(f'Request received at {self.path}: {post_data}')
         
         response = None
         
         if self.path == '/notify':
-            self.handle_notify(post_data)
-        elif self.path == '/new_leader':
-            self.handle_new_leader(post_data)
-        elif self.path == '/share_knowledge':
-            self.handle_share_knowledge(post_data['nodes'])
-        elif self.path == '/rep_data':
-            self.handle_rep_data(post_data)
-        else:
-            self.send_json_response(None, error_message='Page not found', status=404)
-
+            response = self.handle_notify(post_data)
+        elif self.path == '/update-node-list':
+            response = self.server.node.update_node_list(post_data['nodes'])
+        elif self.path == '/update-leader':
+            response = self.server.node.update_leader(post_data['leader_ip'])
+        
+        self.send_json_response(response)
+        
     def do_GET(self):
-        """Handle GET requests."""
-        logger_rh.debug(f'Request path {self.path}')
-        response = None
-        
-        if self.path == '/ping':
-            self.send_json_response({'status':'up'})
+        # Manejar las solicitudes GET
+        if self.path == '/get-nodes':
+            self.send_json_response([node.__dict__ for node in self.server.node.node_list])
+        elif self.path == '/get-leader':
+            self.send_json_response(self.server.node.leader.__dict__)
         else:
-            self.send_json_response(None, error_message='Page not found', status=404)
+            self.send_json_response({"error": "Invalid endpoint"}, status=404)
 
-    def handle_notify(self, node_data):
-        node = GatewayReference(node_data['id'], node_data['ip'])
-        result = self.server.node.notify(node)
-        if result[0]:
-            self.send_json_response(result[1])
-        else:
-            self.send_json_response(None, result[1], 400)
-            
-    def handle_new_leader(self, leader_data):
-        node = GatewayReference(leader_data['id'], leader_data['ip'])
-        self.server.node.set_new_leader(node) #TODO return if leader its alive
-        self.send_json_response({'status':'ok'})
-    
-    def handle_share_knowledge(self, nodes):
-        live_nodes = []
-        for node in nodes:
-            live_nodes.append(GatewayReference(**node))
-        self.server.node.share_knowledge(live_nodes)
         
-    def send_json_response(self, response, error_message=None, status=200, origin = None):
-        if origin:
-            print(f'Responging to {self.client_address}, from {origin}')
+    def send_json_response(self, response, status=200):
+        """Enviar respuesta JSON."""
         self.send_response(status)
-        self.send_header("Content-type", "application/json")
+        self.send_header('Content-Type', 'application/json')
         self.end_headers()
-        
         if response:
-            if isinstance(response, dict):
-                if origin:
-                    print('response as dict')
-                self.wfile.write(json.dumps(response).encode())
-            elif isinstance(response, GatewayReference):
-                self.wfile.write(json.dumps({'id': response.id, 'ip': response.ip}).encode())
-            else:
-                self.wfile.write(json.dumps(response).encode())
-        else:
-            if error_message:
-                self.wfile.write(json.dumps({'status': 'error', 'message': error_message}).encode())
-            else:
-                self.wfile.write(json.dumps({'id': None, 'ip': None}).encode())
-                
-    def handle_rep_data(self, data):
-        """Update the node's data store with the provided data."""
-        self.server.node.update_rep_data(data)
-        self.send_json_response({'data': data})
+            self.wfile.write(json.dumps(response).encode())
