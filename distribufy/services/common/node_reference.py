@@ -34,6 +34,9 @@ class ChordNodeReference:
     def replicate_sec_succ(self):
         self._send_request('/replicate-sec-succ', method='get')
 
+    def update_sec_succ(self, id, ip):
+        self._send_request('/update-sec-succ', {'id': id, 'ip': ip})
+
     def send_election_message(self, election_message):
         self._send_request('/election', election_message)
 
