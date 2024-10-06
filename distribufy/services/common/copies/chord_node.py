@@ -21,7 +21,7 @@ logger_dt = logging.getLogger("__main__.dt")
 
 #region ChordNode
 class ChordNode:
-    def __init__(self, ip: str, db: JSONDatabase, pred_db: JSONDatabase, succ_db: JSONDatabase, role: str, port: int = 8001, m: int = 160):
+    def __init__(self, ip: str, db: JSONDatabase, sec_succ_db: JSONDatabase, succ_db: JSONDatabase, role: str, port: int = 8001, m: int = 160):
         self.id = get_sha_repr(ip)
         self.ip = ip
         self.port = port
@@ -35,7 +35,7 @@ class ChordNode:
         self.finger = [self.ref] * self.m  # Finger table
         self.next = 0  # Finger table index to fix next
         self.data = db#TODO: si mi predecesor se cae, tengo que coger los datos que eran de el y hacerlos mios, si mi sucesor se cae tengo que darle los datos que antes eran de el y darselos a mi nuevo sucesor
-        self.replicated_data_pred = pred_db
+        self.replicated_data_pred = sec_succ_db
         self.replicated_data_succ = succ_db
         self.leader = self.ref
         self.election_started = False#TODO: What happens if the election takes too long

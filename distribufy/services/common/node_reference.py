@@ -27,10 +27,13 @@ class ChordNodeReference:
     #region Coordination
     def drop_suc_rep(self):
         self._send_request('/drop-suc-rep', method='get')
-        
-    def drop_pred_rep(self):
-        self._send_request('/drop-pred-rep', method='get')
+
+    def drop_sec_suc_rep(self):
+        self._send_request('/drop-sec-suc-rep', method='get')
     
+    def replicate_sec_succ(self):
+        self._send_request('/replicate-sec-succ', method='get')
+
     def send_election_message(self, election_message):
         self._send_request('/election', election_message)
 
@@ -66,7 +69,7 @@ class ChordNodeReference:
                     data['source'] = source
                     data['key'] = key
                     self._send_request('/store-replic', data)
-                    self.succ._send_request('/store-replic', data)#TODO: implement a new endpoint for this
+                    self.succ._send_request('/store-replic', data)
                 else:
                     logger.error('Operation not suported')#TODO: implement other operations
 

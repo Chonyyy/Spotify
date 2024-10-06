@@ -26,7 +26,7 @@ def initialize_database(role, filepath):
         columns  = ['key', 'value']
         replic_columns = ['key', 'value']
         key_fields = ['value']
-    return JSONDatabase(filepath, columns, key_fields), JSONDatabase(filepath + 'pred', replic_columns, key_fields), JSONDatabase(filepath + 'succ', replic_columns, key_fields)
+    return JSONDatabase(filepath, columns, key_fields), JSONDatabase(filepath + 'sec_suc', replic_columns, key_fields), JSONDatabase(filepath + 'succ', replic_columns, key_fields)
 
 
 if __name__ == "__main__":
@@ -51,5 +51,5 @@ if __name__ == "__main__":
     # Starting server
     database_name = f'db_{ip}'
     role = str(sys.argv[1])
-    db, pred_db, succ_db = initialize_database(role, database_name)
-    start_server(ip, role=role, db=db, pred_db=pred_db, succ_db=succ_db)
+    db, sec_succ_db, succ_db = initialize_database(role, database_name)
+    start_server(ip, role=role, db=db, sec_succ_db=sec_succ_db, succ_db=succ_db)
