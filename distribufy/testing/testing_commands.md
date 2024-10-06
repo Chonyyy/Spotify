@@ -1,7 +1,17 @@
+# Running a container instance
+//exposing port -p 8001:8001 
+docker run -it --rm --name first_container -p 8001:8001 -v .\:/app distribufy
+docker run -it --rm --name second_container -p 8002:8001 -v .\:/app distribufy
+docker run -it --rm --name third_container -p 8003:8001 -v .\:/app distribufy
+docker run -it --rm --name fourth_container -p 8004:8001 -v .\:/app distribufy
+docker run -it --rm --name fifth_container -p 8005:8001 -v .\:/app distribufy
+
+
 # Comandos de CHordNode
 
 ## Store Data
 Invoke-WebRequest -Uri http://localhost:8001/store-data -Method POST -Body '{"key_fields":["title"],"title":"t", "album":"a", "genre":"g", "artist":"a", "callback": "http://a.com"}' -ContentType "application/json"
+
 curl -X POST http://localhost:8001/store-data \
      -H "Content-Type: application/json" \
      -d '{"username": "user1", "password": "password123", "callback":"warever.com", "key_fields":["username"]}'
@@ -9,7 +19,7 @@ curl -X POST http://localhost:8001/store-data \
 windows
 curl -X POST http://localhost:8002/store-data ^
      -H "Content-Type: application/json" ^
-     -d "{\"key_fields\":[\"title\"],\"title\":\"t\", \"album\":\"a\", \"genre\":\"g\", \"artist\":\"a\", \"callback\": \"http://a.com\"}"
+     -d "{\"key_fields\":[\"title\"],\"title\":\"t1\", \"album\":\"a\", \"genre\":\"g\", \"artist\":\"a\", \"callback\": \"http://a.com\"}"
 
 
 ## Getting Data
@@ -25,7 +35,7 @@ curl -X POST http://localhost:8001/debug-node-data \
      -d '{}'
 
 windows
-curl -X GET http://localhost:8004/debug-node-data ^
+curl -X GET http://localhost:8002/debug-node-data ^
      -H "Content-Type: application/json" ^
      -d "{}"
 
@@ -43,14 +53,6 @@ curl -X GET http://localhost:8001/list_users \
 ## Printing the Finger table
 Invoke-WebRequest -Uri http://localhost:8001/debug/finger_table -Method GET -ContentType "application/json"
 curl -X GET http://localhost:8001/debug/finger_table \-H "Content-Type: application/json"
-
-## Running a container instance
-//exposing port -p 8001:8001 
-docker run -it --rm --name first_container -p 8001:8001 -v .\:/app distribufy
-docker run -it --rm --name second_container -p 8002:8001 -v .\:/app distribufy
-docker run -it --rm --name third_container -p 8003:8001 -v .\:/app distribufy
-docker run -it --rm --name fourth_container -p 8004:8001 -v .\:/app distribufy
-docker run -it --rm --name fifth_container -p 8005:8001 -v .\:/app distribufy
 
 
 

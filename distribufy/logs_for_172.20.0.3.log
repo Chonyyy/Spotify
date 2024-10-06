@@ -1,22 +1,8 @@
-22:34:43 - __main__ - INFO - node_addr: 172.20.0.3:8001 1326221342214535238892280395028687364720704916063
-22:34:43 - __main__.mc - INFO - Receiving multicast messages from 224.1.1.1 for role music_service
-22:34:53 - __main__.mc - INFO - Discovered node: 172.20.0.2 with role: music_service
-22:34:53 - __main__.mc - INFO - Detected leader: 172.20.0.2, 245429615487563066373180685686487647732551519295
-22:34:53 - __main__ - INFO - Discovered entry point: 172.20.0.2
-22:34:53 - __main__ - INFO - Joining to node 245429615487563066373180685686487647732551519295
-22:34:53 - __main__ - INFO - Sending POST request to http://172.20.0.2:8001/find_successor
+19:25:50 - __main__ - INFO - node_addr: 172.20.0.3:8001 1326221342214535238892280395028687364720704916063
+19:25:50 - __main__.mc - INFO - Receiving multicast messages from 224.1.1.1 for role music_service
+19:25:54 - __main__.mc - INFO - Discovered node: 172.20.0.2 with role: music_service
+19:25:54 - __main__.mc - INFO - Detected leader: 172.20.0.2, 245429615487563066373180685686487647732551519295
+19:25:54 - __main__ - INFO - Discovered entry point: 172.20.0.2
+19:25:54 - __main__ - INFO - Joining to node 245429615487563066373180685686487647732551519295
+19:25:54 - __main__ - INFO - Sending POST request to http://172.20.0.2:8001/find_successor
 Payload: {'id': '1326221342214535238892280395028687364720704916063'}
-22:34:53 - __main__ - ERROR - Connection Error in IP 172.20.0.2
-22:34:53 - __main__ - ERROR - ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
-22:34:53 - __main__ - INFO - Sending POST request to http://172.20.0.2:8001/find_successor
-Payload: {'id': '1326221342214535238892280395028687364720704916063'}
-22:34:53 - __main__ - ERROR - Connection Error in IP 172.20.0.2
-22:34:53 - __main__ - ERROR - ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
-22:34:53 - __main__ - INFO - Sending POST request to http://172.20.0.2:8001/find_successor
-Payload: {'id': '1326221342214535238892280395028687364720704916063'}
-22:34:53 - __main__ - ERROR - Connection Error in IP 172.20.0.2
-22:34:53 - __main__ - ERROR - ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
-22:34:53 - __main__ - INFO - Sending POST request to http://172.20.0.2:8001/find_successor
-Payload: {'id': '1326221342214535238892280395028687364720704916063'}
-22:34:53 - __main__ - ERROR - Connection Error in IP 172.20.0.2
-22:34:53 - __main__ - ERROR - ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))

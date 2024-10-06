@@ -13,20 +13,15 @@ from http.server import HTTPServer
 logger = logging.getLogger("__main__")
 
 class MusicNode(ChordNode):
-    def __init__(self, ip: str, db: JSONDatabase, pred_db: JSONDatabase, succ_db: JSONDatabase, role: str, port: int = 8001, m: int = 160):
-        super().__init__( ip, db,pred_db, succ_db,role, port, m )
+    def __init__(self, ip: str, db: JSONDatabase, sec_succ_db: JSONDatabase, succ_db: JSONDatabase, role: str, port: int = 8001, m: int = 160):
+        super().__init__( ip, db,sec_succ_db, succ_db,role, port, m )
         self.role = role 
         self.ip = ip
         self.port = port
         print("Vine a logic")
-        # Handler Init
-        # server_address = (self.ip, self.port)
-        # self.httpd = HTTPServer(server_address, MusicNodePresentation)
-        # self.httpd.node = self#TODO: Make it so this is set in ititialization
-         
-        
+
     def get_db(self):
-        return self.data
+        return self.data.get_all()
 
     def get_song(self, song_key):
         '''
