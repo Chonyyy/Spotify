@@ -88,6 +88,19 @@ class ChordNode:
           
     #region Data
     
+    def absorb_rep_data(self):
+        for entry in self.replicated_data_pred.get_all():
+            try:
+                self.data.insert(entry)
+            except Exception as e:
+                logger.error(f'Error Absorbing pred rep data {e}')
+        for entry in self.replicated_data_sec_pred.get_all():
+            try:
+                self.data.insert(entry)
+            except Exception as e:
+                logger.error(f'Error Absorbing sec pred rep data {e}')
+        return "Done"
+
     def replication_loop(self):
         while True:
             time.sleep(30)
@@ -437,6 +450,8 @@ class ChordNode:
                     
                 x = self.succ.pred
                 if x and x.id != self.id and self._inbetween(x.id, self.id, self.succ.id):#TODO: replicate all database
+                    self.succ.drop_sec_suc_rep()
+                    self.succ.drop_suc_rep()
                     self.succ = x
                     self.sec_succ = x.succ
                     logger.info(f'New-Succ-Stabilize | {x.ip},{x.id}  | node {self.ip}, {self.ip}')
@@ -446,12 +461,10 @@ class ChordNode:
 
                     if self.succ.id != self.id:
                         logger.info(f'Full replication comenced')
-                        self.succ.drop_suc_rep()
                         self.replicate_all_database_succ()
                         second_succ = self.succ.succ
                         logger.debug(f'succ succ = {second_succ.ip}')
                         if second_succ.id != self.id:
-                            self.succ.drop_sec_suc_rep()
                             self.pred.update_sec_succ(self.succ.id, self.succ.ip)
                             self.pred.replicate_sec_succ()
                         else:
@@ -497,7 +510,7 @@ class ChordNode:
 
     def check_predecessor(self):
         """Periodically check if predecessor is alive."""
-        logger_cp.info('Checking Predecessor')#TODO: If my predecesor changes i need to share my data with it
+        logger_cp.info('Checking Predecessor')
         while True:
             try:
                 if self.pred:

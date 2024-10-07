@@ -133,6 +133,9 @@ class ChordNodeReference:
             return []
         return requested_data
 
+    def absorb_rep_data(self):
+        self._send_request('/absorb-rep-data', method='get')
+
     #region Utils
         
     def _send_request(self, path: str, data: dict = None, method: str = 'POST', query_params = None) -> dict:
