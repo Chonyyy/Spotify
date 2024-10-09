@@ -18,6 +18,8 @@ logger_gw = logging.getLogger("__main__.gw")
 
 class Gateway(ChordNode):
     def __init__(self, ip: str, port: int = 8001):
+        logger_gw.info(f'Starting gatewy node in ip: {ip}:{port}')
+        self.role = 'gateway'
         self.ref = GatewayReference(get_sha_repr(ip), ip, port)
         
         # Estructura para guardar nodos conocidos en categorías
@@ -83,14 +85,14 @@ class Gateway(ChordNode):
             multi_response = receive_multicast(self.role)
             discovered_ip = multi_response[0][0] if multi_response[0] else None
             if discovered_ip and discovered_ip != self.ip:
-                logger.info(f"Discovered entry point: {discovered_ip}")
+                logger_gw.info(f"Discovered entry point: {discovered_ip}")
                 discovered_node = GatewayReference(get_sha_repr(discovered_ip), discovered_ip, self.port)
                 self.leader = discovered_node
                 self.join(discovered_node)#TODO: change the join behaviour
                 return
             time.sleep(retry_interval)
 
-        logger.info(f"No other node node discovered.")
+        logger_gw.info(f"No other node node discovered.")
 
     def discovery_music_node(self):
         """Discovery for music nodes"""
@@ -101,7 +103,7 @@ class Gateway(ChordNode):
             multi_response = receive_multicast("music_service")
             discovered_ip = multi_response[0][0] if multi_response[0] else None
             if discovered_ip and discovered_ip != self.ip:
-                logger.info(f"Discovered entry point: {discovered_ip}")
+                logger_gw.info(f"Discovered entry point: {discovered_ip}")
                 discovered_node = MusicNodeReference(get_sha_repr(discovered_ip), discovered_ip, self.port)
                 self.known_nodes['music_service'] = discovered_node
                 return
@@ -132,16 +134,28 @@ class Gateway(ChordNode):
     def ping_nodes(self):
         """Ping to nodes from each category"""
         for category in self.known_nodes:
-            for node in self.known_nodes[category]:
+            nodes = self.known_nodes[category] if self.known_nodes[category] else [] 
+            if not nodes:
+                logger_gw.info(f'No known nodes for category {category}')
+            for node in nodes:
                 try:
                     if node:
                         node.ping()
                     else:
                         raise NotImplementedError()
                 except requests.ConnectionError:
-                    print(f"Node {node.ip} in {category} category is down, removing from the list.")
+                    logger_gw.info(f"Node {node.ip} in {category} category is down, removing from the list.")
                     self.known_nodes[category].remove(node)
                     if category == 'music_service':
                         self.discovery_music_node()
                     elif category == 'storage_service':
                         self.discovery_ftp_node()
+    
+    def stabilize(self):
+        while True:
+            try:
+                for node in self.gateway_nodes.values():
+                    node.ping
+            except requests.ConnectionError:
+                del self.gateway_nodes
+            time.sleep(10)

@@ -51,5 +51,8 @@ if __name__ == "__main__":
     # Starting server
     database_name = f'db_{ip}'
     role = str(sys.argv[1])
-    db, sec_succ_db, succ_db = initialize_database(role, database_name)
-    start_server(ip, role=role, db=db, sec_succ_db=sec_succ_db, succ_db=succ_db)
+    if role == 'gateway':
+        start_server(ip, role, None, None, None)
+    else:
+        db, sec_succ_db, succ_db = initialize_database(role, database_name)
+        start_server(ip, role=role, db=db, sec_succ_db=sec_succ_db, succ_db=succ_db)

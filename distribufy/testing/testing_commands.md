@@ -8,11 +8,11 @@ docker build -t distribufy .
 
 ## Running a container instance
 
-docker run -it --rm --name first_container -p 8001:8001 -v .\:/app distribufy
-docker run -it --rm --name second_container -p 8002:8001 -v .\:/app distribufy
-docker run -it --rm --name third_container -p 8003:8001 -v .\:/app distribufy
-docker run -it --rm --name fourth_container -p 8004:8001 -v .\:/app distribufy
-docker run -it --rm --name fifth_container -p 8005:8001 -v .\:/app distribufy
+sudo docker run -it --rm --name first_container -p 8001:8001 -v .\:/app spotify
+sudo docker run -it --rm --name second_container -p 8002:8001 -v .\:/app spotify
+sudo docker run -it --rm --name third_container -p 8003:8001 -v .\:/app spotify
+sudo docker run -it --rm --name fourth_container -p 8004:8001 -v .\:/app spotify
+sudo docker run -it --rm --name fifth_container -p 8005:8001 -v .\:/app spotify
 
 ## Comandos de CHordNode
 
