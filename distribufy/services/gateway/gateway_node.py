@@ -2,113 +2,146 @@ import hashlib
 import threading
 import time
 import logging
+import requests
 from http.server import HTTPServer
 from services.common.multicast import send_multicast, receive_multicast
 from typing import List, Tuple
 from services.gateway.gateway_reference import GatewayReference
-from services.gateway.gateway_handler import GatewayRequestHandler
+from services.music_service.reference import MusicNodeReference
+#TODO: Import storage service reference
 from services.common.utils import get_sha_repr
 from services.common.chord_node import ChordNode
 
 # Set up logging
-logger = logging.getLogger("__main__")
-logger_cl = logging.getLogger("__main__.cl")
+logger_gw = logging.getLogger("__main__.gw")
 
 
 class Gateway(ChordNode):
     def __init__(self, ip: str, port: int = 8001):
-        super().__init__(ip, None, None, role="gateway", port=port)
+        self.ref = GatewayReference(get_sha_repr(ip), ip, port)
         
         # Estructura para guardar nodos conocidos en categorías
         self.known_nodes = {
-            'gateway': [],
-            'ftp': [],
-            'music_service': []
+            'storage_service': None,
+            'music_service': None
         }
         self.leader = self.ref
+        self.discover_entry()
+
+        self.gateway_nodes = {
+            self.ref.id: self.ref
+        }
         
-        # Iniciar multicast para descubrimiento
-        self.multicast_msg_event = threading.Event()
-        threading.Thread(target=self.discovery_process, daemon=True).start()
-        
-        # Iniciar proceso de estabilización
+        # Stabilizing process
         threading.Thread(target=self.stabilize, daemon=True).start()
 
-        # Hilos para ver si los nodos lider ftp y music service siguen vivos
+        # Check if service nodes are still up
+        threading.Thread(target=self.ping_nodes, daemon=True).start()
+
+        # Thread to check if gateway leader is stil up
         threading.Thread(target=self.check_leader, daemon=True).start()  # Start leader election thread
-        
-
-    def discovery_process(self):
-        """Proceso de descubrimiento multicast para añadir nodos a las categorías."""
-        while True:
-            try:
-                # Recibir mensajes multicast
-                _, node_info = receive_multicast(self.role)
-                if node_info:
-                    discovered_node = GatewayReference(node_info['id'], node_info['ip'], node_info['port'])
-                    # Asignar nodos a categorías
-                    self.add_node_to_category(discovered_node, node_info['role'])
-                    if self.leader == self.ref:
-                        self.send_multicast()
-            except Exception as e:
-                print(f"Error in discovery process: {e}")
-
-    def add_node_to_category(self, node_ref, role):
-        """Añadir nodos a las categorías correspondientes."""
-        if role in self.known_nodes and node_ref not in self.known_nodes[role]:
-            self.known_nodes[role].append(node_ref)
-            print(f"Node {node_ref.ip} added to {role} category.")
-
-    def send_multicast(self):
-        """Enviar mensaje multicast con información del nodo líder y categorías."""
-        message = {
-            'leader_ip': self.leader.ip,
-            'known_nodes': {
-                'gateway': [node.ip for node in self.known_nodes['gateway']],
-                'ftp': [node.ip for node in self.known_nodes['ftp']],
-                'music_service': [node.ip for node in self.known_nodes['music_service']],
-            }
-        }
-        send_multicast(self.role, self.multicast_msg_event, message)
-
-    def stabilize(self):
-        """Proceso de estabilización para verificar el estado de los nodos."""
-        while True:
-            print("Stabilizing...")
-            try:
-                self.check_leader()
-                self.ping_nodes()
-            except Exception as e:
-                print(f"Error during stabilization: {e}")
-            time.sleep(10)
 
     def check_leader(self):
-        """Verificar si el líder sigue activo."""
-        if self.leader == self.ref:
-            print("I am the leader.")
-        else:
+        """Regularly check the leader availability and manage multicast based on leader status."""
+        while True:
+            logger_gw.info('===CHECKING LEADER===')
             try:
-                self.leader.ping
-            except Exception:
-                print("Leader is down, starting a new election.")
+                if self.leader.id == self.id:
+                    # This node is the leader, ensure multicast discovery is running
+                    self.multicast_send_toggle(True)
+
+                    # Check for other leaders (only when this node is a leader)
+                    other_leader_info = self.discover_other_leader()
+                    if other_leader_info and other_leader_info['leader_ip'] != self.ip:
+                        logger_gw.info(f"Detected another leader: {other_leader_info['leader_ip']}")
+
+                else:
+                    # This node is not the leader, stop multicast discovery
+                    self.multicast_send_toggle(False)
+
+                    # Check if the current leader is still alive
+                    self.leader.ping
+                    logger_gw.info(f'Leader ping succesfull: {self.leader.ip}')
+
+            except requests.ConnectionError:
+                del self.gateway_nodes[self.leader.id]
+                # Leader is down, start a new election
+                logger_gw.info('Connection with leader ended, starting election.')
                 self.start_election()
 
-    def start_election(self):
-        """Proceso de elección de líder."""
-        print("Starting leader election...")
-        max_node = max(self.known_nodes['gateway'], key=lambda node: node.id)
-        if max_node == self.ref:
-            self.leader = self.ref
-            self.send_multicast()
-        else:
-            self.leader = max_node
+            except Exception as e:
+                logger_gw.error(f"Error in leader check: {e}")
+            
+            logger_gw.info('===LEADER CHECK DONE===')
+            time.sleep(10)
 
+    def discover_entry(self):
+        retries = 2
+        retry_interval = 5
+
+        for _ in range(retries):
+            multi_response = receive_multicast(self.role)
+            discovered_ip = multi_response[0][0] if multi_response[0] else None
+            if discovered_ip and discovered_ip != self.ip:
+                logger.info(f"Discovered entry point: {discovered_ip}")
+                discovered_node = GatewayReference(get_sha_repr(discovered_ip), discovered_ip, self.port)
+                self.leader = discovered_node
+                self.join(discovered_node)#TODO: change the join behaviour
+                return
+            time.sleep(retry_interval)
+
+        logger.info(f"No other node node discovered.")
+
+    def discovery_music_node(self):
+        """Discovery for music nodes"""
+        retries = 2
+        retry_interval = 5
+
+        for _ in range(retries):
+            multi_response = receive_multicast("music_service")
+            discovered_ip = multi_response[0][0] if multi_response[0] else None
+            if discovered_ip and discovered_ip != self.ip:
+                logger.info(f"Discovered entry point: {discovered_ip}")
+                discovered_node = MusicNodeReference(get_sha_repr(discovered_ip), discovered_ip, self.port)
+                self.known_nodes['music_service'] = discovered_node
+                return
+            time.sleep(retry_interval)
+            
+    def discovery_ftp_node(self):
+        """Discovery for ftp nodes"""
+        raise NotImplementedError()
+
+    def start_election(self):
+        leader_candidate = self.ref.id
+        second_candidate = self.ref.id
+        for node in self.gateway_nodes:
+            if node.id > leader_candidate:
+                second_candidate = leader_candidate
+                leader_candidate = node.id
+        try:
+            new_leader = self.gateway_nodes[leader_candidate]
+            new_leader.ping
+            self.leader = new_leader
+        except requests.ConnectionError:
+            del self.gateway_nodes[leader_candidate]
+            self.leader = self.gateway_nodes[second_candidate]
+        finally:
+            #TODO: Notify new leader
+            raise NotImplementedError()
+                
     def ping_nodes(self):
-        """Verificar el estado de los nodos en todas las categorías."""
+        """Ping to nodes from each category"""
         for category in self.known_nodes:
             for node in self.known_nodes[category]:
                 try:
-                    node.ping
-                except Exception:
+                    if node:
+                        node.ping()
+                    else:
+                        raise NotImplementedError()
+                except requests.ConnectionError:
                     print(f"Node {node.ip} in {category} category is down, removing from the list.")
                     self.known_nodes[category].remove(node)
+                    if category == 'music_service':
+                        self.discovery_music_node()
+                    elif category == 'storage_service':
+                        self.discovery_ftp_node()

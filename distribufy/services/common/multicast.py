@@ -8,8 +8,8 @@ import json
 MULTICAST_GROUPS = {
     'music_info': '224.1.1.1',
     'music_ftp': '224.1.1.2',
-    # 'gateway': '224.1.1.3',
-    'chord_testing': '224.1.1.3',
+    'gateway': '224.1.1.3',
+    'chord_testing': '224.1.1.4',
 }
 MULTICAST_PORT = 5000
 DISCOVERY_MESSAGE = 'CHORD_DISCOVERY'
@@ -50,7 +50,7 @@ def receive_multicast(role, timeout=10):
     multicast_group = MULTICAST_GROUPS.get(role)
     if not multicast_group:
         raise ValueError(f"Invalid role: {role}")
-
+    
     logger_mc.info(f'Receiving multicast messages from {multicast_group} for role {role}')
     
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)

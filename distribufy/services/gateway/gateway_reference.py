@@ -2,7 +2,7 @@ import hashlib
 import requests
 import logging
 from typing import List
-from services.common.utils import get_sha_repr
+from services.common.node_reference import ChordNodeReference
 
 # Set up logging
 logger = logging.getLogger("__main__")
@@ -13,13 +13,8 @@ logger_rh = logging.getLogger("__main__.rh")
 logger_le = logging.getLogger("__main__.le")
 logger_dt = logging.getLogger("__main__.dt")
 
-class GatewayReference:
-    def __init__(self, id: str, ip: str, port: int = 8001):
-        self.id = get_sha_repr(ip) if not id else id
-        self.ip = ip
-        self.port = port
-        self.replication_queue = []
-     
+class GatewayReference(ChordNodeReference):
+    
     def new_leader(self, leader: 'GatewayReference'):
         """Notify the node of a leader change."""
         self._send_request('/new_leader', {'id': leader.id, 'ip': leader.ip})
