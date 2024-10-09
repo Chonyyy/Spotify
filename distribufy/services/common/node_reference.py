@@ -23,7 +23,7 @@ class ChordNodeReference:
         self.ip = ip
         self.port = port
         self.replication_queue = []
-        
+
     #region Coordination
     def drop_suc_rep(self):
         self._send_request('/drop-suc-rep', method='get')
@@ -42,6 +42,9 @@ class ChordNodeReference:
 
     def send_coordinator_message(self, coordinator_message):
         self._send_request('/coordinator', coordinator_message)
+        
+    def get_songs(self):
+        self._send_request('/get-songs', method='get')
     
     def send_store_data(self, data, callback, key_fields):
         """Send request to store a user."""
@@ -132,6 +135,39 @@ class ChordNodeReference:
 
     def absorb_rep_data(self):
         self._send_request('/absorb-rep-data', method='get')
+
+    #region Music Node
+
+    def get_db(self):
+        return self._send_request('/get-db', method='get')
+
+    def song_key_node(self, key):
+        return self._send_request('/get-song-key-node',data= key, method='post')
+
+    def songs_title_node(self, title):
+        return self._send_request('/get-songs-title-node',data= title, method='post')
+
+    def songs_artist_node(self, artist):
+        return self._send_request('/get-songs-artist-node',data= artist, method='post')
+
+    def songs_genre_node(self, genre):
+        return self._send_request('/get-songs-genre-node',data= genre, method='post')
+
+    def get_songs_by_key(self, key):
+        return self._send_request('/get-song-by-key',data= key, method='post')
+    
+    def get_songs_by_title(self, title):
+        return self._send_request('/get-songs-by-title',data= title, method='post')
+    
+    def get_songs_by_artist(self, artist):
+        return self._send_request('/get-songs-by-artist',data= artist, method='post')
+    
+    def get_songs_by_genre(self, genre):
+        return self._send_request('/get-songs-by-genre',data= genre, method='post')
+    
+
+
+
 
     #region Utils
         

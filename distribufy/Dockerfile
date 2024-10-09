@@ -5,7 +5,7 @@ FROM python:latest
 WORKDIR /app
 
 # Copy common files and install dependencies
-COPY requirements.txt app.py server.py common/ /app/
+COPY requirements.txt app.py server.py /app/
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy databases and logs directories

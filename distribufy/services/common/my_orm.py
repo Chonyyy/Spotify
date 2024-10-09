@@ -49,6 +49,10 @@ class JSONDatabase:
             raise ValueError(f"Data already exists")
 
     def query(self, key, value, cond = None):
+        print("key")
+        print(key)
+        print("value")
+        print(value)
         if not cond:
             return [record for record in self.data if record.get(key) == value]
         return [record for record in self.data if cond(record.get(key))]
