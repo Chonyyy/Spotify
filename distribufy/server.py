@@ -5,14 +5,14 @@ import logging
 
 logger = logging.getLogger("__main__")
 
-def start_server(ip, role, db, pred_db, succ_db):
+def start_server(ip, role, db, sec_succ_db, succ_db):
     if role == 'gateway':
         node = Gateway(ip)
     elif role == 'music_service':
         node = MusicNode(
             ip=ip,
             db=db,
-            pred_db=pred_db,
+            sec_succ_db=sec_succ_db,
             succ_db=succ_db,
             role=role
         )
@@ -22,7 +22,7 @@ def start_server(ip, role, db, pred_db, succ_db):
         node = ChordNode(
             ip=ip, 
             db=db, 
-            pred_db=pred_db, 
+            sec_succ_db=sec_succ_db, 
             succ_db=succ_db, 
             role=role
         )
