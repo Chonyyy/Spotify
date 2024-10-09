@@ -34,6 +34,10 @@ class Gateway(ChordNode):
         # Iniciar proceso de estabilización
         threading.Thread(target=self.stabilize, daemon=True).start()
 
+        # Hilos para ver si los nodos lider ftp y music service siguen vivos
+        threading.Thread(target=self.check_leader, daemon=True).start()  # Start leader election thread
+        
+
     def discovery_process(self):
         """Proceso de descubrimiento multicast para añadir nodos a las categorías."""
         while True:
