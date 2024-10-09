@@ -33,6 +33,7 @@ class ChordNode:
         self.succ = self.ref
         self.sec_succ = self.ref
         self.pred = self.ref
+        self.last_pred = self.pred
 
         # Finger table
         self.m = m  # Number of bits in the hash/key space
@@ -80,13 +81,19 @@ class ChordNode:
         for entry in self.replicated_data_pred.get_all():
             try:
                 self.data.insert(entry)
+                self.enqueue_replication_operation(entry, 'insertion', entry['key'])
             except Exception as e:
                 logger.error(f'Error Absorbing pred rep data {e}')
+
         for entry in self.replicated_data_sec_pred.get_all():
             try:
                 self.data.insert(entry)
+                self.enqueue_replication_operation(entry, 'insertion', entry['key'])
             except Exception as e:
                 logger.error(f'Error Absorbing sec pred rep data {e}')
+
+        self.replicated_data_pred.drop()
+        self.replicated_data_sec_pred.drop()
         return "Done"
 
     def replication_loop(self):
@@ -422,7 +429,7 @@ class ChordNode:
         logger.debug(f'Requested data from succ {data_from_succ}')
         for record in data_from_succ:
             self.data.insert(record)
-            self.enqueue_replication_operation(record, 'file_insertion', record['key'])
+            self.enqueue_replication_operation(record, 'insertion', record['key'])
         self.start_election()
 
     def stabilize(self):
@@ -504,6 +511,7 @@ class ChordNode:
                 if self.pred:
                     self.pred.ping
             except requests.ConnectionError:
+                self.absorb_rep_data()
                 logger_cp.info('Predecesor Down')
                 self.pred = self.ref
             logger_cp.info('===Predecessor Checking Done===')
