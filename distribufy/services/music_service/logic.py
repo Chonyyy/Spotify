@@ -18,83 +18,124 @@ class MusicNode(ChordNode):
         self.role = role 
         self.ip = ip
         self.port = port
-        print("Vine a logic")
 
     def get_db(self):
-        return self.data.get_all()
+        logger.debug(f'All data from node requested')
+        data = self.data.get_all()
+        logger.debug(f'Node data: \n{data}')
+        return data
 
-    def get_song(self, song_key):
+    def get_song_by_key(self, song_key): # TODO fix this
         '''
         Return a song store in the Chord Ring given a song_key
         '''
-        return self.get_data(song_key, None)
+        song = self.song_key_node(song_key)
+        print(song)
+        if song != None:
+            return song
 
-    def save_song(self, key, title, album, genre, artist):
-        '''
-        Save a song in the Chord Ring
-        '''
-        
-        song_data = {
-            'key': key,
-            'title': title,
-            'album': album,
-            'genre': genre,
-            'artist': artist
-        }
-        
-        try:
-            # Almacena la canción en la base de datos usando la clave como identificador
-            self.data.insert(song_data)
-
-            print(f"Song '{title}' by '{artist}' successfully saved in the database.")
-        except Exception as e:
-            print(f"Error saving song '{title}' by '{artist}': {str(e)}")
+        next_node = self.succ
+        while next_node.id != self.id:
+            try:
+                logger.debug(f'Getting song from node {next_node.ip}')
+                song = next_node.song_key_node(data_genre)
+                logger.debug(song)
+                if song != None:
+                    return song
+                next_node = next_node.succ
+            except:
+                logger.error(f'Error: Error getting songs from node in ip {next_node.ip}')
+        return all_songs_by_genre
 
     def get_all_songs(self):
-            '''
-            Return all the songs available in the Chord Ring
-            '''
-            all_songs = []
-            all_songs.append(self.data.get_all())
-            
-            chord_node = self.succ
-            while True:
-                
-                if chord_node.id == self.id:
-                    return all_songs
+        '''
+        Return all the songs available in the Chord Ring
+        '''
+        all_songs = []
+        all_songs.extend(self.data.get_all())
+        
+        next_node = self.succ
+        while next_node.id != self.id:
+            try:
+                logger.debug(f'Getting songs from node {next_node.ip}')
+                songs = next_node.get_db()
+                logger.debug(songs)
+                all_songs.extend(songs)#TODO: Verify songs with same id arent being added
+                next_node = next_node.succ
+            except:
+                logger.error(f'Error: Error getting songs from node in ip {next_node.ip}')
+        return all_songs
 
-                try:
-                    songs = chord_node.get_songs()
-                    all_songs.append(songs)
-                    chord_node = chord_node.find_successor()
+    def song_key_node(self, data_key:str):
+        key = data_key["key"]
+        return self.data.query("key", key)
 
-                except:
-                    if not self.succ:
-                        print(f'Error: Could not connect with chord node {self.chord_id}')
-                        break
-            
-            return all_songs
+    def songs_title_node(self, data_title:str):
+        title = data_title["title"]
+        return self.data.query("title", title)
+    
+    def songs_artist_node(self, data_artist:str):
+        artist = data_artist["artist"]
+        return self.data.query("artist", artist)
+    
+    def songs_genre_node(self, data_genre:str):
+        genre = data_genre["genre"]
+        print(genre)
+        return self.data.query("genre", genre)
 
-    def get_songs_by_title(self, title):
+    def get_songs_by_title(self, data_title:str):
         '''
         Filter the available songs by title
         '''
-        all_songs = self.get_all_songs()
-        songs = [song for song in all_songs if song["title"] == title]
-        return songs
+        title = data_title["title"]
+        all_songs_by_artist = []
+        all_songs_by_artist.extend(self.songs_title_node(data_title))
 
-    def get_songs_by_author(self, artist):
-        '''
-        Filter the available songs by author
-        '''
-        all_songs = self.get_all_songs()
-        songs = [song for song in all_songs if song["artist"] == artist]
-        return songs
+        next_node = self.succ
+        while next_node.id != self.id:
+            try:
+                logger.debug(f'Getting songs from node {next_node.ip}')
+                songs = next_node.songs_title_node(data_title)
+                logger.debug(songs)
+                all_songs_by_artist.extend(songs)#TODO: Verify songs with same id arent being added
+                next_node = next_node.succ
+            except:
+                logger.error(f'Error: Error getting songs from node in ip {next_node.ip}')
+        return all_songs_by_artist
 
-    def get_songs_by_gender(self, genre):
+    def get_songs_by_artist(self, data_artist):
         '''
-        Filter the available songs by gender
+        Filter the available songs by artist
         '''
-        all_songs = self.get_all_songs()
-        songs = [song for song in all_songs if song["genre"] == genre]
-        return songs
+        all_songs_by_artist = []
+        all_songs_by_artist.extend(self.songs_artist_node(data_artist))
+
+        next_node = self.succ
+        while next_node.id != self.id:
+            try:
+                logger.debug(f'Getting songs from node {next_node.ip}')
+                songs = next_node.songs_artist_node(data_artist)
+                logger.debug(songs)
+                all_songs_by_artist.extend(songs)#TODO: Verify songs with same id arent being added
+                next_node = next_node.succ
+            except:
+                logger.error(f'Error: Error getting songs from node in ip {next_node.ip}')
+        return all_songs_by_artist
+
+    def get_songs_by_genre(self, data_genre):
+        '''
+        Filter the available songs by genre
+        '''
+        all_songs_by_genre = []
+        all_songs_by_genre.extend(self.songs_genre_node(data_genre))
+        next_node = self.succ
+        while next_node.id != self.id:
+            try:
+                logger.debug(f'Getting songs from node {next_node.ip}')
+                songs = next_node.songs_genre_node(data_genre)
+                logger.debug(songs)
+                all_songs_by_genre.extend(songs)#TODO: Verify songs with same id arent being added
+                next_node = next_node.succ
+            except:
+                logger.error(f'Error: Error getting songs from node in ip {next_node.ip}')
+        return all_songs_by_genre

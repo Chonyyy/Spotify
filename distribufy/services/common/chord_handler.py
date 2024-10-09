@@ -27,47 +27,45 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):
         logger_rh.debug(f'Request path {self.path}')
         """Handle POST requests."""
         content_length = int(self.headers['Content-Length'])
-        post_data = json.loads(self.rfile.read(content_length))
-        logger_rh.debug(f'Handling the following request \n{post_data}')
+        self.post_data = json.loads(self.rfile.read(content_length))
+        logger_rh.debug(f'Handling the following request \n{self.post_data}')
         
         response = None
 
         if self.path == '/store-data':
-            response = self.handle_store_data(post_data)
+            response = self.handle_store_data(self.post_data)
             self.send_json_response(response)
         elif self.path == '/request_data':
-            response = self.handle_request_data(post_data)
+            response = self.handle_request_data(self.post_data)
             self.send_json_response(response)
         elif self.path == '/update-sec-succ':
-            self.handle_update_sec_succ(post_data)
+            self.handle_update_sec_succ(self.post_data)
             self.send_json_response(response)
         elif self.path.startswith('/iterate-songs'):
-            response = self.server.node._get_songs(post_data['origin'])
+            response = self.server.node._get_songs(self.post_data['origin'])
             self.send_json_response(response, status=200)
         elif self.path == '/get-data':
-            response = self.handle_get_data(post_data)
+            response = self.handle_get_data(self.post_data)
             self.send_json_response(response)
         elif self.path == '/store-replic':
-            self.handle_store_replic(post_data)
+            self.handle_store_replic(self.post_data)
             self.send_json_response({'status':'recieved'})
         elif self.path == '/election':
-            response = self.handle_election(post_data)
+            response = self.handle_election(self.post_data)
         elif self.path == '/coordinator':
-            response = self.handle_coordinator(post_data)
+            response = self.handle_coordinator(self.post_data)
         elif self.path == '/notify':
-            response = self.handle_notify(post_data)
+            response = self.handle_notify(self.post_data)
             self.send_json_response(response)
         elif self.path == '/find_successor':
-            response = self.server.node.find_succ(post_data['id'])
+            response = self.server.node.find_succ(self.post_data['id'])
             self.send_json_response(response)
         elif self.path == '/find_predecessor':
-            response = self.server.node.find_pred(post_data['id'])
+            response = self.server.node.find_pred(self.post_data['id'])
             self.send_json_response(response)
         elif self.path == '/closest_preceding_finger':
-            response = self.server.node.closest_preceding_finger(post_data['id'])
+            response = self.server.node.closest_preceding_finger(self.post_data['id'])
             self.send_json_response(response)
-        else:
-            self.send_json_response({}, 'Invalid Endpoint', status=404)
         
     def do_GET(self):
         """Handle GET requests."""
@@ -101,8 +99,6 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):
         elif self.path == '/debug-node-data':
             self.server.node._debug_log_data()
             self.send_json_response({"status": "success"})
-        else:
-            self.send_json_response(None, error_message='Resource not found', status=404)
             
     def handle_song(self):
         query_params = urlparse(self.path).query

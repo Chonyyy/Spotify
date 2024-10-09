@@ -23,7 +23,7 @@ class ChordNodeReference:
         self.ip = ip
         self.port = port
         self.replication_queue = []
-        
+
     #region Coordination
     def drop_suc_rep(self):
         self._send_request('/drop-suc-rep', method='get')
@@ -136,6 +136,39 @@ class ChordNodeReference:
     def absorb_rep_data(self):
         self._send_request('/absorb-rep-data', method='get')
 
+    #region Music Node
+
+    def get_db(self):
+        return self._send_request('/get-db', method='get')
+
+    def song_key_node(self, key):
+        return self._send_request('/get-song-key-node',data= key, method='post')
+
+    def songs_title_node(self, title):
+        return self._send_request('/get-songs-title-node',data= title, method='post')
+
+    def songs_artist_node(self, artist):
+        return self._send_request('/get-songs-artist-node',data= artist, method='post')
+
+    def songs_genre_node(self, genre):
+        return self._send_request('/get-songs-genre-node',data= genre, method='post')
+
+    def get_songs_by_key(self, key):
+        return self._send_request('/get-song-by-key',data= key, method='post')
+    
+    def get_songs_by_title(self, title):
+        return self._send_request('/get-songs-by-title',data= title, method='post')
+    
+    def get_songs_by_artist(self, artist):
+        return self._send_request('/get-songs-by-artist',data= artist, method='post')
+    
+    def get_songs_by_genre(self, genre):
+        return self._send_request('/get-songs-by-genre',data= genre, method='post')
+    
+
+
+
+
     #region Utils
         
     def _send_request(self, path: str, data: dict = None, method: str = 'POST', query_params = None) -> dict:
@@ -176,7 +209,3 @@ class ChordNodeReference:
 
     def __repr__(self) -> str:
         return str(self)
-
-    # hacer request al nodo original
-    # en el handler hacer un endpoit pa lo q yo quiero y ded ese endpoint llamar a self.server.node hacer una funcion ahi
-    # y llamar a esa funcion pa q m devuelva los datos que quiero

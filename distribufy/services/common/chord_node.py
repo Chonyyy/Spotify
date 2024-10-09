@@ -57,24 +57,22 @@ class ChordNode:
         # self.httpd.node = self#TODO: Make it so this is set in ititialization
         
         # Condicionar la inicialización del HTTPServer
-        if type(self).__name__ == 'ChordNode':  # Solo inicializa httpd si no es clase hija
+        if role == 'chord_testing':  # Solo inicializa httpd si no es clase hija
             server_address = (self.ip, self.port)
             self.httpd = HTTPServer(server_address, ChordNodeRequestHandler)
             self.httpd.node = self
         
-        if type(self).__name__ == 'MusicNode':  # Solo inicializa httpd si no es clase hija
-            print("Inicialice music node")
+        if role == 'music_service':
+            logger.info("Initialize as music service")
             server_address = (self.ip, self.port)
             self.httpd = HTTPServer(server_address, MusicNodePresentation)
             self.httpd.node = self
-        print("sali de inicializar")
 
         logger.info(f'node_addr: {ip}:{port} {self.id}')
         
         # Discovery
         self.multicast_msg_event = threading.Event()
         self.discover_entry()
-        print("Estoy en los threads")
         # Start server and background threads
         threading.Thread(target=self.httpd.serve_forever, daemon=True).start()
         logger.info(f'HTTP serving commenced')
