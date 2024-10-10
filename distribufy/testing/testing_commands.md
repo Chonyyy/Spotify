@@ -29,15 +29,7 @@ ubuntu
 ``` bash
 curl -X POST http://localhost:8002/store-data \
      -H "Content-Type: application/json" \
-     -d "{\"key_fields\":[\"title\"],\"title\":\"t1\", \"album\":\"ab\", \"genre\":\"g1\", \"artist\":\"a2\"}"
-```
-
-windows
-
-``` bash
-curl -X POST http://localhost:8002/store-data ^
-     -H "Content-Type: application/json" ^
-     -d "{\"key_fields\":[\"title\"],\"title\":\"t1\", \"album\":\"a\", \"genre\":\"g\", \"artist\":\"a\", \"callback\": \"http://a.com\"}"
+     -d '{"value": "value", "key_fields": ["value"] }'
 ```
 
 ### Getting Data
@@ -53,7 +45,7 @@ curl -X POST http://localhost:8002/get-data ^
 ubuntu
 
 ``` bash
-curl -X GET http://localhost:8001/debug-node-data \
+curl -X GET http://localhost:8004/debug-node-data \
      -H "Content-Type: application/json" \
      -d '{}'
 ```
@@ -61,7 +53,7 @@ curl -X GET http://localhost:8001/debug-node-data \
 windows
 
 ``` bash
-curl -X GET http://localhost:8001/debug-node-data ^
+curl -X GET http://localhost:8003/debug-node-data ^
      -H "Content-Type: application/json" ^
      -d "{}"
 ```
@@ -96,6 +88,24 @@ curl -X GET http://localhost:8001/debug/finger_table \
 
 ``` bash
 python app.py music_service
+```
+
+### Store data
+
+ubuntu
+
+``` bash
+curl -X POST http://localhost:8002/store-data \
+     -H "Content-Type: application/json" \
+     -d "{\"key_fields\":[\"title\"],\"title\":\"t1\", \"album\":\"ab\", \"genre\":\"g1\", \"artist\":\"a2\"}"
+```
+
+windows
+
+``` bash
+curl -X POST http://localhost:8002/store-data ^
+     -H "Content-Type: application/json" ^
+     -d "{\"key_fields\":[\"title\"],\"title\":\"t1\", \"album\":\"a\", \"genre\":\"g\", \"artist\":\"a\", \"callback\": \"http://a.com\"}"
 ```
 
 ### Get data base of songs

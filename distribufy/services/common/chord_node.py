@@ -179,9 +179,11 @@ class ChordNode:
             threading.Thread(target=target_node.send_store_data, args=(data, callback, key_fields), daemon=True).start()
 
     def send_requested_data(self, source_id):
-        requested_data = self.data.query('key', ' ', lambda key: int(key) < source_id)
+        requested_data = self.data.query('key', ' ', lambda key: int(key) < source_id or (int(key) > self.id))
         for entry in requested_data:
             self.data.delete('key', entry['key'])
+            if 'source' in entry:
+                del entry['source']#FIXME Delete these from second succ
         logger.debug(f'Sending {requested_data} to node {source_id}')
         return requested_data
 
@@ -438,6 +440,7 @@ class ChordNode:
         data_from_succ = self.succ.request_data(self.id)
         logger.debug(f'Requested data from succ {data_from_succ}')
         for record in data_from_succ:
+            logger.info(record)
             self.data.insert(record)
             self.enqueue_replication_operation(record, 'insertion', record['key'])
         self.start_election()
