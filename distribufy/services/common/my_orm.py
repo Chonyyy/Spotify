@@ -41,18 +41,17 @@ class JSONDatabase:
 
     def insert(self, record):
         self.validate_record(record)
-        if not record in self.data:
-            logger.info(record)
-            self.data.append(record)
-            self.save()
-        else:
-            raise ValueError(f"Data already exists")
+
+        for song in self.data:
+            if record['key'] == song['key']:
+                print(f"Data already exists")
+                return
+            
+        logger.info(record)
+        self.data.append(record)
+        self.save()
 
     def query(self, key, value, cond = None):
-        print("key")
-        print(key)
-        print("value")
-        print(value)
         if not cond:
             return [record for record in self.data if record.get(key) == value]
         return [record for record in self.data if cond(record.get(key))]
