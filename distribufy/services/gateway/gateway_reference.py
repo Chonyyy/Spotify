@@ -14,19 +14,20 @@ logger_le = logging.getLogger("__main__.le")
 logger_dt = logging.getLogger("__main__.dt")
 
 class GatewayReference(ChordNodeReference):
-    pass
+    # pass
     
-    # def notify(self, node):
-    #     """Notify the node of a leader change."""
-    #     self._send_request('/gw/notify', {'id': node.id, 'ip': node.ip})
+    def notify(self, node):
+        """Notify the node of a leader change."""
+        self._send_request('/gw/notify', {'id': node.id, 'ip': node.ip})
     
-    # def share_gw_knowledge(self, known_nodes: List['GatewayReference']):
-    #     """Notify the new leader."""
-    #     nodes = []
-    #     for node in known_nodes:
-    #         nodes.append({'ip': node.ip, 'port': node.port, 'id': node.id})
-    #     self._send_request('/gw/share-gw-knowledge', {'nodes': nodes})
+    def share_gw_knowledge(self, known_nodes: List['GatewayReference']):
+        """Notify the new leader."""
+        logger.debug(f'Sharing known gw nodes {known_nodes}')
+        nodes = []
+        for node in known_nodes:
+            nodes.append({'ip': node.ip, 'port': node.port, 'id': node.id})
+        self._send_request('/gw/share-gw-knowledge', {'nodes': nodes})
 
-    # @property
-    # def gateway_nodes(self):
-    #     return self._send_request('/gw/gateway-nodes', method='get')
+    @property
+    def gateway_nodes(self):
+        return self._send_request('/gw/gateway-nodes', method='get')

@@ -26,30 +26,27 @@ class GatewayRequestHandler(ChordNodeRequestHandler):
     def do_POST(self):
         super().do_POST()
 
-        # if self.path == '/gw/notify':
-        #     self.handle_gw_notify(self.post_data)
-        #     self.send_json_response(None)
-        # elif self.path == '/gw/share-gw-knowledge':
-        #     self.handle_share_gw_knowledge(self.post_data)
-        #     self.send_json_response({"status": "success"})
+        if self.path == '/gw/notify':
+            self.handle_gw_notify(self.post_data)
+            self.send_json_response(None)
+        elif self.path == '/gw/share-gw-knowledge':
+            self.handle_share_gw_knowledge(self.post_data)
+            self.send_json_response({"status": "success"})
 
     def do_GET(self):
         super().do_GET()
 
-    #     if self.path == '/gw/gateway-nodes':
-    #         all_nodes = list(self.server.node.gateway_nodes.values())
-    #         node_dict = {}
-    #         #FIXME: finish this
-    #         for node in all_nodes:
-    #             node_dict[node.id] = {'id': node.id, 'ip': node.ip}
-    #         self.send_json_response(node_dict)
+        if self.path == '/gw/gateway-nodes':
+            all_nodes = list(self.server.node.gateway_nodes.values())
+            node_dict = {}
+            #FIXME: finish this
+            for node in all_nodes:
+                node_dict[node.id] = {'id': node.id, 'ip': node.ip}
+            self.send_json_response(node_dict)
 
-    # def handle_gw_notify(self, post_data):
-    #     node = GatewayReference(post_data['id'], post_data['ip'])
-    #     self.server.node.notify_gw(node)
+    def handle_gw_notify(self, post_data):
+        node = GatewayReference(post_data['id'], post_data['ip'])
+        self.server.node.notify_gw(node)
 
-    # def handle_share_gw_knowledge(self, post_data):
-    #     print(post_data['nodes'])
-    #     for node in post_data['nodes']:
-    #         node_ref = GatewayReference(node['id'], node['ip'])
-    #         self.server.node.gateway_node[node['id']] = node_ref
+    def handle_share_gw_knowledge(self, post_data):
+        self.server.node.update_known_gw_nodes(post_data)
