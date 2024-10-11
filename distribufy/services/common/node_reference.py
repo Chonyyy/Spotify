@@ -140,6 +140,9 @@ class ChordNodeReference:
 
     def get_db(self):
         return self._send_request('/get-db', method='get')
+    
+    def get_songs(self):
+        return self._send_request('/get-songs', method='get')
 
     def song_key_node(self, key):
         return self._send_request('/get-song-key-node',data= key, method='post')

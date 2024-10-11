@@ -63,7 +63,8 @@ class Gateway(ChordNode):
         # Thread to check if gateway leader is stil up
         threading.Thread(target=self.check_leader, daemon=True).start()  # Start leader election thread
     
-
+        threading.Thread(target=self.discovery_music_node, daemon=True).start()
+    
 
     #region Discovery
 
@@ -116,8 +117,6 @@ class Gateway(ChordNode):
                     other_leader_info = self.discover_other_leader()
                     if other_leader_info and other_leader_info['leader_ip'] != self.ip:
                         logger_gw.info(f"Detected another leader: {other_leader_info['leader_ip']}")
- 
-                    self.do_leader_things()
 
                 else:
                     # This node is not the leader, stop multicast discovery
@@ -205,35 +204,23 @@ class Gateway(ChordNode):
             if node.id != self.id:
                 node.share_gw_knowledge(final_node_dict.values())
 
-    #region Leader things
-
-    def do_leader_things(self):
-        subordinate = random.choice(self.gateway_nodes)
-        self.do_subordinate_things(subordinate)
-
-        # • El nodo gateway seleccionado se comunica con los servicios necesarios.
-        # • Realiza el procesamiento necesario para responder al request.
-
-    def do_subordinate_things(self, subordinate):
-        pass
-
     #region Not Checked
-
 
     def discovery_music_node(self):
         """Discovery for music nodes"""
         retries = 2
         retry_interval = 5
 
-        for _ in range(retries):
-            multi_response = receive_multicast("music_service")
-            discovered_ip = multi_response[0][0] if multi_response[0] else None
-            if discovered_ip and discovered_ip != self.ip:
-                logger_gw.info(f"Discovered entry point: {discovered_ip}")
-                discovered_node = MusicNodeReference(get_sha_repr(discovered_ip), discovered_ip, self.port)
-                self.known_nodes['music_service'] = discovered_node
-                return
-            time.sleep(retry_interval)
+        while(True):
+            for _ in range(retries):
+                multi_response = receive_multicast("music_service")
+                discovered_ip = multi_response[0][0] if multi_response[0] else None
+                if discovered_ip and discovered_ip != self.ip:
+                    logger_gw.info(f"Discovered music service: {discovered_ip}")
+                    discovered_node = MusicNodeReference(get_sha_repr(discovered_ip), discovered_ip, self.port)
+                    self.known_nodes['music_service'] = discovered_node
+                    return
+                time.sleep(retry_interval)
             
     def discovery_ftp_node(self):
         """Discovery for ftp nodes"""
@@ -281,23 +268,38 @@ class Gateway(ChordNode):
         '''
         Return all the songs available in the Chord Ring
         '''
+        if self.leader.id == self.id and len(self.gateway_nodes) > 1:
+            subordinate = random.choice(self.gateway_nodes)
+            return subordinate.get_all_songs()
+        else:
+            music_node = self.known_nodes['music_service']
+            return music_node.get_songs()
+    
+    def get_song_by_key(self, song_key):
+        '''
+        Return a song store in the Chord Ring given a song_key
+        '''
+
         music_node = self.known_nodes['music_service']
+        return music_node.get_song_by_key(song_key)
 
     def get_songs_by_title(self, data_title:str):
         '''
         Filter the available songs by title
         '''
         music_node = self.known_nodes['music_service']
-
+        return music_node.get_songs_by_title(data_title)
 
     def get_songs_by_artist(self, data_artist):
         '''
         Filter the available songs by artist
         '''
-        pass
+        music_node = self.known_nodes['music_service']
+        return music_node.get_songs_by_artist(data_artist)
 
     def get_songs_by_genre(self, data_genre):
         '''
         Filter the available songs by genre
         '''
-        pass
+        music_node = self.known_nodes['music_service']
+        return music_node.get_songs_by_genre(data_genre)

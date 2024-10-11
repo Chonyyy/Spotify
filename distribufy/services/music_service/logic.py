@@ -38,14 +38,14 @@ class MusicNode(ChordNode):
         while next_node.id != self.id:
             try:
                 logger.debug(f'Getting song from node {next_node.ip}')
-                song = next_node.song_key_node(data_genre)
+                song = next_node.song_key_node(song_key)
                 logger.debug(song)
                 if song != None:
                     return song
                 next_node = next_node.succ
             except:
                 logger.error(f'Error: Error getting songs from node in ip {next_node.ip}')
-        return all_songs_by_genre
+        return song
 
     def get_all_songs(self):
         '''
