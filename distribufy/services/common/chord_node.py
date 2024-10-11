@@ -20,6 +20,20 @@ logger_rh = logging.getLogger("__main__.rh")
 logger_le = logging.getLogger("__main__.le")
 logger_dt = logging.getLogger("__main__.dt")
 
+chord_references = {
+    'gateway': 'class',
+    'music_service': 'class',
+    'storage_service': 'class',
+    'chord_testing': 'class',
+}
+
+chord_handlers = {
+    'gateway': 'class',
+    'music_service': 'class',
+    'storage_service': 'class',
+    'chord_testing': 'class',
+}
+
 #region ChordNode
 class ChordNode:
     def __init__(self, ip: str, db: JSONDatabase, sec_succ_db: JSONDatabase, succ_db: JSONDatabase, role: str, port: int = 8001, m: int = 160):

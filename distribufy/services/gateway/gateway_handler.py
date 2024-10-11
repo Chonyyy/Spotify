@@ -24,36 +24,29 @@ logger = logging.getLogger("__main__")
 
 class GatewayRequestHandler(ChordNodeRequestHandler):
     def do_POST(self):
-        """Manejar solicitudes POST."""
-        content_length = int(self.headers['Content-Length'])
-        post_data = json.loads(self.rfile.read(content_length))
-        logger.debug(f'Request received at {self.path}: {post_data}')
-        
-        response = None
-        
-        if self.path == '/notify':
-            response = self.handle_notify(post_data)
-        elif self.path == '/update-node-list':
-            response = self.server.node.update_node_list(post_data['nodes'])
-        elif self.path == '/update-leader':
-            response = self.server.node.update_leader(post_data['leader_ip'])
-        
-        self.send_json_response(response)
-        
-    def do_GET(self):
-        # Manejar las solicitudes GET
-        if self.path == '/get-nodes':
-            self.send_json_response([node.__dict__ for node in self.server.node.node_list])
-        elif self.path == '/get-leader':
-            self.send_json_response(self.server.node.leader.__dict__)
-        else:
-            self.send_json_response({"error": "Invalid endpoint"}, status=404)
+        super().do_POST()
 
-        
-    def send_json_response(self, response, status=200):
-        """Enviar respuesta JSON."""
-        self.send_response(status)
-        self.send_header('Content-Type', 'application/json')
-        self.end_headers()
-        if response:
-            self.wfile.write(json.dumps(response).encode())
+        if self.path == '/gw/notify':
+            self.handle_gw_notify(self.post_data)
+            self.send_json_response(None)
+        elif self.path == '/gw/share-gw-knowledge':
+            self.handle_share_gw_knowledge(self.post_data)
+            self.send_json_response({"status": "success"})
+
+    def do_GET(self):
+        super().do_GET()
+
+        if self.path == '/gw/gateway-nodes':
+            all_nodes = list(self.server.node.gateway_nodes.values())
+            node_dict = {}
+            #FIXME: finish this
+            for node in all_nodes:
+                node_dict[node.id] = {'id': node.id, 'ip': node.ip}
+            self.send_json_response(node_dict)
+
+    def handle_gw_notify(self, post_data):
+        node = GatewayReference(post_data['id'], post_data['ip'])
+        self.server.node.notify_gw(node)
+
+    def handle_share_gw_knowledge(self, post_data):
+        self.server.node.update_known_gw_nodes(post_data)
