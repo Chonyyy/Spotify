@@ -33,6 +33,16 @@ class GatewayRequestHandler(ChordNodeRequestHandler):
             self.handle_share_gw_knowledge(self.post_data)
             self.send_json_response({"status": "success"})
 
+        elif self.path == '/gw/get-songs-by-title':
+            response = self.server.node.get_songs_by_title(self.post_data)
+            return self.send_json_response(response)
+        elif self.path == '/gw/get-songs-by-artist':
+            response = self.server.node.get_songs_by_artist(self.post_data)
+            return self.send_json_response(response)
+        elif self.path == '/gw/get-songs-by-genre':
+            response = self.server.node.get_songs_by_genre(self.post_data)
+            return self.send_json_response(response)
+
     def do_GET(self):
         super().do_GET()
 
@@ -43,6 +53,11 @@ class GatewayRequestHandler(ChordNodeRequestHandler):
             for node in all_nodes:
                 node_dict[node.id] = {'id': node.id, 'ip': node.ip}
             self.send_json_response(node_dict)
+        
+        elif self.path == '/gw/get-songs':
+            response = self.server.node.get_all_songs()
+            return self.send_json_response(response)
+
 
     def handle_gw_notify(self, post_data):
         node = GatewayReference(post_data['id'], post_data['ip'])

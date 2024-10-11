@@ -150,7 +150,9 @@ class MusicNode(ChordNode):
         for i in range(num_chunks):
             start = i * chunk_size
             end = min(start + chunk_size, total_size)
-            chunks.append((i + 1, start, end))  # (Número del pedazo, inicio, fin)
+            chunk_str = '' + data['title'] + '_' + str(i + 1)
+            chunk_id = get_sha_repr(chunk_str)
+            chunks.append((chunk_id, start, end))  # (Número del pedazo, inicio, fin)
 
         key_fields = data['key_fields']
         new_data = self._transform_data(data, chunks)
@@ -163,5 +165,4 @@ class MusicNode(ChordNode):
         new_data = data
         del new_data['total_size']
         new_data['chunk_distribution'] = file_chunks
-        print("transf data ok")
         return new_data

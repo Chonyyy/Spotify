@@ -1,13 +1,12 @@
 import hashlib
 import threading
-import time
+import time, random
 import logging
 import requests
 from typing import List, Tuple
 from http.server import HTTPServer
 from services.common.multicast import send_multicast, receive_multicast
 from services.common.utils import get_sha_repr
-
 from services.common.chord_node import ChordNode
 from services.gateway.gateway_reference import GatewayReference
 from services.gateway.gateway_handler import GatewayRequestHandler
@@ -64,6 +63,8 @@ class Gateway(ChordNode):
         # Thread to check if gateway leader is stil up
         threading.Thread(target=self.check_leader, daemon=True).start()  # Start leader election thread
     
+
+
     #region Discovery
 
     def discover_entry(self):
@@ -115,6 +116,8 @@ class Gateway(ChordNode):
                     other_leader_info = self.discover_other_leader()
                     if other_leader_info and other_leader_info['leader_ip'] != self.ip:
                         logger_gw.info(f"Detected another leader: {other_leader_info['leader_ip']}")
+ 
+                    self.do_leader_things()
 
                 else:
                     # This node is not the leader, stop multicast discovery
@@ -136,6 +139,7 @@ class Gateway(ChordNode):
             
             logger_gw.info('===LEADER-CICLE ENDED===')
             time.sleep(10)
+
 
     def join(self, node):
         """Join a Gateway network using 'node' as an entry point."""
@@ -201,9 +205,17 @@ class Gateway(ChordNode):
             if node.id != self.id:
                 node.share_gw_knowledge(final_node_dict.values())
 
+    #region Leader things
 
+    def do_leader_things(self):
+        subordinate = random.choice(self.gateway_nodes)
+        self.do_subordinate_things(subordinate)
 
+        # • El nodo gateway seleccionado se comunica con los servicios necesarios.
+        # • Realiza el procesamiento necesario para responder al request.
 
+    def do_subordinate_things(self, subordinate):
+        pass
 
     #region Not Checked
 
@@ -261,3 +273,31 @@ class Gateway(ChordNode):
                         self.discovery_music_node()
                     elif category == 'storage_service':
                         self.discovery_ftp_node()
+
+
+    #region Iteraction MusicNode
+
+    def get_all_songs(self):
+        '''
+        Return all the songs available in the Chord Ring
+        '''
+        music_node = self.known_nodes['music_service']
+
+    def get_songs_by_title(self, data_title:str):
+        '''
+        Filter the available songs by title
+        '''
+        music_node = self.known_nodes['music_service']
+
+
+    def get_songs_by_artist(self, data_artist):
+        '''
+        Filter the available songs by artist
+        '''
+        pass
+
+    def get_songs_by_genre(self, data_genre):
+        '''
+        Filter the available songs by genre
+        '''
+        pass
