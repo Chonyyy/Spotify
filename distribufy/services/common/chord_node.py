@@ -274,7 +274,9 @@ class ChordNode:
                     other_leader_info = self.discover_other_leader()
                     if other_leader_info and other_leader_info['leader_ip'] != self.ip:
                         logger_le.info(f"Detected another leader: {other_leader_info['leader_ip']}")
-                        self.merge_rings(other_leader_info)
+                        other_leader = ChordNodeReference(get_sha_repr(other_leader_info['leader_ip']), other_leader_info['leader_ip'])
+                        self.join(other_leader)#FIXME
+                        # self.merge_rings(other_leader_info)
 
                 else:
                     # This node is not the leader, stop multicast discovery
@@ -284,10 +286,17 @@ class ChordNode:
                     self.leader.ping
                     logger_le.info(f'Leader ping succesfull: {self.leader.ip}')
 
+                    if self.succ.id == self.pred.id  == self.id:
+                        self.join(self.leader)
+
             except requests.ConnectionError:
                 # Leader is down, start a new election
                 logger_le.info('Connection with leader ended, starting election.')
-                self.start_election()
+                try:
+                    self.start_election()
+                except requests.ConnectionError:
+                    logger.error(f'Connection error while starting election. Leader is self')
+                    self.leader = self.ref
 
             except Exception as e:
                 logger_le.error(f"Error in leader check: {e}")
@@ -476,7 +485,7 @@ class ChordNode:
                             self.pred.update_sec_succ(self.succ.id, self.succ.ip)
                             self.pred.replicate_sec_succ()
                         else:
-                            self.sec_succ = self.id
+                            self.sec_succ = self.ref
                     
             # except ConnectionRefusedError:
             except requests.ConnectionError:

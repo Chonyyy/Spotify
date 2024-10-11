@@ -198,6 +198,7 @@ class ChordNodeReference:
                     raise e
             except requests.exceptions.JSONDecodeError as e:
                 logger.error(f'JSON Decode Error: {e}')
+                logger.error(f'Request path: {path}')
                 logger.error(f'Response text: {response_raw.text}')  # Log the response body
                 raise e
             except Exception as e:
