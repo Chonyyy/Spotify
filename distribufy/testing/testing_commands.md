@@ -170,3 +170,13 @@ curl -X POST http://localhost:8001/get-songs-by-genre \
      -H "Content-Type: application/json" \
      -d "{\"genre\":\"g1\"}"
 ```
+
+### Save song
+
+ubuntu
+
+``` bash
+curl -X POST http://localhost:8001/save-song \
+     -H "Content-Type: application/json" \
+     -d "{\"key_fields\":[\"title\"],\"title\":\"t1\", \"album\":\"ab\", \"genre\":\"g1\", \"artist\":\"a2\", \"total_size\": 45455}"
+```

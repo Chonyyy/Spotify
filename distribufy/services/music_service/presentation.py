@@ -16,7 +16,7 @@ class MusicNodePresentation(ChordNodeRequestHandler):
     def do_POST(self):
         super().do_POST()
 
-        if self.path == 'save-song':
+        if self.path == '/save-song':
             response = self.server.node.save_song(self.post_data)
             self.send_json_response(response)
 

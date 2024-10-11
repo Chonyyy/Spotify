@@ -2,7 +2,7 @@ import threading
 import requests
 import time
 import logging
-import os
+import os, math
 from services.common.chord_node import ChordNode
 from services.common.utils import get_sha_repr
 from services.common.my_orm import JSONDatabase
@@ -139,3 +139,29 @@ class MusicNode(ChordNode):
             except:
                 logger.error(f'Error: Error getting songs from node in ip {next_node.ip}')
         return all_songs_by_genre
+
+    def save_song(self, data):
+        total_size = int(data['total_size'])
+        logger.info(f'Total size recieived: {total_size}')
+        chunk_size = 1024
+        chunks = []
+        num_chunks = math.ceil(total_size / chunk_size)  # Número total de pedazos
+
+        for i in range(num_chunks):
+            start = i * chunk_size
+            end = min(start + chunk_size, total_size)
+            chunks.append((i + 1, start, end))  # (Número del pedazo, inicio, fin)
+
+        key_fields = data['key_fields']
+        new_data = self._transform_data(data, chunks)
+
+        del new_data['key_fields']
+        self.store_data(key_fields, new_data)
+        return {"message": "File stored", "file_chunks": chunks}
+    
+    def _transform_data(self, data: dict, file_chunks):
+        new_data = data
+        del new_data['total_size']
+        new_data['chunk_distribution'] = file_chunks
+        print("transf data ok")
+        return new_data

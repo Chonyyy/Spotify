@@ -12,7 +12,7 @@ def initialize_database(role, filepath):
     columns = None
     replic_columns = None
     if role == 'music_service':
-        columns = ['key','title', 'album', 'genre', 'artist']
+        columns = ['key','title', 'album', 'genre', 'artist', 'chunk_distribution']
         replic_columns = ['key','title', 'album', 'genre', 'artist']
         key_fields = ['value']
     elif role == 'music_ftp':
