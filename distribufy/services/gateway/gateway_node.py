@@ -3,6 +3,7 @@ import threading
 import time, random
 import logging
 import requests
+import socket
 from typing import List, Tuple
 from http.server import HTTPServer
 from services.common.multicast import send_multicast, receive_multicast
@@ -66,7 +67,6 @@ class Gateway(ChordNode):
         threading.Thread(target=self.discovery_music_node, daemon=True).start()
         threading.Thread(target=self.discovery_ftp_node, daemon=True).start()
     
-
     #region Discovery
 
     def discover_entry(self):
@@ -321,7 +321,6 @@ class Gateway(ChordNode):
             music_node = self.known_nodes['music_service']
             return music_node.get_song_by_key(song_key)
 
-
     def get_songs_by_title(self, data_title:str):
         '''
         Filter the available songs by title
@@ -363,3 +362,42 @@ class Gateway(ChordNode):
         else:
             music_node = self.known_nodes['music_service']
             return music_node.get_songs_by_genre(data_genre)
+
+    def store_song_file(self):#TODO
+        """Handle the initiation of storing a song file."""
+        # Find an available UDP port to receive the file
+        udp_socket, port = self._create_udp_socket()
+
+        # Spawn a new thread to receive the data asynchronously
+        threading.Thread(target=self._receive_file_data, args=(udp_socket,), daemon=True).start()
+
+        # Return the IP and port where the data can be sent
+        return {"ip": self.ip, "port": port}
+
+    def _create_udp_socket(self):#TODO
+        """Create and bind a UDP socket to an available port."""
+        udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        udp_socket.bind((self.ip, 0))  # Bind to any available port
+        port = udp_socket.getsockname()[1]
+        logger_gw.info(f"UDP socket created at {self.ip}:{port}")
+        return udp_socket, port
+
+    def _receive_file_data(self, udp_socket):#TODO
+        """Receive the file data over the UDP socket."""
+        try:
+            while True:
+                data, addr = udp_socket.recvfrom(4096)  # Buffer size can be adjusted
+                if data:
+                    # Process the received file data (this can be saving to memory, etc.)
+                    logger_gw.info(f"Received data from {addr}")
+                    # Handle data processing or saving here
+                else:
+                    break
+        except Exception as e:
+            logger_gw.error(f"Error receiving file data: {e}")
+        finally:
+            udp_socket.close()
+            logger_gw.info("UDP socket closed after file reception.")
+
+    def get_song_file(self):#TODO
+        raise NotImplementedError

@@ -32,11 +32,9 @@ class GatewayRequestHandler(ChordNodeRequestHandler):
         elif self.path == '/gw/share-gw-knowledge':
             self.handle_share_gw_knowledge(self.post_data)
             self.send_json_response({"status": "success"})
-
-        if self.path == '/gw/save-song':
+        elif self.path == '/gw/save-song':
             response = self.server.node.save_song(self.post_data)
             self.send_json_response({"status":"Song store ok"})
-
         elif self.path == '/gw/get-song-by-key':
             response = self.server.node.get_song_by_key(self.post_data)
             self.send_json_response(response)
@@ -49,6 +47,12 @@ class GatewayRequestHandler(ChordNodeRequestHandler):
         elif self.path == '/gw/get-songs-by-genre':
             response = self.server.node.get_songs_by_genre(self.post_data)
             self.send_json_response(response)
+        if self.path == '/gw/store-song-file':#TODO
+            # Trigger the store file process
+            udp_info = self.server.node.store_song_file()
+            self.send_json_response(udp_info)  # Return the UDP IP and port
+        elif self.path == '/gw/get-song-file':#TODO
+            raise NotImplementedError
 
     def do_GET(self):
         super().do_GET()
@@ -56,16 +60,13 @@ class GatewayRequestHandler(ChordNodeRequestHandler):
         if self.path == '/gw/gateway-nodes':
             all_nodes = list(self.server.node.gateway_nodes.values())
             node_dict = {}
-            #FIXME: finish this
             for node in all_nodes:
                 node_dict[node.id] = {'id': node.id, 'ip': node.ip}
             self.send_json_response(node_dict)
-        
         elif self.path == '/gw/get-songs':
             response = self.server.node.get_all_songs()
             return self.send_json_response(response)
-
-
+        
     def handle_gw_notify(self, post_data):
         node = GatewayReference(post_data['id'], post_data['ip'])
         self.server.node.notify_gw(node)
