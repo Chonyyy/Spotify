@@ -78,7 +78,7 @@ class ChordNode:
                     self.rep_pred = self.pred.id
     
     def drop_data(self):
-        if self.role == 'music_ftp':
+        if self.role == 'storage_service':
             self.delete_files(self.file_storage)
         
     def replicate_all_database(self):
@@ -90,11 +90,11 @@ class ChordNode:
             self.enqueue_replication_operation(record, 'insertion', key)
         
     def drop_suc_rep(self):
-        if self.role == 'music_ftp':
+        if self.role == 'storage_service':
             self.delete_files()
     
     def drop_pred_rep(self):
-        if self.role == 'music_ftp':
+        if self.role == 'storage_service':
             self.delete_files()
     
     def delete_files(self, filepath):

@@ -52,13 +52,12 @@ class ChordNodeReference:
         data['key_fields'] = key_fields
         self._send_request('/store-data', data)
         
-    def send_get_data(self, key, callback):
+    def send_get_data(self, key):
         """Send request to get an user"""
         data = {
-            'callback':callback,
             'key':key
         }
-        self._send_request('/get-data', data)
+        return self._send_request('/get-data-target', data)
         
     def enqueue_rep_operation(self, source_id, data, operation='insertion', key=None):
         self.replication_queue.append((source_id, data, operation, key))
