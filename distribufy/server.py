@@ -1,6 +1,7 @@
 from services.gateway.gateway_node import Gateway
 from services.music_service.logic import MusicNode
 from services.common.chord_node import ChordNode
+from services.storage_service.storage_node import StorageNode
 import logging
 
 logger = logging.getLogger("__main__")
@@ -17,7 +18,13 @@ def start_server(ip, role, db, sec_succ_db, succ_db):
             role=role
         )
     elif role == 'storage_service':
-        pass
+        node = StorageNode(
+            ip=ip,
+            db=db,
+            sec_succ_db=sec_succ_db,
+            succ_db=succ_db,
+            role=role
+        )
     elif role == 'chord_testing':
         node = ChordNode(
             ip=ip, 

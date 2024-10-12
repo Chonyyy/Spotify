@@ -10,6 +10,7 @@ from services.common.node_reference import ChordNodeReference
 from services.common.chord_handler import ChordNodeRequestHandler
 from services.common.multicast import send_multicast, receive_multicast
 from services.music_service.presentation import MusicNodePresentation
+from services.storage_service.storage_handler import StorageRequestHandler
 
 # Set up logging
 logger = logging.getLogger("__main__")
@@ -77,10 +78,16 @@ class ChordNode:
             self.httpd = HTTPServer(server_address, ChordNodeRequestHandler)
             self.httpd.node = self
         
-        if role == 'music_service':
+        elif role == 'music_service':
             logger.info("Initialize as music service")
             server_address = (self.ip, self.port)
             self.httpd = HTTPServer(server_address, MusicNodePresentation)
+            self.httpd.node = self
+
+        elif role == 'storage_service':
+            logger.info("Initialize as music service")
+            server_address = (self.ip, self.port)
+            self.httpd = HTTPServer(server_address, StorageRequestHandler)
             self.httpd.node = self
 
         logger.info(f'node_addr: {ip}:{port} {self.id}')
@@ -201,17 +208,21 @@ class ChordNode:
         logger.debug(f'Sending {requested_data} to node {source_id}')
         return requested_data
 
-    def get_data(self, key, callback):#TODO: While testing sending to an invalid url, the url seemed fine but got an error
+    def get_data(self, key):
         logger_dt.info(f'Getting item by key {key}')
         target_node = self.find_succ(key)
         logger.info(f'Asking for key {key}, to node {target_node.ip}|{target_node.id}')
         if target_node.id == self.id:
-            ##TODO: respond to callback
-            data = self.data.query("id", key)
-            self._send_request(callback, data)
+            return self.data.query("key", key)
         else:
-            threading.Thread(target=target_node.send_get_data, args= [key, callback], daemon=True).start()
+            data = target_node.send_get_data(key)
+            logger.info(f'Returned data is {data}')
+            return data
             
+    def get_data_target(self, key):
+        logger_dt.info(f'Getting item by key {key} in self')
+        return self.data.query("key", key)
+        
     def store_replic(self, source, data, key):
         logger.info(f'Replic storage comenced')
         if source == self.pred.id:

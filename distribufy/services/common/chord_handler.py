@@ -47,6 +47,9 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):
         elif self.path == '/get-data':
             response = self.handle_get_data(self.post_data)
             self.send_json_response(response)
+        elif self.path == '/get-data-target':
+            response = self.handle_get_data_target(self.post_data)
+            self.send_json_response(response)
         elif self.path == '/store-replic':
             self.handle_store_replic(self.post_data)
             self.send_json_response({'status':'recieved'})
@@ -197,14 +200,16 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):
         self.server.node.update_sec_succ(post_data['id'], post_data['ip'])
 
     def handle_get_data(self, post_data):
-        if 'callback' not in post_data:
-            self.send_json_response(None, error_message='Provided data must contain a callback addr', status=400)
         if 'key' not in post_data:
             self.send_json_response(None, error_message='Provided data must contain a key')
-        callback = post_data['callback']
         key = post_data['key']
-        self.server.node.get_data(key, callback)
-        return {"status": "success"}
+        return self.server.node.get_data(key)
+    
+    def handle_get_data_target(self, post_data):
+        if 'key' not in post_data:
+            self.send_json_response(None, error_message='Provided data must contain a key')
+        key = post_data['key']
+        return self.server.node.get_data_target(key)
 
     def handle_election(self, post_data):
         # Request validation

@@ -7,7 +7,7 @@ import json
 
 MULTICAST_GROUPS = {
     'music_service': '224.1.1.1',
-    'music_ftp': '224.1.1.2',
+    'storage_service': '224.1.1.2',
     'gateway': '224.1.1.3',
     'chord_testing': '224.1.1.4',
 }
