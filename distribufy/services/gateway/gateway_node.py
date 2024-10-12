@@ -64,6 +64,7 @@ class Gateway(ChordNode):
         threading.Thread(target=self.check_leader, daemon=True).start()  # Start leader election thread
     
         threading.Thread(target=self.discovery_music_node, daemon=True).start()
+        threading.Thread(target=self.discovery_ftp_node, daemon=True).start()
     
 
     #region Discovery
@@ -225,7 +226,19 @@ class Gateway(ChordNode):
             
     def discovery_ftp_node(self):
         """Discovery for ftp nodes"""
-        raise NotImplementedError()
+        retries = 2
+        retry_interval = 5
+
+        while(True):
+            for _ in range(retries):
+                multi_response = receive_multicast("storage_service")
+                discovered_ip = multi_response[0][0] if multi_response[0] else None
+                if discovered_ip and discovered_ip != self.ip:
+                    logger_gw.info(f"Discovered storage service: {discovered_ip}")
+                    discovered_node = MusicNodeReference(get_sha_repr(discovered_ip), discovered_ip, self.port)
+                    self.known_nodes['storage_service'] = discovered_node
+                    return
+                time.sleep(retry_interval)
 
     def start_election(self):
         leader_candidate = self.ref.id
