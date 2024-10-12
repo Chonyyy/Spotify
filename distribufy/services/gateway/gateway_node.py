@@ -389,7 +389,7 @@ class Gateway(ChordNode):
                 data, addr = udp_socket.recvfrom(4096)  # Buffer size can be adjusted
                 if data:
                     # Process the received file data (this can be saving to memory, etc.)
-                    logger_gw.info(f"Received data from {addr}")
+                    logger_gw.info(f"Received data from {addr} data: \n{data}")
                     # Handle data processing or saving here
                 else:
                     break
