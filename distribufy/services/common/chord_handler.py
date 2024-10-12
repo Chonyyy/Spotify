@@ -264,6 +264,8 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):
             print(f'Responging to {self.client_address}, from {origin}')
         self.send_response(status)
         self.send_header("Content-type", "application/json")
+        self.send_header("Access-Control-Allow-Origin", "*")
+        print(self.headers)
         self.end_headers()
         
         if response:
