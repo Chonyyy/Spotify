@@ -38,7 +38,6 @@ class GatewayReference(ChordNodeReference):
     def get_songs_by_genre(self, genre):
         return self._send_request('/gw/get-songs-by-genre',data= genre, method='post')
     
-
     def share_gw_knowledge(self, known_nodes: List['GatewayReference']):
         """Notify the new leader."""
         logger.debug(f'Sharing known gw nodes {known_nodes}')
@@ -46,6 +45,19 @@ class GatewayReference(ChordNodeReference):
         for node in known_nodes:
             nodes.append({'ip': node.ip, 'port': node.port, 'id': node.id})
         self._send_request('/gw/share-gw-knowledge', {'nodes': nodes})
+
+    def store_song_file(self):#TODO
+        """Initiate the file storage process by making an HTTP request."""
+        try:
+            response = self._send_request('/gw/store-song-file', method='post')
+            logger.info(f"Received UDP details for file transfer: {response}")
+            return response
+        except Exception as e:
+            logger.error(f"Error initiating file storage: {e}")
+            return None
+
+    def get_song_file(self):#TODO
+        raise NotImplementedError
 
     @property
     def gateway_nodes(self):
