@@ -20,6 +20,25 @@ class GatewayReference(ChordNodeReference):
         """Notify the node of a leader change."""
         self._send_request('/gw/notify', {'id': node.id, 'ip': node.ip})
     
+    def save_song(self, data):
+        self._send_request('/gw/save-song', data)
+    
+    def get_all_songs(self):
+        return self._send_request('/gw/get-songs', method='get')
+    
+    def get_song_by_key(self, key):
+        return self._send_request('/gw/get-song-by-key',data= key, method='post')
+    
+    def get_songs_by_title(self, title):
+        return self._send_request('/gw/get-songs-by-title',data= title, method='post')
+    
+    def get_songs_by_artist(self, artist):
+        return self._send_request('/gw/get-songs-by-artist',data= artist, method='post')
+    
+    def get_songs_by_genre(self, genre):
+        return self._send_request('/gw/get-songs-by-genre',data= genre, method='post')
+    
+
     def share_gw_knowledge(self, known_nodes: List['GatewayReference']):
         """Notify the new leader."""
         logger.debug(f'Sharing known gw nodes {known_nodes}')

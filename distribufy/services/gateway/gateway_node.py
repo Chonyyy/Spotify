@@ -150,12 +150,13 @@ class Gateway(ChordNode):
             node.notify(self.ref)
             if self.id > node.id:
                 self.leader = self.ref
+                self.gateway_nodes[node.id] = node
                 self.anounce_leader()
             else:
                 logger_gw.info(f'Setting node {node.ip} as leader')
                 self.leader = node
                 self.gateway_nodes[node.id] = node
-                self.update_gw_knowledge()
+            self.update_gw_knowledge()
             logger_gw.info('===JOIN ENDED===')
 
     def notify_gw(self, node):
@@ -268,18 +269,26 @@ class Gateway(ChordNode):
         Save a song in the Chord Ring
         '''
         if self.leader.id == self.id and len(self.gateway_nodes) > 1:
-            subordinate = random.choice(self.gateway_nodes)
-            return subordinate.save_song()
+            subordinate = random.choice(list(self.gateway_nodes.values()))
+            
+            while subordinate.id == self.leader.id:
+                subordinate = random.choice(list(self.gateway_nodes.values()))
+
+            return subordinate.save_song(data)
         else:
             music_node = self.known_nodes['music_service']
-            return music_node.save_song()
+            return music_node.save_song(data)
 
     def get_all_songs(self):
         '''
         Return all the songs available in the Chord Ring
         '''
         if self.leader.id == self.id and len(self.gateway_nodes) > 1:
-            subordinate = random.choice(self.gateway_nodes)
+            subordinate = random.choice(list(self.gateway_nodes.values()))
+
+            while subordinate.id == self.leader.id:
+                subordinate = random.choice(list(self.gateway_nodes.values()))
+
             return subordinate.get_all_songs()
         else:
             music_node = self.known_nodes['music_service']
@@ -290,8 +299,11 @@ class Gateway(ChordNode):
         Return a song store in the Chord Ring given a song_key
         '''
         if self.leader.id == self.id and len(self.gateway_nodes) > 1:
-            subordinate = random.choice(self.gateway_nodes)
-            return subordinate.get_song_by_key()
+            subordinate = random.choice(list(self.gateway_nodes.values()))
+            while subordinate.id == self.leader.id:
+                subordinate = random.choice(list(self.gateway_nodes.values()))
+
+            return subordinate.get_song_by_key(song_key)
         else:
             music_node = self.known_nodes['music_service']
             return music_node.get_song_by_key(song_key)
@@ -302,8 +314,11 @@ class Gateway(ChordNode):
         Filter the available songs by title
         '''
         if self.leader.id == self.id and len(self.gateway_nodes) > 1:
-            subordinate = random.choice(self.gateway_nodes)
-            return subordinate.get_song_by_key()
+            subordinate = random.choice(list(self.gateway_nodes.values()))
+            while subordinate.id == self.leader.id:
+                subordinate = random.choice(list(self.gateway_nodes.values()))
+
+            return subordinate.get_songs_by_title(data_title)
         else:
             music_node = self.known_nodes['music_service']
             return music_node.get_songs_by_title(data_title)
@@ -313,8 +328,11 @@ class Gateway(ChordNode):
         Filter the available songs by artist
         '''
         if self.leader.id == self.id and len(self.gateway_nodes) > 1:
-            subordinate = random.choice(self.gateway_nodes)
-            return subordinate.get_song_by_key()
+            subordinate = random.choice(list(self.gateway_nodes.values()))
+            while subordinate.id == self.leader.id:
+                subordinate = random.choice(list(self.gateway_nodes.values()))
+
+            return subordinate.get_song_by_artist()
         else:
             music_node = self.known_nodes['music_service']
             return music_node.get_songs_by_artist(data_artist)
@@ -324,8 +342,11 @@ class Gateway(ChordNode):
         Filter the available songs by genre
         '''
         if self.leader.id == self.id and len(self.gateway_nodes) > 1:
-            subordinate = random.choice(self.gateway_nodes)
-            return subordinate.get_song_by_key()
+            subordinate = random.choice(list(self.gateway_nodes.values()))
+            while subordinate.id == self.leader.id:
+                subordinate = random.choice(list(self.gateway_nodes.values()))
+
+            return subordinate.get_songs_by_genre()
         else:
             music_node = self.known_nodes['music_service']
             return music_node.get_songs_by_genre(data_genre)

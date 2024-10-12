@@ -150,8 +150,8 @@ class MusicNode(ChordNode):
         for i in range(num_chunks):
             start = i * chunk_size
             end = min(start + chunk_size, total_size)
-            chunk_str = '' + data['title'] + '_' + str(i + 1)
-            chunk_id = get_sha_repr(chunk_str)
+            chunk_str = data['title'] + '_' + str(i + 1)
+            chunk_id = chunk_str
             chunks.append((chunk_id, start, end))  # (Número del pedazo, inicio, fin)
 
         key_fields = data['key_fields']

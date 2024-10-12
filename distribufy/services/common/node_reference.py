@@ -141,6 +141,11 @@ class ChordNodeReference:
     def get_db(self):
         return self._send_request('/get-db', method='get')
     
+    def save_song(self, data):#TODO ver esto
+        logger.info("Dataaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+        logger.info(data)
+        return self._send_request('/save-song',data)
+    
     def get_songs(self):
         return self._send_request('/get-songs', method='get')
 
@@ -156,7 +161,7 @@ class ChordNodeReference:
     def songs_genre_node(self, genre):
         return self._send_request('/get-songs-genre-node',data= genre, method='post')
 
-    def get_songs_by_key(self, key):
+    def get_song_by_key(self, key):
         return self._send_request('/get-song-by-key',data= key, method='post')
     
     def get_songs_by_title(self, title):

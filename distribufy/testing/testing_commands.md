@@ -97,7 +97,7 @@ ubuntu
 ``` bash
 curl -X POST http://localhost:8001/store-data \
      -H "Content-Type: application/json" \
-     -d "{\"key_fields\":[\"title\"],\"title\":\"t1\", \"album\":\"ab\", \"genre\":\"g1\", \"artist\":\"a2\"}"
+     -d "{\"key_fields\":[\"title\"],\"title\":\"title\", \"album\":\"ab\", \"genre\":\"g1\", \"artist\":\"a2\"}"
 ```
 
 windows
@@ -176,9 +176,9 @@ curl -X POST http://localhost:8001/get-songs-by-genre \
 ubuntu
 
 ``` bash
-curl -X POST http://localhost:8001/save-song \
+curl -X POST http://localhost:8004/save-song \
      -H "Content-Type: application/json" \
-     -d "{\"key_fields\":[\"title\"],\"title\":\"t1\", \"album\":\"ab\", \"genre\":\"g1\", \"artist\":\"a2\", \"total_size\": 45455}"
+     -d "{\"key_fields\":[\"title\"],\"title\":\"t\", \"album\":\"ab\", \"genre\":\"g1\", \"artist\":\"a2\", \"total_size\": 45455}"
 ```
 
 ## Comandos de Gateway
@@ -186,7 +186,7 @@ curl -X POST http://localhost:8001/save-song \
 ubuntu
 
 ``` bash
-curl -X GET http://localhost:8001/gw/get-songs
+curl -X GET http://localhost:8004/gw/get-songs
 ```
 
 ### Get songs by key gw
@@ -194,7 +194,7 @@ curl -X GET http://localhost:8001/gw/get-songs
 ubuntu
 
 ``` bash
-curl -X POST http://localhost:8001/gw/get-song-by-key \
+curl -X POST http://localhost:8004/gw/get-song-by-key \
      -H "Content-Type: application/json" \
      -d "{\"key\": 1308545745728133123969321625266336910349324885359}"
 ```
@@ -204,9 +204,9 @@ curl -X POST http://localhost:8001/gw/get-song-by-key \
 ubuntu
 
 ``` bash
-curl -X POST http://localhost:8001/gw/get-songs-by-title \
+curl -X POST http://localhost:8004/gw/get-songs-by-title \
      -H "Content-Type: application/json" \
-     -d "{\"title\":\"t1\"}"
+     -d "{\"title\":\"t3\"}"
 ```
 
 ### Get songs by artist gw
@@ -214,7 +214,7 @@ curl -X POST http://localhost:8001/gw/get-songs-by-title \
 ubuntu
 
 ``` bash
-curl -X POST http://localhost:8001/gw/get-songs-by-artist \
+curl -X POST http://localhost:8002/gw/get-songs-by-artist \
      -H "Content-Type: application/json" \
      -d "{\"artist\":\"a2\"}"
 ```
@@ -224,7 +224,7 @@ curl -X POST http://localhost:8001/gw/get-songs-by-artist \
 ubuntu
 
 ``` bash
-curl -X POST http://localhost:8001/gw/get-songs-by-genre \
+curl -X POST http://localhost:8002/gw/get-songs-by-genre \
      -H "Content-Type: application/json" \
      -d "{\"genre\":\"g1\"}"
 ```
@@ -234,7 +234,7 @@ curl -X POST http://localhost:8001/gw/get-songs-by-genre \
 ubuntu
 
 ``` bash
-curl -X POST http://localhost:8001/gw/save-song \
+curl -X POST http://localhost:8004/gw/save-song \
      -H "Content-Type: application/json" \
-     -d "{\"key_fields\":[\"title\"],\"title\":\"t1\", \"album\":\"ab\", \"genre\":\"g1\", \"artist\":\"a2\", \"total_size\": 45455}"
+     -d "{\"key_fields\":[\"title\"],\"title\":\"t3\", \"album\":\"ab\", \"genre\":\"g1\", \"artist\":\"a2\", \"total_size\": 45455}"
 ```

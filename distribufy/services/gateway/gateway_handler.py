@@ -35,17 +35,20 @@ class GatewayRequestHandler(ChordNodeRequestHandler):
 
         if self.path == '/gw/save-song':
             response = self.server.node.save_song(self.post_data)
-            self.send_json_response(response)
+            self.send_json_response({"status":"Song store ok"})
 
+        elif self.path == '/gw/get-song-by-key':
+            response = self.server.node.get_song_by_key(self.post_data)
+            self.send_json_response(response)
         elif self.path == '/gw/get-songs-by-title':
             response = self.server.node.get_songs_by_title(self.post_data)
-            return self.send_json_response(response)
+            self.send_json_response(response)
         elif self.path == '/gw/get-songs-by-artist':
             response = self.server.node.get_songs_by_artist(self.post_data)
-            return self.send_json_response(response)
+            self.send_json_response(response)
         elif self.path == '/gw/get-songs-by-genre':
             response = self.server.node.get_songs_by_genre(self.post_data)
-            return self.send_json_response(response)
+            self.send_json_response(response)
 
     def do_GET(self):
         super().do_GET()
