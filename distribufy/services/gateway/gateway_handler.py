@@ -33,6 +33,10 @@ class GatewayRequestHandler(ChordNodeRequestHandler):
             self.handle_share_gw_knowledge(self.post_data)
             self.send_json_response({"status": "success"})
 
+        if self.path == '/gw/save-song':
+            response = self.server.node.save_song(self.post_data)
+            self.send_json_response(response)
+
         elif self.path == '/gw/get-songs-by-title':
             response = self.server.node.get_songs_by_title(self.post_data)
             return self.send_json_response(response)

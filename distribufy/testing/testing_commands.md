@@ -95,7 +95,7 @@ python app.py music_service
 ubuntu
 
 ``` bash
-curl -X POST http://localhost:8002/store-data \
+curl -X POST http://localhost:8001/store-data \
      -H "Content-Type: application/json" \
      -d "{\"key_fields\":[\"title\"],\"title\":\"t1\", \"album\":\"ab\", \"genre\":\"g1\", \"artist\":\"a2\"}"
 ```
@@ -177,6 +177,64 @@ ubuntu
 
 ``` bash
 curl -X POST http://localhost:8001/save-song \
+     -H "Content-Type: application/json" \
+     -d "{\"key_fields\":[\"title\"],\"title\":\"t1\", \"album\":\"ab\", \"genre\":\"g1\", \"artist\":\"a2\", \"total_size\": 45455}"
+```
+
+## Comandos de Gateway
+
+ubuntu
+
+``` bash
+curl -X GET http://localhost:8001/gw/get-songs
+```
+
+### Get songs by key gw
+
+ubuntu
+
+``` bash
+curl -X POST http://localhost:8001/gw/get-song-by-key \
+     -H "Content-Type: application/json" \
+     -d "{\"key\": 1308545745728133123969321625266336910349324885359}"
+```
+
+### Get songs by title gw
+
+ubuntu
+
+``` bash
+curl -X POST http://localhost:8001/gw/get-songs-by-title \
+     -H "Content-Type: application/json" \
+     -d "{\"title\":\"t1\"}"
+```
+
+### Get songs by artist gw
+
+ubuntu
+
+``` bash
+curl -X POST http://localhost:8001/gw/get-songs-by-artist \
+     -H "Content-Type: application/json" \
+     -d "{\"artist\":\"a2\"}"
+```
+
+### Get songs by genre gw
+
+ubuntu
+
+``` bash
+curl -X POST http://localhost:8001/gw/get-songs-by-genre \
+     -H "Content-Type: application/json" \
+     -d "{\"genre\":\"g1\"}"
+```
+
+### Save song gw
+
+ubuntu
+
+``` bash
+curl -X POST http://localhost:8001/gw/save-song \
      -H "Content-Type: application/json" \
      -d "{\"key_fields\":[\"title\"],\"title\":\"t1\", \"album\":\"ab\", \"genre\":\"g1\", \"artist\":\"a2\", \"total_size\": 45455}"
 ```

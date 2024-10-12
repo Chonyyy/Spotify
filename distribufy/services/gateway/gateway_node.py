@@ -128,7 +128,7 @@ class Gateway(ChordNode):
 
             except requests.ConnectionError:
                 with self.known_gw_nodes_lock:
-                    del self.gateway_nodes[self.leader.id]
+                    # del self.gateway_nodes[self.leader.id]
                     # Leader is down, start a new election
                     logger_gw.info('Connection with leader ended, starting election.')
                 self.start_election()
@@ -174,7 +174,7 @@ class Gateway(ChordNode):
     def anounce_leader(self):
         """Iterate all known nodes anouncing itself as leader"""
         logger_gw.info(f'Anouncing to all nodes i am the leader')
-        for node in self.gateway_nodes:
+        for node in self.gateway_nodes.values():
             node.notify(self.ref)
         logger_gw.info(f'Done anouncing to all nodes i am the leader')
 
@@ -261,8 +261,18 @@ class Gateway(ChordNode):
                     elif category == 'storage_service':
                         self.discovery_ftp_node()
 
-
     #region Iteraction MusicNode
+
+    def save_song(self, data):
+        '''
+        Save a song in the Chord Ring
+        '''
+        if self.leader.id == self.id and len(self.gateway_nodes) > 1:
+            subordinate = random.choice(self.gateway_nodes)
+            return subordinate.save_song()
+        else:
+            music_node = self.known_nodes['music_service']
+            return music_node.save_song()
 
     def get_all_songs(self):
         '''
@@ -279,27 +289,43 @@ class Gateway(ChordNode):
         '''
         Return a song store in the Chord Ring given a song_key
         '''
+        if self.leader.id == self.id and len(self.gateway_nodes) > 1:
+            subordinate = random.choice(self.gateway_nodes)
+            return subordinate.get_song_by_key()
+        else:
+            music_node = self.known_nodes['music_service']
+            return music_node.get_song_by_key(song_key)
 
-        music_node = self.known_nodes['music_service']
-        return music_node.get_song_by_key(song_key)
 
     def get_songs_by_title(self, data_title:str):
         '''
         Filter the available songs by title
         '''
-        music_node = self.known_nodes['music_service']
-        return music_node.get_songs_by_title(data_title)
+        if self.leader.id == self.id and len(self.gateway_nodes) > 1:
+            subordinate = random.choice(self.gateway_nodes)
+            return subordinate.get_song_by_key()
+        else:
+            music_node = self.known_nodes['music_service']
+            return music_node.get_songs_by_title(data_title)
 
     def get_songs_by_artist(self, data_artist):
         '''
         Filter the available songs by artist
         '''
-        music_node = self.known_nodes['music_service']
-        return music_node.get_songs_by_artist(data_artist)
+        if self.leader.id == self.id and len(self.gateway_nodes) > 1:
+            subordinate = random.choice(self.gateway_nodes)
+            return subordinate.get_song_by_key()
+        else:
+            music_node = self.known_nodes['music_service']
+            return music_node.get_songs_by_artist(data_artist)
 
     def get_songs_by_genre(self, data_genre):
         '''
         Filter the available songs by genre
         '''
-        music_node = self.known_nodes['music_service']
-        return music_node.get_songs_by_genre(data_genre)
+        if self.leader.id == self.id and len(self.gateway_nodes) > 1:
+            subordinate = random.choice(self.gateway_nodes)
+            return subordinate.get_song_by_key()
+        else:
+            music_node = self.known_nodes['music_service']
+            return music_node.get_songs_by_genre(data_genre)
