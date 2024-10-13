@@ -4,6 +4,7 @@ import time, random
 import logging
 import requests
 import socket
+import base64
 from typing import List, Tuple
 from http.server import HTTPServer
 from services.common.multicast import send_multicast, receive_multicast
@@ -433,7 +434,7 @@ class Gateway(ChordNode):
                         'key':song_title + str(chunk_num),
                         'start': start,
                         'ends': start + 1024,
-                        'data': data,
+                        'data': base64.b64encode(data).decode('utf-8'),
                     },'warever.com', ['key'])#FIXME: Handle if the node crashes
                     start += 1024 #FIXME: coger el tamanyo dinamicamente de data
                     chunk_num += 1
