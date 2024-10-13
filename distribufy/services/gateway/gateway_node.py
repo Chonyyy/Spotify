@@ -431,7 +431,7 @@ class Gateway(ChordNode):
                     file_data.extend(data)  # Accumulate received data
                     storage_node.send_store_data({
                         'key_fields': ['key'],
-                        'key':song_title + chunk_num,
+                        'key':song_title + str(chunk_num),
                         'start': start,
                         'ends': start + 1024,
                         'data': data,
