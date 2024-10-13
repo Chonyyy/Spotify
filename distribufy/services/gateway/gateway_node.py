@@ -435,7 +435,7 @@ class Gateway(ChordNode):
                         'start': start,
                         'ends': start + 1024,
                         'data': base64.b64encode(data).decode('utf-8'),
-                    },'warever.com', ['key'])#FIXME: Handle if the node crashes
+                    },False, ['key'])#FIXME: Handle if the node crashes
                     start += 1024 #FIXME: coger el tamanyo dinamicamente de data
                     chunk_num += 1
                 else:
