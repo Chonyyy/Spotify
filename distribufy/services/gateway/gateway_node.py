@@ -385,6 +385,7 @@ class Gateway(ChordNode):
         fields = ['title', 'album', 'genre', 'artist']
         payload = {key: post_data[key] for key in fields}
         payload['total_size'] = 10
+        payload['key_fields'] = ['title', 'artist', 'album']
         music_service.store_song_data(payload)
 
         # Find an available UDP port to receive the file
