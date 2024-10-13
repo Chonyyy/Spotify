@@ -46,10 +46,10 @@ class GatewayReference(ChordNodeReference):
             nodes.append({'ip': node.ip, 'port': node.port, 'id': node.id})
         self._send_request('/gw/share-gw-knowledge', {'nodes': nodes})
 
-    def store_song_file(self):#TODO
+    def store_song_file(self, payload):#TODO
         """Initiate the file storage process by making an HTTP request."""
         try:
-            response = self._send_request('/gw/store-song-file', method='post')
+            response = self._send_request('/gw/store-song-file', payload)
             logger.info(f"Received UDP details for file transfer: {response}")
             return response
         except Exception as e:

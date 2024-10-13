@@ -369,7 +369,13 @@ class Gateway(ChordNode):
         Args:
             file_id (str): Identifier for the song file being stored.
         """
-        #TODO: add logic to redirect if i am the leader
+        if self.leader.id == self.id and len(self.gateway_nodes) > 1:
+            subordinate = random.choice(list(self.gateway_nodes.values()))
+            
+            while subordinate.id == self.leader.id:
+                subordinate = random.choice(list(self.gateway_nodes.values()))
+
+            return subordinate.store_song_file(post_data)
 
         # Get the music service
         music_service = self.known_nodes['music_service']#FIXME: What if theres no music service discovered yet ?
