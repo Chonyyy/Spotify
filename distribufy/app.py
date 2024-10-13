@@ -12,8 +12,8 @@ def initialize_database(role, filepath):
     columns = None
     replic_columns = None
     if role == 'music_service':
-        columns = ['key','title', 'album', 'genre', 'artist', 'chunk_distribution', 'image']
-        replic_columns = ['key','title', 'album', 'genre', 'artist', 'chunk_distribution', 'image']
+        columns = ['key','title', 'album', 'genre', 'artist', 'chunk_distribution']
+        replic_columns = ['key','title', 'album', 'genre', 'artist', 'chunk_distribution']
         key_fields = ['value']
     elif role == 'storage_service':
         columns = ['key', 'start', 'ends', 'data']
