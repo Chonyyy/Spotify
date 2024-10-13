@@ -448,5 +448,55 @@ class Gateway(ChordNode):
             udp_socket.close()
             logger_gw.info(f"UDP socket closed for file ID: {song_title}")
 
-    def get_song_file(self):#TODO
-        raise NotImplementedError
+    def send_song_file(self, song_key: str, udp_ip: str, udp_port: int, start_chunk: int, post_data):#FIXME
+        """
+        Send a song file chunk by chunk over a UDP socket.
+        Args:
+            song_key (str): The identifier of the song to be sent.
+            udp_ip (str): The IP of the UDP socket.
+            udp_port (int): The port of the UDP socket.
+            start_chunk (int): The chunk number to start the transfer from.
+        """
+        if self.leader.id == self.id and len(self.gateway_nodes) > 1:
+            subordinate = random.choice(list(self.gateway_nodes.values()))
+            
+            while subordinate.id == self.leader.id:
+                subordinate = random.choice(list(self.gateway_nodes.values()))
+
+            return subordinate.store_song_file(post_data)#FIXME
+        
+        storage_node = self.known_nodes.get('storage_service')
+
+        if not storage_node:
+            logger_gw.error("No storage node available.")
+            return False
+
+        try:
+            # Create a UDP socket
+            udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+            # Send chunks starting from `start_chunk`
+            chunk_number = start_chunk
+            while True:
+                # Get the chunk from the storage node
+                chunk = storage_node.get_data(song_key)#FIXME
+                if not chunk:
+                    logger_gw.info(f"All chunks sent for song {song_key}.")
+                    break
+
+                # Send the chunk over UDP
+                udp_socket.sendto(chunk, (udp_ip, udp_port))
+                logger_gw.info(f"Sent chunk {chunk_number} of {song_key} to {udp_ip}:{udp_port}")
+
+                chunk_number += 1
+
+            logger_gw.info(f"File {song_key} successfully sent over UDP.")
+            return True
+
+        except Exception as e:
+            logger_gw.error(f"Error sending song file {song_key}: {e}")
+            return False
+
+        finally:
+            udp_socket.close()
+            logger_gw.info(f"UDP socket closed for song {song_key}")

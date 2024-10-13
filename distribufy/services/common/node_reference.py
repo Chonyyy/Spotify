@@ -51,6 +51,13 @@ class ChordNodeReference:
         data['callback'] = callback
         data['key_fields'] = key_fields
         self._send_request('/store-data', data)
+
+    def get_data(self, key):
+        """Send request to get an user"""
+        data = {
+            'key':key
+        }
+        return self._send_request('/get-data-target', data)
         
     def send_get_data(self, key):
         """Send request to get an user"""

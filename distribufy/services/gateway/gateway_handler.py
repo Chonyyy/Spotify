@@ -52,7 +52,22 @@ class GatewayRequestHandler(ChordNodeRequestHandler):
             udp_info = self.server.node.store_song_file(self.post_data)
             self.send_json_response(udp_info)  # Return the UDP IP and port
         elif self.path == '/gw/get-song-file':#TODO
-            raise NotImplementedError
+            # Parse the request data
+            song_key = self.post_data.get('song_key')
+            udp_ip = self.post_data.get('udp_ip')
+            udp_port = int(self.post_data.get('udp_port'))
+            start_chunk = int(self.post_data.get('start_chunk', 0))
+
+            if song_key and udp_ip and udp_port is not None:
+                # Trigger sending the song file via UDP
+                success = self.server.node.send_song_file(song_key, udp_ip, udp_port, start_chunk, self.post_data)
+
+                if success:
+                    self.send_json_response({"status": "success", "message": f"File {song_key} sent over UDP."})
+                else:
+                    self.send_json_response({"status": "error", "message": f"Failed to send file {song_key}."}, status=500)
+            else:
+                self.send_json_response({"status": "error", "message": "Missing required parameters."}, status=400)
 
     def do_GET(self):
         super().do_GET()

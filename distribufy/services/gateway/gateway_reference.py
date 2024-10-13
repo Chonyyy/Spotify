@@ -56,8 +56,29 @@ class GatewayReference(ChordNodeReference):
             logger.error(f"Error initiating file storage: {e}")
             return None
 
-    def get_song_file(self):#TODO
-        raise NotImplementedError
+    def send_song_file(self, song_key: str, udp_ip: str, udp_port: int, start_chunk: int):#TODO
+        """
+        Request to send a song file via UDP starting from a specific chunk.
+        Args:
+            song_key (str): The identifier of the song to send.
+            udp_ip (str): The IP address of the UDP receiver.
+            udp_port (int): The port number of the UDP receiver.
+            start_chunk (int): The chunk number to start sending from.
+        """
+        payload = {
+            'song_key': song_key,
+            'udp_ip': udp_ip,
+            'udp_port': udp_port,
+            'start_chunk': start_chunk
+        }
+
+        try:
+            response = self._send_request('/gw/send-song-file', payload)
+            logger.info(f"Requested sending of {song_key} starting at chunk {start_chunk} to {udp_ip}:{udp_port}.")
+            return response
+        except Exception as e:
+            logger.error(f"Error sending song file {song_key}: {e}")
+            return None
 
     @property
     def gateway_nodes(self):
