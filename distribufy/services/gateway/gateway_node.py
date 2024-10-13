@@ -430,12 +430,11 @@ class Gateway(ChordNode):
                     logger_gw.info(f"Received {len(data)} bytes from {addr} via UDP")
                     file_data.extend(data)  # Accumulate received data
                     storage_node.send_store_data({
-                        'key_fields': ['key'],
                         'key':song_title + str(chunk_num),
                         'start': start,
                         'ends': start + 1024,
                         'data': data,
-                    })#FIXME: Handle if the node crashes
+                    },'warever.com', ['key'])#FIXME: Handle if the node crashes
                     start += 1024 #FIXME: coger el tamanyo dinamicamente de data
                     chunk_num += 1
                 else:
