@@ -49,7 +49,7 @@ class GatewayRequestHandler(ChordNodeRequestHandler):
             self.send_json_response(response)
         if self.path == '/gw/store-song-file':#TODO
             # Trigger the store file process
-            udp_info = self.server.node.store_song_file()
+            udp_info = self.server.node.store_song_file(self.post_data)
             self.send_json_response(udp_info)  # Return the UDP IP and port
         elif self.path == '/gw/get-song-file':#TODO
             raise NotImplementedError

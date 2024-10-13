@@ -363,41 +363,84 @@ class Gateway(ChordNode):
             music_node = self.known_nodes['music_service']
             return music_node.get_songs_by_genre(data_genre)
 
-    def store_song_file(self):#TODO
-        """Handle the initiation of storing a song file."""
+    def store_song_file(self, post_data):#TODO
+        """
+        Handle the initiation of storing a song file.
+        Args:
+            file_id (str): Identifier for the song file being stored.
+        """
+        #TODO: add logic to redirect if i am the leader
+
+        # Get the music service
+        music_service = self.known_nodes['music_service']#FIXME: What if theres no music service discovered yet ?
+
+        # Save the music data in the music service 
+        # title', 'album', 'genre', 'artist', 'chunk_distribution', 'image'
+        fields = ['title', 'album', 'genre', 'artist']
+        payload = {key: post_data[key] for key in fields}
+        payload['total_size'] = 10
+        music_service.store_song_data(payload)
+
         # Find an available UDP port to receive the file
         udp_socket, port = self._create_udp_socket()
 
         # Spawn a new thread to receive the data asynchronously
-        threading.Thread(target=self._receive_file_data, args=(udp_socket,), daemon=True).start()
+        threading.Thread(target=self._receive_file_data, args=(udp_socket, post_data['title']), daemon=True).start()
 
         # Return the IP and port where the data can be sent
         return {"ip": self.ip, "port": port}
 
-    def _create_udp_socket(self):#TODO
-        """Create and bind a UDP socket to an available port."""
+    def _create_udp_socket(self):
+        """
+        Create and bind a UDP socket to an available port.
+        Returns:
+            udp_socket: The UDP socket object.
+            port (int): The port number the socket is bound to.
+        """
         udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         udp_socket.bind((self.ip, 0))  # Bind to any available port
         port = udp_socket.getsockname()[1]
         logger_gw.info(f"UDP socket created at {self.ip}:{port}")
         return udp_socket, port
 
-    def _receive_file_data(self, udp_socket):#TODO
-        """Receive the file data over the UDP socket."""
+    def _receive_file_data(self, udp_socket, song_title: str):
+        """
+        Receive file data over the UDP socket and send it to storage_services.
+        Args:
+            udp_socket: The UDP socket object.
+            file_id (str): Identifier for the file being received.
+        """
+        storage_node = self.known_nodes['storage_service'] #FIXME: What if theres no storage service node ?
         try:
+            logger_gw.info(f"Listening for file data on UDP socket for file ID: {song_title}")
+            start = 0
+            chunk_num = 0
             while True:
-                data, addr = udp_socket.recvfrom(4096)  # Buffer size can be adjusted
+                file_data = bytearray()  # Use bytearray to accumulate binary file data
+                data, addr = udp_socket.recvfrom(1024)  # Buffer size of 1024 bytes
+
                 if data:
-                    # Process the received file data (this can be saving to memory, etc.)
-                    logger_gw.info(f"Received data from {addr} data: \n{data}")
-                    # Handle data processing or saving here
+                    logger_gw.info(f"Received {len(data)} bytes from {addr} via UDP")
+                    file_data.extend(data)  # Accumulate received data
+                    storage_node.send_store_data({
+                        'key_fields': ['key'],
+                        'key':song_title + chunk_num,
+                        'start': start,
+                        'ends': start + 1024,
+                        'data': data,
+                    })#FIXME: Handle if the node crashes
+                    start += 1024 #FIXME: coger el tamanyo dinamicamente de data
+                    chunk_num += 1
                 else:
                     break
+            logger_gw.info(f"File data for {song_title} received and sended to storage services")
+
         except Exception as e:
             logger_gw.error(f"Error receiving file data: {e}")
+
         finally:
             udp_socket.close()
-            logger_gw.info("UDP socket closed after file reception.")
+            logger_gw.info(f"UDP socket closed for file ID: {song_title}")
 
     def get_song_file(self):#TODO
         raise NotImplementedError

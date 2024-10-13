@@ -178,10 +178,10 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):
         self.server.node.store_replic(source, post_data, key)
         return {"status": "success"} 
 
-    def handle_store_data(self, post_data):
-        if 'callback' not in post_data:
-            # self.send_json_response(None, error_message='Provided data must contain a callback addr', status=400)
-            post_data['callback'] = None
+    def handle_store_data(self, post_data):#FIXME: Changes for adding the data to the correct endpoint lost ?????????
+        # if 'callback' not in post_data:
+        #     # self.send_json_response(None, error_message='Provided data must contain a callback addr', status=400)
+        #     post_data['callback'] = None
         if 'key_fields' not in post_data or not isinstance(post_data['key_fields'], list):
             self.send_json_response(None, error_message='Provided data must contain a key_fields list')
         callback = post_data['callback']
