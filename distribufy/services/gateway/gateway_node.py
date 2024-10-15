@@ -34,6 +34,18 @@ class Gateway(ChordNode):
             'storage_service': None,
             'music_service': None
         }
+        
+        self.cached_ips = [
+            '172.20.240.2', 
+            '172.20.240.4', 
+            '172.20.240.6', 
+            '172.20.240.8', 
+            '172.20.240.10', 
+            '172.20.240.12', 
+            '172.20.240.14', 
+            '172.20.240.16', 
+            '172.20.240.18', 
+            ]
 
         # Node for storing other gateway nodes
         self.gateway_nodes = {
@@ -48,7 +60,8 @@ class Gateway(ChordNode):
         threading.Thread(target=self.httpd.serve_forever, daemon=True).start()
         logger_gw.info(f'HTTP serving commenced')
 
-        self.discover_entry()
+        if not self.discover_entry_cached():
+            self.discover_entry()
         
         # Start server and background threads
         
@@ -86,6 +99,25 @@ class Gateway(ChordNode):
             time.sleep(retry_interval)
 
         logger_gw.info(f"No other node node discovered.")
+
+    def discover_entry_cached(self):
+        for cached_ip in self.cached_ips:
+            if cached_ip != self.ip:
+                try:
+                    cached_node = GatewayReference(get_sha_repr(cached_ip), cached_ip, 8001)
+                    cached_node.ping
+                    if cached_node.role != self.role:
+                        logger_gw.info(f'Node with ip {cached_ip} found in different role')
+                        continue
+                    role_leader_info = cached_node.leader
+                    role_leader = GatewayReference(role_leader_info['id'], role_leader_info['ip'], 8001)
+                    self.leader = role_leader
+                    logger_gw.info(f"Discovered entry point: {role_leader.ip}")
+                    self.join(role_leader)
+                    return True
+                except requests.ConnectionError:
+                    logger_gw.info(f'Node with ip {cached_ip} not found')
+        return False
     
     def stabilize(self):
         while True:
