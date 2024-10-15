@@ -56,7 +56,7 @@ class GatewayReference(ChordNodeReference):
             logger.error(f"Error initiating file storage: {e}")
             return None
 
-    def send_song_file(self, song_key: str, udp_ip: str, udp_port: int, start_chunk: int):#TODO
+    def send_song_file(self, song_title: str, client_ip: str, client_port: int, start_chunk: int):#TODO
         """
         Request to send a song file via UDP starting from a specific chunk.
         Args:
@@ -66,18 +66,18 @@ class GatewayReference(ChordNodeReference):
             start_chunk (int): The chunk number to start sending from.
         """
         payload = {
-            'song_key': song_key,
-            'udp_ip': udp_ip,
-            'udp_port': udp_port,
+            'song_title': song_title,
+            'client_ip': client_ip,
+            'client_port': client_port,
             'start_chunk': start_chunk
         }
 
         try:
-            response = self._send_request('/gw/send-song-file', payload)
-            logger.info(f"Requested sending of {song_key} starting at chunk {start_chunk} to {udp_ip}:{udp_port}.")
+            response = self._send_request('/gw/get-song-file', payload)
+            logger.info(f"Requested sending of {song_title} starting at chunk {start_chunk} to {client_ip}:{client_port}.")
             return response
         except Exception as e:
-            logger.error(f"Error sending song file {song_key}: {e}")
+            logger.error(f"Error sending song file {song_title}: {e}")
             return None
 
     @property

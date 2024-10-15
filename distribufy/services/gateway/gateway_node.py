@@ -516,7 +516,7 @@ class Gateway(ChordNode):
             while subordinate.id == self.leader.id:
                 subordinate = random.choice(list(self.gateway_nodes.values()))
 
-            return subordinate.send_song_file(post_data)#FIXME
+            return subordinate.send_song_file(song_title, client_ip, client_port, start_chunk)
         
         storage_node = self.known_nodes.get('storage_service')
 
