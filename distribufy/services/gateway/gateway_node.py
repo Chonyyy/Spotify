@@ -363,6 +363,8 @@ class Gateway(ChordNode):
         else:
             music_node = self.known_nodes['music_service']
             return music_node.get_songs_by_genre(data_genre)
+        
+    #region File transfer
 
     def store_song_file(self, post_data):#TODO
         """
@@ -386,17 +388,19 @@ class Gateway(ChordNode):
         fields = ['title', 'album', 'genre', 'artist']
         payload = {key: post_data[key] for key in fields}
         payload['total_size'] = 10
-        payload['key_fields'] = ['title', 'artist', 'album']
+        payload['key_fields'] = ['title']
         music_service.store_song_data(payload)
 
         # Find an available UDP port to receive the file
-        udp_socket, port = self._create_udp_socket()
+        listening_socket, listening_port = self._create_udp_socket()
+        writing_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        client_addr = (post_data['client_ip'], post_data['client_port'])
 
         # Spawn a new thread to receive the data asynchronously
-        threading.Thread(target=self._receive_file_data, args=(udp_socket, post_data['title']), daemon=True).start()
+        threading.Thread(target=self._receive_file_data, args=(listening_socket, writing_socket, post_data['title'], client_addr), daemon=True).start()
 
         # Return the IP and port where the data can be sent
-        return {"ip": self.ip, "port": port}
+        return {"ip": self.ip, "port": listening_port}
 
     def _create_udp_socket(self):
         """
@@ -408,10 +412,10 @@ class Gateway(ChordNode):
         udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         udp_socket.bind((self.ip, 0))  # Bind to any available port
         port = udp_socket.getsockname()[1]
-        logger_gw.info(f"UDP socket created at {self.ip}:{port}")
+        logger_gw.info(f"Listening socket created at {self.ip}:{port}")
         return udp_socket, port
 
-    def _receive_file_data(self, udp_socket, song_title: str):
+    def _receive_file_data(self, listen_socket, writing_socket, song_title: str, client_addr: tuple[str,str]):
         """
         Receive file data over the UDP socket and send it to storage_services.
         Args:
@@ -419,37 +423,53 @@ class Gateway(ChordNode):
             file_id (str): Identifier for the file being received.
         """
         storage_node = self.known_nodes['storage_service'] #FIXME: What if theres no storage service node ?
+        chunk_size = 50000
         try:
             logger_gw.info(f"Listening for file data on UDP socket for file ID: {song_title}")
             start = 0
             chunk_num = 0
             while True:
-                file_data = bytearray()  # Use bytearray to accumulate binary file data
-                data, addr = udp_socket.recvfrom(1024)  # Buffer size of 1024 bytes
-
-                if data:
-                    logger_gw.info(f"Received {len(data)} bytes from {addr} via UDP")
-                    file_data.extend(data)  # Accumulate received data
-                    storage_node.send_store_data({
-                        'key':song_title + str(chunk_num),
-                        'start': start,
-                        'ends': start + 1024,
-                        'data': base64.b64encode(data).decode('utf-8'),
-                    },False, ['key'])#FIXME: Handle if the node crashes
-                    start += 1024 #FIXME: coger el tamanyo dinamicamente de data
-                    chunk_num += 1
-                else:
+                #[ ]: Reading from socket
+                data, addr = listen_socket.recvfrom(chunk_size)  # Buffer size of 1024 bytes
+                if not data:
                     break
+                logger_gw.info(f"Received {len(data)} bytes from {addr} via UDP")
+                logger_gw.debug(f'Storing chunk {song_title + str(chunk_num)} and id {get_sha_repr(song_title + str(chunk_num))}')
+                storage_node.send_store_data({
+                    'key':get_sha_repr(song_title + str(chunk_num)),
+                    'start': start,
+                    'ends': start + 50000,
+                    'data': base64.b64encode(data).decode('utf-8'),
+                },False, ['key'])#FIXME: Handle if the node crashes
+                start += len(data)
+                chunk_num += 1
+
+                # Send a confirmation message to the server
+                writing_socket.sendto(b'Data processed', client_addr)
+
+                # Wait for the next message from the server
+                client_message, _ = listen_socket.recvfrom(chunk_size)
+                client_message = client_message.decode()
+                logger_gw.info(f'Received message from client: {client_message}')
+
+                if client_message == 'Complete':
+                    logger_gw.info('Completed receiving all chunks. Closing the socket.')
+                    break
+                
             logger_gw.info(f"File data for {song_title} received and sended to storage services")
+
+        except socket.timeout:
+            logger_gw.debug(f'timeout')
 
         except Exception as e:
             logger_gw.error(f"Error receiving file data: {e}")
 
         finally:
-            udp_socket.close()
-            logger_gw.info(f"UDP socket closed for file ID: {song_title}")
+            # Cleanup
+            listen_socket.close()
+            writing_socket.close()  
 
-    def send_song_file(self, song_key: str, udp_ip: str, udp_port: int, start_chunk: int, post_data):#FIXME
+    def send_song_file(self, song_title: str, client_ip: str, client_port: int, start_chunk: int, post_data):#FIXME
         """
         Send a song file chunk by chunk over a UDP socket.
         Args:
@@ -464,7 +484,7 @@ class Gateway(ChordNode):
             while subordinate.id == self.leader.id:
                 subordinate = random.choice(list(self.gateway_nodes.values()))
 
-            return subordinate.store_song_file(post_data)#FIXME
+            return subordinate.send_song_file(post_data)#FIXME
         
         storage_node = self.known_nodes.get('storage_service')
 
@@ -472,6 +492,16 @@ class Gateway(ChordNode):
             logger_gw.error("No storage node available.")
             return False
 
+        # Find an available UDP port to send the file
+        listening_socket, listening_port = self._create_udp_socket()
+        writing_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        client_addr = (client_ip, client_port)
+
+        threading.Thread(target=self._send_file_data, args=(listening_socket, writing_socket, song_title, client_addr), daemon=True).start()
+
+        # Return the IP and port where the data can be sent
+        return {"ip": self.ip, "port": listening_port}
+    
         try:
             # Create a UDP socket
             udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -480,15 +510,17 @@ class Gateway(ChordNode):
             chunk_number = start_chunk
             while True:
                 # Get the chunk from the storage node
-                chunk = storage_node.get_data(song_key)#FIXME
+                logger_gw.debug(f'getting chunk {song_key + str(chunk_number)} and id {get_sha_repr(song_key + str(chunk_number))}')
+                chunk = storage_node.get_data_ext(get_sha_repr(f'{song_key}{chunk_number}'))[0]['data']#FIXME
+                logger_gw.debug(f'Debug-Requested-Chunk{chunk}')
                 if not chunk:
                     logger_gw.info(f"All chunks sent for song {song_key}.")
                     break
 
                 # Send the chunk over UDP
-                udp_socket.sendto(chunk, (udp_ip, udp_port))
-                logger_gw.info(f"Sent chunk {chunk_number} of {song_key} to {udp_ip}:{udp_port}")
-
+                udp_socket.sendto(base64.b64decode(chunk), (udp_ip, udp_port))
+                logger_gw.debug(f'Chunk {song_key + str(chunk_number)} and id {get_sha_repr(song_key + str(chunk_number))} Sending/ed')
+                time.sleep(7)
                 chunk_number += 1
 
             logger_gw.info(f"File {song_key} successfully sent over UDP.")
@@ -501,3 +533,59 @@ class Gateway(ChordNode):
         finally:
             udp_socket.close()
             logger_gw.info(f"UDP socket closed for song {song_key}")
+
+    def _send_file_data(self, listen_socket, writing_socket, song_title: str, client_addr: tuple[str,str]):
+        """
+        Receive file data over the UDP socket and send it to storage_services.
+        Args:
+            udp_socket: The UDP socket object.
+            file_id (str): Identifier for the file being received.
+        """
+        storage_node = self.known_nodes['storage_service'] #FIXME: What if theres no storage service node ?
+        try:
+
+            # Leer el archivo por chunks y enviar de uno en uno
+            chunk_number = 0
+            logger_gw.debug(f'getting chunk {song_title + str(chunk_number)} and id {get_sha_repr(song_title + str(chunk_number))}')
+            chunk_info = storage_node.get_data_ext(get_sha_repr(f'{song_title}{chunk_number}'))
+            chunk = chunk_info[0]['data']
+            logger_gw.debug(f'Sending chunk: {chunk_number}')
+
+            # Send the chunk over UDP
+            writing_socket.sendto(base64.b64decode(chunk), client_addr)
+            logger_gw.info(f'Chunk_{chunk_number} sent')
+
+            # Wait for confirmation from the client
+            confirmation, _ = listen_socket.recvfrom(1024)
+            logger_gw.info(f"Received confirmation: {confirmation.decode()}")
+            chunk_number += 1
+
+            while True:
+                chunk_info = storage_node.get_data_ext(get_sha_repr(f'{song_title}{chunk_number}'))
+                chunk = chunk_info[0]['data'] if chunk_info else None
+                if not chunk:
+                    writing_socket.sendto(b'Complete', client_addr)
+                    logger_gw.info(f'=== FILE TRANSFER COMPLETED {chunk_number - 1}===')
+                    break
+                # Send a message to the client before the next chunk
+                writing_socket.sendto(b'Sending next chunk', client_addr)
+                logger_gw.info('confirmation message sent')
+
+                logger_gw.info(f'Sending chunk {chunk_number}')
+                writing_socket.sendto(base64.b64decode(chunk), client_addr)
+                logger_gw.info(f'Chunk sent')
+                time.sleep(0.2)
+
+                # Wait for confirmation from the client
+                confirmation, _ = listen_socket.recvfrom(1024)
+                logger_gw.info(f"Received confirmation: {confirmation.decode()}")
+                time.sleep(0.2)
+                chunk_number += 1
+    
+        except Exception as e:
+            logger_gw.error(f'Error sending file chunks: {e}')
+
+        finally:
+            writing_socket.close()
+            listen_socket.close()
+            logger_gw.info(f"=== CLOSING SOCKETS ===")

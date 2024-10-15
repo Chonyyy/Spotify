@@ -58,7 +58,14 @@ class ChordNodeReference:
             'key':key
         }
         return self._send_request('/get-data-target', data)
-        
+    
+    def get_data_ext(self, key):
+        """send request to get an db entry"""
+        data = {
+            'key':key
+        }
+        return self._send_request('/get-data', data)
+    
     def send_get_data(self, key):
         """Send request to get an user"""
         data = {
