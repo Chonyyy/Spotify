@@ -124,6 +124,10 @@ class ChordNodeReference:
     @property
     def leader(self):
         return self._send_request('/get-leader', method='get')
+    
+    @property
+    def role(self):
+        return self._send_request('/get-role', method='get')
 
     def notify(self, node: 'ChordNodeReference'):
         """Notify the node of a change."""
@@ -194,7 +198,7 @@ class ChordNodeReference:
         
     def _send_request(self, path: str, data: dict = None, method: str = 'POST', query_params = None) -> dict:
         """Send a request and handle retries."""
-        max_retries = 4
+        max_retries = 2
         for i in range(max_retries):
             response = None
             try:

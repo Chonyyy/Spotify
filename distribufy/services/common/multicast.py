@@ -46,7 +46,7 @@ def send_multicast(role, stop_event, leader_info=None):
         logger_mc.info(f"Stopping multicast discovery for role {role}.")
         sock.close()
 
-def receive_multicast(role, timeout=10):
+def receive_multicast(role, timeout=2):
     multicast_group = MULTICAST_GROUPS.get(role)
     if not multicast_group:
         raise ValueError(f"Invalid role: {role}")

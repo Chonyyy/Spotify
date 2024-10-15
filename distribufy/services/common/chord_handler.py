@@ -96,6 +96,9 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):
         elif self.path == '/get-leader':
             response = self.server.node.leader_info()
             self.send_json_response(response)
+        elif self.path == '/get-role':
+            response = self.server.node.role
+            self.send_json_response(response)
         elif self.path == '/absorb-rep-data':
             response = self.server.node.absorb_rep_data()
             self.send_json_response(response, status=200)

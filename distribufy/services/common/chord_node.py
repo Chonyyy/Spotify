@@ -49,6 +49,17 @@ class ChordNode:
         self.sec_succ = self.ref
         self.pred = self.ref
         self.last_pred = self.pred
+        self.cached_ips = [
+            '172.20.240.2', 
+            '172.20.240.4', 
+            '172.20.240.6', 
+            '172.20.240.8', 
+            '172.20.240.10', 
+            '172.20.240.12', 
+            '172.20.240.14', 
+            '172.20.240.16', 
+            '172.20.240.18', 
+            ]
 
         # Finger table
         self.m = m  # Number of bits in the hash/key space
@@ -94,7 +105,8 @@ class ChordNode:
         
         # Discovery
         self.multicast_msg_event = threading.Event()
-        self.discover_entry()
+        if not self.discover_entry_cached():
+            self.discover_entry()
         # Start server and background threads
         threading.Thread(target=self.httpd.serve_forever, daemon=True).start()
         logger.info(f'HTTP serving commenced')
@@ -440,6 +452,26 @@ class ChordNode:
                 return
             time.sleep(retry_interval)
         logger.info(f"No other node node discovered.")
+
+    def discover_entry_cached(self):
+        for cached_ip in self.cached_ips:
+            if cached_ip != self.ip:
+                try:
+                    cached_node = ChordNodeReference(get_sha_repr(cached_ip), cached_ip, 8001)
+                    cached_node.ping
+                    if cached_node.role != self.role:
+                        logger.info(f'Node with ip {cached_ip} found in different role')
+                        continue
+                    role_leader_info = cached_node.leader
+                    role_leader = ChordNodeReference(role_leader_info['id'], role_leader_info['ip'], 8001)
+                    self.leader = role_leader
+                    logger.info(f"Discovered entry point: {role_leader.ip}")
+                    self.join(role_leader)
+                    return True
+                except requests.ConnectionError:
+                    logger.info(f'Node with ip {cached_ip} not found')
+        return False
+
     
     def multicast_send_toggle(self, enable: bool):
         """Toggle the multicast discovery for the leader node."""
