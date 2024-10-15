@@ -129,7 +129,7 @@ class ChordNode:
 
     def replication_loop(self):
         while True:
-            time.sleep(30)
+            time.sleep(15)
             try:
                 if self.succ.replication_queue:
                     with self.replication_lock:
@@ -244,7 +244,7 @@ class ChordNode:
             
     def enqueue_replication_operation(self, data, operation, key, second_succ = False):
         max_retries = 2
-        retry_interval = 3  # seconds
+        retry_interval = 1  # seconds
         
         for _ in range(max_retries):
             if self.succ.id == self.id or self.succ.succ == self.id:
@@ -328,7 +328,7 @@ class ChordNode:
                 # raise e
             
             logger_le.info('===LEADER CHECK DONE===')
-            time.sleep(10)
+            time.sleep(1)
 
     def discover_other_leader(self):
         """Listen for other leader nodes using multicast."""
@@ -427,7 +427,7 @@ class ChordNode:
 
     def discover_entry(self):
         retries = 2
-        retry_interval = 5
+        retry_interval = 1
 
         for _ in range(retries):
             multi_response = receive_multicast(self.role)
@@ -470,7 +470,7 @@ class ChordNode:
         logger.info(f'New-Succ-join | {node.id} | node {self.id}')
         self.succ.notify(self.ref)
 
-        time.sleep(10) #To wait a bit for the ring to stabilize
+        time.sleep(5) #To wait a bit for the ring to stabilize
         data_from_succ = self.succ.request_data(self.id)
         logger.debug(f'Requested data from succ {data_from_succ}')
         for record in data_from_succ:
@@ -519,7 +519,7 @@ class ChordNode:
             except Exception as e:
                 logger_stab.error(f"in stabilize: {e}")
             logger_stab.info('===STABILIZING DONE===')
-            time.sleep(10)
+            time.sleep(1)
 
     def replicate_sec_succ(self):
         self.replicate_all_database_sec_succ()
@@ -548,7 +548,7 @@ class ChordNode:
             except Exception as e:
                 logger_ff.error(f"Error in fix_fingers: {e}")
             logger_ff.info('===Finger Table Updating Done===')
-            time.sleep(10)
+            time.sleep(1)
 
     def check_predecessor(self):
         """Periodically check if predecessor is alive."""
@@ -562,7 +562,7 @@ class ChordNode:
                 logger_cp.info('Predecesor Down')
                 self.pred = self.ref
             logger_cp.info('===Predecessor Checking Done===')
-            time.sleep(10)
+            time.sleep(1)
             
     def print_finger_table(self):
         """Print the finger table."""

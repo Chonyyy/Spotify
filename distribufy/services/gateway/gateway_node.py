@@ -72,7 +72,7 @@ class Gateway(ChordNode):
 
     def discover_entry(self):
         retries = 2
-        retry_interval = 5
+        retry_interval = 1
 
         for _ in range(retries):
             multi_response = receive_multicast(self.role)
@@ -103,7 +103,7 @@ class Gateway(ChordNode):
                         logger_gw.info(f'node {node.ip} not found')
                         del self.gateway_nodes[node.id] # RuntimeError: dictionary changed size during iteration
             logger_gw.info(f'===STABILIZATION-CICLE ENDED===')
-            time.sleep(10)
+            time.sleep(1)
 
     def check_leader(self):
         """Regularly check the leader availability and manage multicast based on leader status."""
@@ -139,7 +139,7 @@ class Gateway(ChordNode):
                 logger_gw.error(f"Error in leader check: {e}")
             
             logger_gw.info('===LEADER-CICLE ENDED===')
-            time.sleep(10)
+            time.sleep(5)
 
 
     def join(self, node):
@@ -212,7 +212,7 @@ class Gateway(ChordNode):
     def discovery_music_node(self):
         """Discovery for music nodes"""
         retries = 2
-        retry_interval = 5
+        retry_interval = 1
 
         while(True):
             for _ in range(retries):
@@ -228,7 +228,7 @@ class Gateway(ChordNode):
     def discovery_ftp_node(self):
         """Discovery for ftp nodes"""
         retries = 2
-        retry_interval = 5
+        retry_interval = 1
 
         while(True):
             for _ in range(retries):
@@ -501,38 +501,6 @@ class Gateway(ChordNode):
 
         # Return the IP and port where the data can be sent
         return {"ip": self.ip, "port": listening_port}
-    
-        try:
-            # Create a UDP socket
-            udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-
-            # Send chunks starting from `start_chunk`
-            chunk_number = start_chunk
-            while True:
-                # Get the chunk from the storage node
-                logger_gw.debug(f'getting chunk {song_key + str(chunk_number)} and id {get_sha_repr(song_key + str(chunk_number))}')
-                chunk = storage_node.get_data_ext(get_sha_repr(f'{song_key}{chunk_number}'))[0]['data']#FIXME
-                logger_gw.debug(f'Debug-Requested-Chunk{chunk}')
-                if not chunk:
-                    logger_gw.info(f"All chunks sent for song {song_key}.")
-                    break
-
-                # Send the chunk over UDP
-                udp_socket.sendto(base64.b64decode(chunk), (udp_ip, udp_port))
-                logger_gw.debug(f'Chunk {song_key + str(chunk_number)} and id {get_sha_repr(song_key + str(chunk_number))} Sending/ed')
-                time.sleep(7)
-                chunk_number += 1
-
-            logger_gw.info(f"File {song_key} successfully sent over UDP.")
-            return True
-
-        except Exception as e:
-            logger_gw.error(f"Error sending song file {song_key}: {e}")
-            return False
-
-        finally:
-            udp_socket.close()
-            logger_gw.info(f"UDP socket closed for song {song_key}")
 
     def _send_file_data(self, listen_socket, writing_socket, song_title: str, client_addr: tuple[str,str]):
         """

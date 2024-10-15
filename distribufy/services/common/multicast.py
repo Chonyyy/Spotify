@@ -39,7 +39,7 @@ def send_multicast(role, stop_event, leader_info=None):
         while not stop_event.is_set():
             sock.sendto(message, (multicast_group, MULTICAST_PORT))
             logger_mc.info(f"Multicast discovery message sent for role {role}.")
-            time.sleep(10)
+            time.sleep(1)
     except Exception as e:
         logger_mc.error(f"Error in multicast sending: {e}")
     finally:
