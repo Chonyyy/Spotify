@@ -18,7 +18,7 @@ def initialize_database(role, filepath):
     elif role == 'storage_service':
         columns = ['key', 'value', 'start', 'ends', 'data']
         replic_columns = ['key', 'value', 'start', 'ends', 'data']
-        key_fields = ['key']
+        key_fields = ['value']
     elif role == 'gateway':
         columns  = ['key', 'ip', 'port', 'role']
         key_fields = ['value']
