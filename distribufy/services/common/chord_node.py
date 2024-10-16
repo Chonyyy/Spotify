@@ -195,6 +195,7 @@ class ChordNode:
         if target_node.id == self.id:
             record = {"key": key, "last_update": "testing", "deleted": False}
             record.update(data)
+            logger.debug('STARTING DATA INSERT')
             self.data.insert(record)
                 
             logger.info(f'Data {key_information} stored at node {self.ip}')

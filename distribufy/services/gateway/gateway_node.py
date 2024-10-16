@@ -468,11 +468,11 @@ class Gateway(ChordNode):
                 logger_gw.info(f"Received {len(data)} bytes from {addr} via UDP")
                 logger_gw.debug(f'Storing chunk {song_title + str(chunk_num)} and id {get_sha_repr(song_title + str(chunk_num))}')
                 storage_node.send_store_data({
-                    'key':get_sha_repr(song_title + str(chunk_num)),
+                    'value':song_title + str(chunk_num),
                     'start': start,
                     'ends': start + 50000,
                     'data': base64.b64encode(data).decode('utf-8'),
-                },False, ['key'])#FIXME: Handle if the node crashes
+                },False, ['value'])#FIXME: Handle if the node crashes
                 start += len(data)
                 chunk_num += 1
 

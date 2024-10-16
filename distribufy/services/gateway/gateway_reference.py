@@ -24,7 +24,11 @@ class GatewayReference(ChordNodeReference):
         self._send_request('/gw/save-song', data)
     
     def get_all_songs(self):
-        return self._send_request('/gw/get-songs', method='get')
+        response = self._send_request('/gw/get-songs', method='get')
+        logger.debug(f'{response} id in response: {'id' in response}')
+        if 'id' in response:
+            return []
+        return response
     
     def get_song_by_key(self, key):
         return self._send_request('/gw/get-song-by-key',data= key, method='post')
