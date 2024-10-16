@@ -254,7 +254,6 @@ class Gateway(ChordNode):
                     logger_gw.info(f"Discovered music service: {discovered_ip}")
                     discovered_node = MusicNodeReference(get_sha_repr(discovered_ip), discovered_ip, self.port)
                     self.known_nodes['music_service'] = discovered_node
-                    return
                 time.sleep(retry_interval)
             
     def discovery_ftp_node(self):
@@ -270,7 +269,6 @@ class Gateway(ChordNode):
                     logger_gw.info(f"Discovered storage service: {discovered_ip}")
                     discovered_node = MusicNodeReference(get_sha_repr(discovered_ip), discovered_ip, self.port)
                     self.known_nodes['storage_service'] = discovered_node
-                    return
                 time.sleep(retry_interval)
 
     def start_election(self):
@@ -338,7 +336,9 @@ class Gateway(ChordNode):
             return subordinate.get_all_songs()
         else:
             music_node = self.known_nodes['music_service']
-            return music_node.get_songs()
+            songs = music_node.get_songs()
+            logger_gw.info(f'returned songs: {songs}')
+            return songs
     
     def get_song_by_key(self, song_key):
         '''
@@ -473,6 +473,7 @@ class Gateway(ChordNode):
                     'ends': start + 50000,
                     'data': base64.b64encode(data).decode('utf-8'),
                 },False, ['value'])#FIXME: Handle if the node crashes
+                time.sleep(3)
                 start += len(data)
                 chunk_num += 1
 

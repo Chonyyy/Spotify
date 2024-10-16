@@ -141,7 +141,7 @@ class ChordNode:
 
     def replication_loop(self):
         while True:
-            time.sleep(15)
+            time.sleep(2)
             try:
                 if self.succ.replication_queue:
                     with self.replication_lock:

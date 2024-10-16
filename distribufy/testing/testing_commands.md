@@ -48,7 +48,7 @@ curl -X POST http://localhost:8002/get-data ^
 ubuntu
 
 ``` bash
-curl -X GET http://localhost:8004/debug-node-data \
+curl -X GET http://localhost:8008/debug-node-data \
      -H "Content-Type: application/json" \
      -d '{}'
 ```
