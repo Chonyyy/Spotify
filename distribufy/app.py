@@ -14,10 +14,10 @@ def initialize_database(role, filepath):
     if role == 'music_service':
         columns = ['key','title', 'album', 'genre', 'artist', 'chunk_distribution']
         replic_columns = ['key','title', 'album', 'genre', 'artist', 'chunk_distribution']
-        key_fields = ['value']
+        key_fields = ['title']
     elif role == 'storage_service':
-        columns = ['key', 'start', 'ends', 'data']
-        replic_columns = ['key', 'start', 'ends', 'data']
+        columns = ['key', 'value', 'start', 'ends', 'data']
+        replic_columns = ['key', 'value', 'start', 'ends', 'data']
         key_fields = ['key']
     elif role == 'gateway':
         columns  = ['key', 'ip', 'port', 'role']
