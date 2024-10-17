@@ -23,6 +23,8 @@ class ChordNodeReference:
         self.ip = ip
         self.port = port
         self.replication_queue = []
+        self.get_succ_count = 0
+        self.get_pred_count = 0
 
     #region Coordination
     def drop_suc_rep(self):
@@ -91,29 +93,33 @@ class ChordNodeReference:
 
     #region Chord logic
     
-    def find_successor(self, id: int) -> 'ChordNodeReference':
+    def find_successor(self, id: int, origin = None) -> 'ChordNodeReference':
         """Find successor of a given id."""
-        response = self._send_request('/find_successor', {'id': str(id)})
+        if origin:
+            logger.debug(f'find successor origin: {origin}')
+        response = self._send_request('/find_successor', {'id': str(id), 'origin': origin})
         logger.debug(f'Find Successor Response:\n{response}')
         return ChordNodeReference(response['id'], response['ip'], self.port)
     
-    def find_predecessor(self, id: int) -> 'ChordNodeReference':
+    def find_predecessor(self, id: int, origin = None) -> 'ChordNodeReference':
         """Find predecessor of a given id."""
-        response = self._send_request('/find_predecessor', {'id': str(id)})
+        if origin:
+            logger.debug(f'find predecessor origin: {origin}')
+        response = self._send_request('/find_predecessor', {'id': str(id), 'origin': origin})
         logger.debug(f'Find Predecessor Response:\n{response}')
         return ChordNodeReference(response['id'], response['ip'], self.port)
     
-    @property
-    def succ(self) -> 'ChordNodeReference':
+    def succ(self, origin = None) -> 'ChordNodeReference':
         """Get successor node."""
-        response = self._send_request('/get_successor', method='get')
+        self.get_succ_count += 1
+        response = self._send_request(f'/get_successor-{self.get_succ_count}-{origin}', method='get')
         logger.debug(f'Get Successor Response:\n{response}')
         return ChordNodeReference(response['id'], response['ip'], self.port)
 
-    @property
-    def pred(self) -> 'ChordNodeReference':
+    def pred(self, origin = None) -> 'ChordNodeReference':
         """Get predecessor node."""
-        response = self._send_request('/get_predecessor', method='get')
+        self.get_pred_count += 1
+        response = self._send_request(f'/get_predecessor-{self.get_pred_count}-{origin}', method='get')
         logger.debug(f'Get Predecessor Response:\n{response}')
         return ChordNodeReference(response['id'], response['ip'], self.port)
 

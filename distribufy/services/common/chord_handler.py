@@ -61,10 +61,10 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):
             response = self.handle_notify(self.post_data)
             self.send_json_response(response)
         elif self.path == '/find_successor':
-            response = self.server.node.find_succ(self.post_data['id'])
+            response = self.server.node.find_succ(self.post_data['id'], self.post_data['origin'])
             self.send_json_response(response)
         elif self.path == '/find_predecessor':
-            response = self.server.node.find_pred(self.post_data['id'])
+            response = self.server.node.find_pred(self.post_data['id'], self.post_data['origin'])
             self.send_json_response(response)
         elif self.path == '/closest_preceding_finger':
             response = self.server.node.closest_preceding_finger(self.post_data['id'])
@@ -77,11 +77,11 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):
         
         if self.path == '/ping':
             self.send_json_response({'status':'up'})
-        elif self.path == '/get_predecessor':
+        elif self.path.startswith('/get_predecessor'):
             response = self.server.node.pred
             logger_rh.debug(f'Response for get_predecessor request:\n{response}')
             self.send_json_response(response)
-        elif self.path == '/get_successor':
+        elif self.path.startswith('/get_successor'):
             response = self.server.node.succ
             self.send_json_response(response)
         elif self.path.startswith('/drop-suc-rep'):

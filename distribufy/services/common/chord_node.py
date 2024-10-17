@@ -139,9 +139,9 @@ class ChordNode:
         self.replicated_data_sec_pred.drop()
         return "Done"
 
-    def replication_loop(self):
+    def replication_loop(self):#FIXME: This seems to be causing problems
         while True:
-            time.sleep(15)
+            # time.sleep(15)
             try:
                 if self.succ.replication_queue:
                     with self.replication_lock:
@@ -189,8 +189,8 @@ class ChordNode:
         key = get_sha_repr(key_information)
         logger_dt.info(f'Storing information: {key_information}; key: {key}')
 
-        target_node = self.find_succ(key)
-        logger.info(f'Asking for key {key}, to node {target_node.ip}|{target_node.id}')
+        target_node = self.find_succ(key, 'store_data')
+        logger.info(f'Asking for key {key}, to node {target_node.ip}|{target_node.id} condition {target_node.id == self.id}')
 
         if target_node.id == self.id:
             record = {"key": key, "last_update": "testing", "deleted": False}
@@ -200,7 +200,9 @@ class ChordNode:
                 
             logger.info(f'Data {key_information} stored at node {self.ip}')
 
-            self.enqueue_replication_operation(record, 'insertion', key)
+            threading.Thread(target=self.enqueue_replication_operation, args=(record, 'insertion', key), daemon=True).start()
+            logger.debug(f'enqueue replication operation thread started')
+            # self.enqueue_replication_operation(record, 'insertion', key)
             
             # Optionally respond to the callback if provided
             if callback:
@@ -211,6 +213,7 @@ class ChordNode:
             if callback:
                 data['callback'] = callback
             threading.Thread(target=target_node.send_store_data, args=(data, callback, key_fields), daemon=True).start()
+        logger.debug('Leaving store data')
 
     def send_requested_data(self, source_id):
         requested_data = self.data.query('key', ' ', lambda key: int(key) < source_id or (int(key) > self.id))
@@ -223,7 +226,7 @@ class ChordNode:
 
     def get_data(self, key):
         logger_dt.info(f'Getting item by key {key}')
-        target_node = self.find_succ(key)
+        target_node = self.find_succ(key, 'get_data')
         logger.info(f'Asking for key {key}, to node {target_node.ip}|{target_node.id}')
         if target_node.id == self.id:
             return self.data.query("key", key)
@@ -246,7 +249,7 @@ class ChordNode:
                 d[clave] = valor 
             self.replicated_data_pred.insert(d)
             logger.info(f'Replicated data stored')
-        if source == self.pred.pred.id:
+        if source == self.pred.pred('store_replic').id:
             logger.info(f'Storing replic information: {data} in from seccond-pred node {source}')
             d = {}
             d["key"] = key
@@ -260,7 +263,7 @@ class ChordNode:
         retry_interval = 1  # seconds
         
         for _ in range(max_retries):
-            if self.succ.id == self.id or self.succ.succ == self.id:
+            if self.succ.id == self.id or self.succ.succ('enqueue_rep_operation') == self.id:
                 logger.info('Stabilization in progress. Retrying...')
                 time.sleep(retry_interval)
             else:
@@ -286,11 +289,11 @@ class ChordNode:
         other_leader = ChordNodeReference(other_leader_info['leader_id'], other_leader_info['leader_ip'])
         
         # Notify successor to update the ring structure
-        self.succ = other_leader.find_successor(self.id)
+        self.succ = other_leader.find_successor(self.id, 'merge_rings')
         self.succ.notify(self.ref)
         
         # Update predecessor as well
-        self.pred = other_leader.find_predecessor(self.id)
+        self.pred = other_leader.find_predecessor(self.id, 'merge_rings')
         self.pred.notify(self.ref)
         
         logger.info(f"Rings merged with new successor: {self.succ.ip} and new predecessor: {self.pred.ip}")
@@ -416,18 +419,30 @@ class ChordNode:
         else:  # The interval wraps around 0
             return int(start) < int(k) or int(k) <= int(end)
 
-    def find_succ(self, id: int) -> 'ChordNodeReference':
+    def find_succ(self, id: int, origin = None) -> 'ChordNodeReference':
         """Find successor of a given id."""
-        node = self.find_pred(id)  # Find predecessor of id
-        return node.succ  # Return successor of that node
+        if origin:
+            logger.debug(f'find succ origin: {origin}')
+        node = self.find_pred(id, origin)  # Find predecessor of id
+        if isinstance(node, ChordNode):
+            return node.succ
+        return node.succ(origin)  # Return successor of that node
 
-    def find_pred(self, id: int) -> 'ChordNodeReference':
+    def find_pred(self, id: int, origin = None) -> 'ChordNodeReference':
         """Find predecessor of a given id."""
+        if origin:
+            logger.debug(f'find pred origin: {origin}')
         node = self
-        while not self._inbetween(id, node.id, node.succ.id):
+        if self._inbetween(id, node.id, node.succ.id):
+            logger.debug(f'Pred found {node.id}{origin}')
+            return node
+        node = node.closest_preceding_finger(id)
+        logger.debug(f'closest preceding finger found {node.id}{origin}')
+
+        while not self._inbetween(id, node.id, node.succ(origin).id):
             node = node.closest_preceding_finger(id)
-            logger.debug(f'closest preceding finger found {node.id}')
-        logger.debug(f'Pred found {node.id}')
+            logger.debug(f'closest preceding finger found {node.id}{origin}')
+        logger.debug(f'Pred found {node.id}{origin}')
         return node
 
     def closest_preceding_finger(self, id: int) -> 'ChordNodeReference':
@@ -498,7 +513,7 @@ class ChordNode:
             return
         logger.info(f'Joining to node {node.id}')
         self.pred = self.ref
-        self.succ = node.find_successor(self.id)
+        self.succ = node.find_successor(self.id, 'join')
 
         logger.info(f'New-Succ-join | {node.id} | node {self.id}')
         self.succ.notify(self.ref)
@@ -523,12 +538,12 @@ class ChordNode:
                 else:
                     logger_stab.info('Current predecessor is None')
                     
-                x = self.succ.pred
+                x = self.succ.pred('stabilize')
                 if x and x.id != self.id and self._inbetween(x.id, self.id, self.succ.id):#TODO: replicate all database
                     self.succ.drop_sec_suc_rep()
                     self.succ.drop_suc_rep()
                     self.succ = x
-                    self.sec_succ = x.succ
+                    self.sec_succ = x.succ('stabilize1')
                     logger.info(f'New-Succ-Stabilize | {x.ip},{x.id}  | node {self.ip}, {self.ip}')
                     logger.info(f'enqueuing all database')    
 
@@ -537,7 +552,7 @@ class ChordNode:
                     if self.succ.id != self.id:
                         logger.info(f'Full replication comenced')
                         self.replicate_all_database_succ()
-                        second_succ = self.succ.succ
+                        second_succ = self.succ.succ('stabilize2')
                         logger.debug(f'succ succ = {second_succ.ip}')
                         if second_succ.id != self.id:
                             self.pred.update_sec_succ(self.succ.id, self.succ.ip)
@@ -551,6 +566,7 @@ class ChordNode:
                 logger.info(f'New-Succ-Stabilize | self | node {self.id}')
             except Exception as e:
                 logger_stab.error(f"in stabilize: {e}")
+                raise
             logger_stab.info('===STABILIZING DONE===')
             time.sleep(1)
 
@@ -577,7 +593,7 @@ class ChordNode:
                 if self.next == 0:
                     logger_ff.info('Finished Finger Table Iteration')
                     self.print_finger_table()
-                self.finger[self.next] = self.find_succ((self.id + 2**self.next) % 2**self.m)
+                self.finger[self.next] = self.find_succ((self.id + 2**self.next) % 2**self.m, 'fix_fingers')
             except Exception as e:
                 logger_ff.error(f"Error in fix_fingers: {e}")
             logger_ff.info('===Finger Table Updating Done===')
