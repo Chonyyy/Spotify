@@ -116,7 +116,7 @@ class ChordNode:
         threading.Thread(target=self.fix_fingers, daemon=True).start()  # Start fix fingers thread
         threading.Thread(target=self.check_predecessor, daemon=True).start()  # Start check predecessor thread
         threading.Thread(target=self.check_leader, daemon=True).start()  # Start leader election thread
-        threading.Thread(target=self.replication_loop, daemon=True).start()  # Start replication thread
+        # threading.Thread(target=self.replication_loop, daemon=True).start()  # Start replication thread
           
     #region Data
     
@@ -140,19 +140,24 @@ class ChordNode:
         return "Done"
 
     def replication_loop(self):#FIXME: This seems to be causing problems
-        while True:
-            # time.sleep(15)
+        # while True:
+        #     time.sleep(15)
+            logger.info('===Replication Loop Started===')
             try:
                 if self.succ.replication_queue:
-                    with self.replication_lock:
-                        logger.info(f'Succesor rep apply{self.succ.ip}')
+                    # with self.replication_lock:
+                        logger.info(f'apply Succesor rep{self.succ.ip}')
                         self.succ.apply_rep_operations()
-                    with self.replication_lock:
-                        logger.info(f'Seccond succesor rep apply{self.sec_succ.ip}')
-                        self.sec_succ.apply_rep_operations()
+                        logger.info(f'Succesor apply rep{self.succ.ip}')
+                    # with self.replication_lock:
+                    #    logger.info(f'Seccond succesor rep apply{self.sec_succ.ip}')
+                        # self.sec_succ.apply_rep_operations()
                 if self.sec_succ.replication_queue:
-                        logger.info(f'Seccond succesor rep apply{self.sec_succ.ip}')
+                    # with self.replication_lock:
+                        logger.info(f'apply Seccond succesor rep{self.sec_succ.ip}')
                         self.sec_succ.apply_rep_operations()
+                        logger.info(f'Seccond succesor rep apply{self.sec_succ.ip}')
+                logger.info('===Replication Loop Ended===')
             except Exception as e:
                 logger.error(f'ERROR IN REPLICATION LOOP: {e}')
     
@@ -200,9 +205,11 @@ class ChordNode:
                 
             logger.info(f'Data {key_information} stored at node {self.ip}')
 
-            threading.Thread(target=self.enqueue_replication_operation, args=(record, 'insertion', key), daemon=True).start()
+            # threading.Thread(target=self.enqueue_replication_operation, args=(record, 'insertion', key), daemon=True).start()
             logger.debug(f'enqueue replication operation thread started')
-            # self.enqueue_replication_operation(record, 'insertion', key)
+            self.enqueue_replication_operation(record, 'insertion', key)
+            self.enqueue_replication_operation(record, 'insertion', key, True)
+            logger.debug('Done enqueue rep')
             
             # Optionally respond to the callback if provided
             if callback:
@@ -212,8 +219,10 @@ class ChordNode:
             data['key_fields'] = key_fields
             if callback:
                 data['callback'] = callback
-            threading.Thread(target=target_node.send_store_data, args=(data, callback, key_fields), daemon=True).start()
-        logger.debug('Leaving store data')
+            t = threading.Thread(target=target_node.send_store_data, args=(data, callback, key_fields), daemon=True)
+            t.start()
+            # t.join()
+        logger.debug(f'Leaving store data {key}')
 
     def send_requested_data(self, source_id):
         requested_data = self.data.query('key', ' ', lambda key: int(key) < source_id or (int(key) > self.id))
@@ -239,9 +248,10 @@ class ChordNode:
         logger_dt.info(f'Getting item by key {key} in self')
         return self.data.query("key", key)
         
-    def store_replic(self, source, data, key):
+    def store_replic(self, source, data, key, second_pred = False):
         logger.info(f'Replic storage comenced')
-        if source == self.pred.id:
+        # if source == self.pred.id:
+        if not second_pred:
             logger.info(f'Storing replic information: {data} in from pred node {source}')
             d = {}
             d["key"] = key
@@ -249,7 +259,8 @@ class ChordNode:
                 d[clave] = valor 
             self.replicated_data_pred.insert(d)
             logger.info(f'Replicated data stored')
-        if source == self.pred.pred('store_replic').id:
+        # if source == self.pred.pred('store_replic').id:
+        if second_pred:
             logger.info(f'Storing replic information: {data} in from seccond-pred node {source}')
             d = {}
             d["key"] = key
@@ -263,16 +274,18 @@ class ChordNode:
         retry_interval = 1  # seconds
         
         for _ in range(max_retries):
-            if self.succ.id == self.id or self.succ.succ('enqueue_rep_operation') == self.id:
+            # if self.succ.id == self.id or self.succ.succ('enqueue_rep_operation') == self.id:
+            if (self.succ.id == self.id and not second_succ) or (second_succ and self.sec_succ.id == self.id):# QUe pasa si se intenta replicar mientras se 
                 logger.info('Stabilization in progress. Retrying...')
                 time.sleep(retry_interval)
             else:
                 with self.replication_lock:#TODO: Synch should be implemented so i cant delete something that havent been created ?
                     logger.debug(f'Enqueuing rep op {operation}:{key}')
                     if second_succ:
-                        self.sec_succ.enqueue_rep_operation(self.id, data, operation, key)
+                        self.sec_succ.enqueue_rep_operation(self.id, data, operation, key, second_pred = second_succ)
                     else:
                         self.succ.enqueue_rep_operation(self.id, data, operation, key)
+                    self.replication_loop()
                 break
         else:
             logger.info('No successor found')

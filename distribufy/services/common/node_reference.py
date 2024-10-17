@@ -59,35 +59,42 @@ class ChordNodeReference:
         data = {
             'key':key
         }
-        return self._send_request('/get-data-target', data)
+        response = self._send_request('/get-data-target', data)
+        logger.debug(f'Get data Response:\n{response}')
+        return response
     
     def get_data_ext(self, key):
         """send request to get an db entry"""
         data = {
             'key':key
         }
-        return self._send_request('/get-data', data)
+        response = self._send_request('/get-data', data)
+        logger.debug(f'Get data ext Response:\n{response}')
+        return response
     
     def send_get_data(self, key):
         """Send request to get an user"""
         data = {
             'key':key
         }
-        return self._send_request('/get-data-target', data)
+        response = self._send_request('/get-data-target', data)
+        logger.debug(f'send data Response:\n{response}')
+        return response
         
-    def enqueue_rep_operation(self, source_id, data, operation='insertion', key=None):
-        self.replication_queue.append((source_id, data, operation, key))
+    def enqueue_rep_operation(self, source_id, data, operation='insertion', key=None, second_pred = False):
+        self.replication_queue.append((source_id, data, operation, key, second_pred))
         print(f'{self.ip}{self.id} {self.replication_queue}')
     
     def apply_rep_operations(self):
             logger_dt.debug("Apliying rep operations")
             while self.replication_queue:
-                source, data, operation, key = self.replication_queue.pop()
+                source, data, operation, key, second_pred = self.replication_queue.pop()
                 if operation == 'insertion':
                     data['source'] = source
                     data['key'] = key
+                    data['second_pred'] = second_pred
                     self._send_request('/store-replic', data)
-                    self.succ._send_request('/store-replic', data)
+                    # self.succ._send_request('/store-replic', data)
                 else:
                     logger.error('Operation not suported')#TODO: implement other operations
 
@@ -129,11 +136,15 @@ class ChordNodeReference:
     
     @property
     def leader(self):
-        return self._send_request('/get-leader', method='get')
+        response = self._send_request('/get-leader', method='get')
+        logger.debug(f'Get leader Response:\n{response}')
+        return response
     
     @property
     def role(self):
-        return self._send_request('/get-role', method='get')
+        response = self._send_request('/get-role', method='get')
+        logger.debug(f'Get role Response:\n{response}')
+        return response
 
     def notify(self, node: 'ChordNodeReference'):
         """Notify the node of a change."""
@@ -141,7 +152,7 @@ class ChordNodeReference:
         
     def songs_iterations(self, origin_id):
         """Iterate trough all nodes getting all song informations"""
-        return self._send_request('/iterate-songs', {'origin': origin_id})
+        response = self._send_request('/iterate-songs', {'origin': origin_id})
 
     def closest_preceding_finger(self, id: int) -> 'ChordNodeReference':
         """Find the closest preceding finger for a given id."""
@@ -152,6 +163,7 @@ class ChordNodeReference:
     def request_data(self, id: str):
         """Request data after a new join"""
         requested_data = self._send_request('/request_data', {'id': id})
+        logger.debug(f'request data Response:\n{requested_data}')
         if 'id' in requested_data:
             return []
         return requested_data
@@ -162,40 +174,60 @@ class ChordNodeReference:
     #region Music Node
 
     def get_db(self):
-        return self._send_request('/get-db', method='get')
+        response = self._send_request('/get-db', method='get')
+        logger.debug(f'Get db:\n{response}')
+        return response
     
     def save_song(self, data):#TODO ver esto
-        logger.info("Dataaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
-        logger.info(data)
-        return self._send_request('/save-song',data)
+        response = self._send_request('/save-song',data)
+        logger.debug(f'Save song Response:\n{response}')
+        return data
     
     def get_songs(self):
-        return self._send_request('/get-songs', method='get')
+        response = self._send_request('/get-songs', method='get')
+        logger.debug(f'Get songs Response:\n{response}')
+        return response
 
     def song_key_node(self, key):
-        return self._send_request('/get-song-key-node',data= key, method='post')
+        response = self._send_request('/get-song-key-node',data= key, method='post')
+        logger.debug(f'Get song key node Response:\n{response}')
+        return response
 
     def songs_title_node(self, title):
-        return self._send_request('/get-songs-title-node',data= title, method='post')
-
+        response =  self._send_request('/get-songs-title-node',data= title, method='post')
+        logger.debug(f'songs_title_node Response:\n{response}')
+        return response
+        
     def songs_artist_node(self, artist):
-        return self._send_request('/get-songs-artist-node',data= artist, method='post')
-
+        response =  self._send_request('/get-songs-artist-node',data= artist, method='post')
+        logger.debug(f'songs_artist_node Response:\n{response}')
+        return response
+        
     def songs_genre_node(self, genre):
-        return self._send_request('/get-songs-genre-node',data= genre, method='post')
-
+        response =  self._send_request('/get-songs-genre-node',data= genre, method='post')
+        logger.debug(f'songs_genre_node Response:\n{response}')
+        return response
+        
     def get_song_by_key(self, key):
-        return self._send_request('/get-song-by-key',data= key, method='post')
-    
+        response =  self._send_request('/get-song-by-key',data= key, method='post')
+        logger.debug(f'get_song_by_key Response:\n{response}')
+        return response
+        
     def get_songs_by_title(self, title):
-        return self._send_request('/get-songs-by-title',data= title, method='post')
-    
+        response =  self._send_request('/get-songs-by-title',data= title, method='post')
+        logger.debug(f'get_songs_by_title Response:\n{response}')
+        return response
+        
     def get_songs_by_artist(self, artist):
-        return self._send_request('/get-songs-by-artist',data= artist, method='post')
-    
+        response =  self._send_request('/get-songs-by-artist',data= artist, method='post')
+        logger.debug(f'get_songs_by_artist Response:\n{response}')
+        return response
+        
     def get_songs_by_genre(self, genre):
-        return self._send_request('/get-songs-by-genre',data= genre, method='post')
-    
+        response =  self._send_request('/get-songs-by-genre',data= genre, method='post')
+        logger.debug(f'get_songs_by_genre Response:\n{response}')
+        return response
+        
 
 
 

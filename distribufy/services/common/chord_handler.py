@@ -33,7 +33,10 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):
         response = None
 
         if self.path == '/store-data':
-            response = self.handle_store_data(self.post_data)
+            t = threading.Thread(target=self.handle_store_data, args=(self.post_data,), daemon=True)
+            t.start()
+            # t.join()
+            # response = self.handle_store_data(self.post_data)
             self.send_json_response(response)
         elif self.path == '/request_data':
             response = self.handle_request_data(self.post_data)
@@ -175,10 +178,12 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):
             self.send_json_response(None, error_message='Provided data must contain a source id', status=400)
         source = post_data['source']
         key = post_data['key']
+        second_pred = post_data['second_pred']
+        del post_data['second_pred']
         del post_data['key']
         del post_data['source']
         
-        self.server.node.store_replic(source, post_data, key)
+        self.server.node.store_replic(source, post_data, key, second_pred)
         return {"status": "success"} 
 
     def handle_store_data(self, post_data):#FIXME: Changes for adding the data to the correct endpoint lost ?????????
