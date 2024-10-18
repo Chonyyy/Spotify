@@ -262,7 +262,7 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):
 
     def handle_notify(self, post_data):
         node = ChordNodeReference(post_data['id'], post_data['ip'])
-        self.server.node.notify(node)
+        threading.Thread(target=self.server.node.notify, args=(node,), daemon=True).start()
 
     def handle_start_election(self):
         threading.Thread(target=self.server.node.start_election, daemon=True).start()

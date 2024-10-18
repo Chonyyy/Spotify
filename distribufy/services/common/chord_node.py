@@ -536,21 +536,31 @@ class ChordNode:
             return
         logger.info(f'Joining to node {node.id}')
         self.pred = self.ref
-        self.succ = node.find_successor(self.id, 'join')#TODO Also get second succ
+        self.succ = node.find_successor(self.id, 'join')
+        self.sec_succ = self.succ.succ('join')
+        if self.sec_succ.id == self.succ.id:
+            self.sec_succ = self.ref
 
         logger.info(f'New-Succ-join | {node.id} | node {self.id}')
         self.succ.notify(self.ref)
 
-        time.sleep(5) #To wait a bit for the ring to stabilize
+        time.sleep(8) #To wait a bit for the ring to stabilize
         data_from_succ = self.succ.request_data(self.id)
-        logger.debug(f'Requested data from succ {data_from_succ}')
+        threading.Thread(target=self.request_data_store, args=(data_from_succ,), daemon=True).start()
+        self.start_election()
+
+    def request_data_store(self, data_from_succ):
+        logger.debug(f'Requested data from succ {len(data_from_succ)}')
         for record in data_from_succ:
             logger.info(record)
             if 'second_pred' in record:
                 del record['second_pred']
+            logger.info(f'Data {record['key']} stored at node {self.ip}')
             self.data.insert(record)
             self.enqueue_replication_operation(record, 'insertion', record['key'])
-        self.start_election()
+            self.enqueue_replication_operation(record, 'insertion', record['key'], True)
+            time.sleep(0.5)
+            logger.debug('Done enqueue rep request_data')
 
     def stabilize(self):
         """Regularly check and stabilize the Chord structure."""
