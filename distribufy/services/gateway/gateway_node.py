@@ -254,7 +254,6 @@ class Gateway(ChordNode):
                     logger_gw.info(f"Discovered music service: {discovered_ip}")
                     discovered_node = MusicNodeReference(get_sha_repr(discovered_ip), discovered_ip, self.port)
                     self.known_nodes['music_service'] = discovered_node
-                    return
                 time.sleep(retry_interval)
             
     def discovery_ftp_node(self):
@@ -270,7 +269,6 @@ class Gateway(ChordNode):
                     logger_gw.info(f"Discovered storage service: {discovered_ip}")
                     discovered_node = MusicNodeReference(get_sha_repr(discovered_ip), discovered_ip, self.port)
                     self.known_nodes['storage_service'] = discovered_node
-                    return
                 time.sleep(retry_interval)
 
     def start_election(self):
@@ -338,7 +336,9 @@ class Gateway(ChordNode):
             return subordinate.get_all_songs()
         else:
             music_node = self.known_nodes['music_service']
-            return music_node.get_songs()
+            songs = music_node.get_songs()
+            logger_gw.info(f'returned songs: {songs}')
+            return songs
     
     def get_song_by_key(self, song_key):
         '''
@@ -529,12 +529,12 @@ class Gateway(ChordNode):
         writing_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         client_addr = (client_ip, client_port)
 
-        threading.Thread(target=self._send_file_data, args=(listening_socket, writing_socket, song_title, client_addr), daemon=True).start()
+        threading.Thread(target=self._send_file_data, args=(listening_socket, writing_socket, song_title, client_addr, start_chunk), daemon=True).start()
 
         # Return the IP and port where the data can be sent
         return {"ip": self.ip, "port": listening_port}
 
-    def _send_file_data(self, listen_socket, writing_socket, song_title: str, client_addr: tuple[str,str]):
+    def _send_file_data(self, listen_socket, writing_socket, song_title: str, client_addr: tuple[str,str], start_chunk):
         """
         Receive file data over the UDP socket and send it to storage_services.
         Args:
@@ -545,7 +545,7 @@ class Gateway(ChordNode):
         try:
 
             # Leer el archivo por chunks y enviar de uno en uno
-            chunk_number = 0
+            chunk_number = start_chunk
             logger_gw.debug(f'getting chunk {song_title + str(chunk_number)} and id {get_sha_repr(song_title + str(chunk_number))}')
             chunk_info = storage_node.get_data_ext(get_sha_repr(f'{song_title}{chunk_number}'))
             chunk = chunk_info[0]['data']

@@ -80,7 +80,12 @@ class GatewayRequestHandler(ChordNodeRequestHandler):
                 node_dict[node.id] = {'id': node.id, 'ip': node.ip}
             self.send_json_response(node_dict)
         elif self.path == '/gw/get-songs':
-            response = self.server.node.get_all_songs()
+            logger.debug(f'Return get-songs')
+            try:
+                response = self.server.node.get_all_songs()
+            except Exception as e:
+                logger.error(f'Error get-songs {e}')
+            logger.debug(f'Return get-songs{response}')
             return self.send_json_response(response)
         
     def handle_gw_notify(self, post_data):

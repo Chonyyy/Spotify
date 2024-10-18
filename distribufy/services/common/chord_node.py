@@ -123,6 +123,8 @@ class ChordNode:
     def absorb_rep_data(self):
         for entry in self.replicated_data_pred.get_all():
             try:
+                if 'second_pred' in entry:
+                    del entry['second_pred']
                 self.data.insert(entry)
                 self.enqueue_replication_operation(entry, 'insertion', entry['key'])
             except Exception as e:
@@ -130,6 +132,8 @@ class ChordNode:
 
         for entry in self.replicated_data_sec_pred.get_all():
             try:
+                if 'second_pred' in entry:
+                    del entry['second_pred']
                 self.data.insert(entry)
                 self.enqueue_replication_operation(entry, 'insertion', entry['key'])
             except Exception as e:
@@ -201,6 +205,8 @@ class ChordNode:
             record = {"key": key, "last_update": "testing", "deleted": False}
             record.update(data)
             logger.debug('STARTING DATA INSERT')
+            if 'second_pred' in record:
+                del record['second_pred']
             self.data.insert(record)
                 
             logger.info(f'Data {key_information} stored at node {self.ip}')
@@ -257,6 +263,8 @@ class ChordNode:
             d["key"] = key
             for clave, valor in data.items():
                 d[clave] = valor 
+            if 'second_pred' in d:
+                del d['second_pred']
             self.replicated_data_pred.insert(d)
             logger.info(f'Replicated data stored')
         # if source == self.pred.pred('store_replic').id:
@@ -266,6 +274,8 @@ class ChordNode:
             d["key"] = key
             for clave, valor in data.items():
                 d[clave] = valor 
+            if 'second_pred' in d:
+                del d['second_pred']
             self.replicated_data_sec_pred.insert(d)
             logger.info(f'Replicated data stored')
             
@@ -526,7 +536,7 @@ class ChordNode:
             return
         logger.info(f'Joining to node {node.id}')
         self.pred = self.ref
-        self.succ = node.find_successor(self.id, 'join')
+        self.succ = node.find_successor(self.id, 'join')#TODO Also get second succ
 
         logger.info(f'New-Succ-join | {node.id} | node {self.id}')
         self.succ.notify(self.ref)
@@ -536,6 +546,8 @@ class ChordNode:
         logger.debug(f'Requested data from succ {data_from_succ}')
         for record in data_from_succ:
             logger.info(record)
+            if 'second_pred' in record:
+                del record['second_pred']
             self.data.insert(record)
             self.enqueue_replication_operation(record, 'insertion', record['key'])
         self.start_election()
