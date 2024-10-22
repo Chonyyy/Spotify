@@ -52,18 +52,24 @@ class MusicNode(ChordNode):
         Return all the songs available in the Chord Ring
         '''
         all_songs = []
-        all_songs.extend(self.data.get_all())
+        starting_data = self.data.get_all()
+        logger.debug(f'Starting Data: {starting_data}')
+        all_songs.extend(starting_data)
         
         next_node = self.succ
         while next_node.id != self.id:
             try:
                 logger.debug(f'Getting songs from node {next_node.ip}')
                 songs = next_node.get_db()
-                logger.debug(songs)
+
+                logger.debug(f'songs from node {next_node.ip} + {songs}')
                 all_songs.extend(songs)#TODO: Verify songs with same id arent being added
-                next_node = next_node.succ
-            except:
+                next_node = next_node.succ()
+            except Exception as e:
                 logger.error(f'Error: Error getting songs from node in ip {next_node.ip}')
+                logger.error(f'{e}')
+                logger.debug(f'{songs}')
+        logger.debug(f'all songs {all_songs}')
         return all_songs
 
     def song_key_node(self, data_key:str):

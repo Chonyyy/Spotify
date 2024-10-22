@@ -83,10 +83,10 @@ class GatewayRequestHandler(ChordNodeRequestHandler):
             logger.debug(f'Return get-songs')
             try:
                 response = self.server.node.get_all_songs()
+                logger.debug(f'Return get-songs {response}')
+                self.send_json_response(response)
             except Exception as e:
                 logger.error(f'Error get-songs {e}')
-            logger.debug(f'Return get-songs{response}')
-            return self.send_json_response(response)
         
     def handle_gw_notify(self, post_data):
         node = GatewayReference(post_data['id'], post_data['ip'])

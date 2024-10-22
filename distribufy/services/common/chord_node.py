@@ -231,7 +231,12 @@ class ChordNode:
         logger.debug(f'Leaving store data {key}')
 
     def send_requested_data(self, source_id):
-        requested_data = self.data.query('key', ' ', lambda key: int(key) < source_id or (int(key) > self.id))
+        requested_data = self.data.query(
+            'key', 
+            ' ', 
+            lambda key: 
+             (self.id > source_id and int(key) < source_id) or 
+             (self.id <= source_id and int(key) < source_id and int(key) > self.id))
         for entry in requested_data:
             self.data.delete('key', entry['key'])
             if 'source' in entry:
@@ -579,6 +584,9 @@ class ChordNode:
                     self.succ.drop_suc_rep()
                     self.succ = x
                     self.sec_succ = x.succ('stabilize1')
+                    if self.sec_succ.id == self.succ.id:
+                        self.sec_succ = self.ref
+
                     logger.info(f'New-Succ-Stabilize | {x.ip},{x.id}  | node {self.ip}, {self.ip}')
                     logger.info(f'enqueuing all database')    
 
@@ -587,7 +595,7 @@ class ChordNode:
                     if self.succ.id != self.id:
                         logger.info(f'Full replication comenced')
                         self.replicate_all_database_succ()
-                        second_succ = self.succ.succ('stabilize2')
+                        second_succ = self.sec_succ
                         logger.debug(f'succ succ = {second_succ.ip}')
                         if second_succ.id != self.id:
                             self.pred.update_sec_succ(self.succ.id, self.succ.ip)
