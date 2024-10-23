@@ -95,6 +95,7 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):
             self.send_json_response(response, status=200)
         elif self.path == '/replicate-sec-succ':
             self.server.node.replicate_sec_succ()
+            self.send_json_response({"status": "success"})
         elif self.path == '/replicate-succ':
             self.server.node.replicate_succ()
             self.send_json_response(response, status=200)

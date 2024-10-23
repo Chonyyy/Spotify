@@ -64,9 +64,10 @@ class ChordNode:
         # Finger table
         self.m = m  # Number of bits in the hash/key space
         self.finger = [self.ref] * self.m  # Finger table
-        self.next = 0  # Finger table index to fix next
+        self.next = m  # Finger table index to fix next
 
         # Data and Replication
+        self.have_to_replicate = False
         self.data = db
         self.replicated_data_pred = sec_succ_db
         self.replicated_data_sec_pred = succ_db
@@ -239,7 +240,7 @@ class ChordNode:
             'key', 
             ' ', 
             lambda key: 
-             (self.id > source_id and int(key) < source_id) or 
+             (self.id > source_id and ((int(key) < source_id) or (int(key) > self.id))) or 
              (self.id <= source_id and int(key) < source_id and int(key) > self.id))
         for entry in requested_data:
             self.data.delete('key', entry['key'])
@@ -449,8 +450,10 @@ class ChordNode:
         """Check if k is in the interval (start, end]."""
         logger.debug(f'Inbetween (k = {k}, start = {start}, end = {end})')
         if int(start) < int(end):
+            logger.debug(f'Inbetween result 1-{int(start) < int(k) <= int(end)}')
             return int(start) < int(k) <= int(end)
         else:  # The interval wraps around 0
+            logger.debug(f'Inbetween result 2-{int(start) > int(k) or int(k) <= int(end)}')
             return int(start) < int(k) or int(k) <= int(end)
 
     def find_succ(self, id: int, origin = None) -> 'ChordNodeReference':
@@ -586,29 +589,40 @@ class ChordNode:
                     logger_stab.info('Current predecessor is None')
                     
                 x = self.succ.pred('stabilize')
-                if x and x.id != self.id and self._inbetween(x.id, self.id, self.succ.id):#TODO: replicate all database
-                    self.succ.drop_sec_suc_rep()
-                    self.succ.drop_suc_rep()
+                if x and x.id != self.id and self._inbetween(x.id, self.id, self.succ.id):
+                    self.have_to_replicate = True
+                    logger.debug(f'Droped old succs dbs succ:{self.succ.ip}, sec_succ:{self.sec_succ}')
                     self.succ = x
                     self.sec_succ = x.succ('stabilize1')
                     if self.sec_succ.id == self.succ.id:
                         self.sec_succ = self.ref
 
-                    logger.info(f'New-Succ-Stabilize | {x.ip},{x.id}  | node {self.ip}, {self.ip}')
-                    logger.info(f'enqueuing all database')    
+                    logger.debug(f'New succs succ:{self.succ.ip}, sec_succ:{self.sec_succ}')
 
                     self.succ.notify(self.ref)
+                    logger.debug(f'New succ notified')  
+
+                elif self.have_to_replicate:
+                    logger.info(f'Actual succ found {self.succ.ip} sec_succ {self.sec_succ.ip}')
+                    if self.sec_succ.id != self.id:
+                        self.sec_succ.drop_sec_suc_rep()
+                    logger.debug(f'Droped new sec_succ dp') 
 
                     if self.succ.id != self.id:
-                        logger.info(f'Full replication comenced')
+                        logger.info(f'Full db rep in succ comenced')
                         self.replicate_all_database_succ()
-                        second_succ = self.sec_succ
-                        logger.debug(f'succ succ = {second_succ.ip}')
-                        if second_succ.id != self.id:
+                        logger.info(f'Full db rep in succ done')
+
+                        logger.info(f'Full db rep in sec succ commenced')
+                        self.replicate_all_database_sec_succ()
+                        logger.info(f'Full db rep in sec succ done')
+                        if self.sec_succ.id != self.id:
                             self.pred.update_sec_succ(self.succ.id, self.succ.ip)
                             self.pred.replicate_sec_succ()
                         else:
                             self.sec_succ = self.ref
+                    logger.info(f'setting Have to replicate to false')
+                    self.have_to_replicate = False
                     
             # except ConnectionRefusedError:
             except requests.ConnectionError:
@@ -636,13 +650,26 @@ class ChordNode:
 
     def fix_fingers(self):
         """Periodically update finger table entries."""
+        # while True:
+        #     logger_ff.info('Updating The Finger Table')
+        #     try:
+        #         self.next = (self.next + 1) % self.m
+        #         if self.next == 0:
+        #             logger_ff.info('Finished Finger Table Iteration')
+        #             self.print_finger_table()
+        #         self.finger[self.next] = self.find_succ((self.id + 2**self.next) % 2**self.m, 'fix_fingers')
+        #     except Exception as e:
+        #         logger_ff.error(f"Error in fix_fingers: {e}")
+        #     logger_ff.info('===Finger Table Updating Done===')
+        #     time.sleep(1)
         while True:
             logger_ff.info('Updating The Finger Table')
             try:
-                self.next = (self.next + 1) % self.m
-                if self.next == 0:
+                self.next = (self.next - 1)
+                if self.next < 0:
                     logger_ff.info('Finished Finger Table Iteration')
-                    self.print_finger_table()
+                    self.next = self.m -1
+                    # self.print_finger_table()
                 self.finger[self.next] = self.find_succ((self.id + 2**self.next) % 2**self.m, 'fix_fingers')
             except Exception as e:
                 logger_ff.error(f"Error in fix_fingers: {e}")

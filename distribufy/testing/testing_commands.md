@@ -4,15 +4,32 @@ Commands to taste the spotify back-end
 
 ## Building
 
+docker network create --subnet 172.20.0.0/16 --ip-range 172.20.240.0/20 distribunet
 docker build -t distribufy .
 
 ## Running a container instance
 
-sudo docker run -it --rm --name first_container -p 8001:8001 -v .\:/app spotify
-sudo docker run -it --rm --name second_container -p 8002:8001 -v .\:/app spotify
-sudo docker run -it --rm --name third_container -p 8003:8001 -v .\:/app spotify
-sudo docker run -it --rm --name fourth_container -p 8004:8001 -v .\:/app spotify
-sudo docker run -it --rm --name fifth_container -p 8005:8001 -v .\:/app spotify
+sudo docker run -it --rm --network distribunet --ip 172.20.240.2 -p 8001:8001 -v $(pwd):/app spotify /bin/bash
+
+sudo docker run -it --rm --network distribunet --ip 172.20.240.4 -p 8002:8001 -v $(pwd):/app spotify /bin/bash
+
+sudo docker run -it --rm --network distribunet --ip 172.20.240.6 -p 8003:8001 -v $(pwd):/app spotify /bin/bash
+
+sudo docker run -it --rm --network distribunet --ip 172.20.240.8 -p 8004:8001 -v $(pwd):/app spotify /bin/bash
+
+sudo docker run -it --rm --network distribunet --ip 172.20.240.10 -p 8005:8001 -v $(pwd):/app spotify /bin/bash
+
+sudo docker run -it --rm --network distribunet --ip 172.20.240.12 -p 8006:8001 -v $(pwd):/app spotify /bin/bash
+
+sudo docker run -it --rm --network distribunet --ip 172.20.240.14 -p 8007:8001 -v $(pwd):/app spotify /bin/bash
+
+sudo docker run -it --rm --network distribunet --ip 172.20.240.16 -p 8008:8001 -v $(pwd):/app spotify /bin/bash
+
+sudo docker run -it --rm --network distribunet --ip 172.20.240.18 -p 8009:8001 -v $(pwd):/app spotify /bin/bash
+
+sudo docker run -it --rm --network distribunet --ip 172.20.240.20 -p 8010:8001 -v $(pwd):/app spotify /bin/bash
+
+sudo docker run -it --rm --network distribunet --ip 172.20.240.22 -p 8011:8001 -v $(pwd):/app spotify /bin/bash
 
 ## Comandos de CHordNode
 
