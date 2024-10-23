@@ -298,13 +298,15 @@ class ChordNode:
                 logger.info('Stabilization in progress. Retrying...')
                 time.sleep(retry_interval)
             else:
-                with self.replication_lock:#TODO: Synch should be implemented so i cant delete something that havent been created ?
-                    logger.debug(f'Enqueuing rep op {operation}:{key}')
-                    if second_succ:
+                if second_succ:
+                    with self.second_succ_replication_lock:#TODO: Synch should be implemented so i cant delete something that havent been created ?
+                        logger.debug(f'Enqueuing rep op in {self.sec_succ.id}:{operation}:{key}')
                         self.sec_succ.enqueue_rep_operation(self.id, data, operation, key, second_pred = second_succ)
-                    else:
+                else:
+                    with self.replication_lock:
+                        logger.debug(f'Enqueuing rep op in {self.succ.ip}:{operation}:{key}')
                         self.succ.enqueue_rep_operation(self.id, data, operation, key)
-                    self.replication_loop()
+                self.replication_loop()
                 break
         else:
             logger.info('No successor found')
