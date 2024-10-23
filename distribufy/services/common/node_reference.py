@@ -35,6 +35,9 @@ class ChordNodeReference:
     
     def replicate_sec_succ(self):
         self._send_request('/replicate-sec-succ', method='get')
+    
+    def replicate_succ(self):
+        self._send_request('/replicate-succ', method='get')
 
     def update_sec_succ(self, id, ip):
         self._send_request('/update-sec-succ', {'id': id, 'ip': ip})
@@ -83,7 +86,7 @@ class ChordNodeReference:
         
     def enqueue_rep_operation(self, source_id, data, operation='insertion', key=None, second_pred = False):
         self.replication_queue.append((source_id, data, operation, key, second_pred))
-        print(f'{self.ip}{self.id} {self.replication_queue}')
+        logger.debug(f'{self.ip}{self.id} {self.replication_queue}')
     
     def apply_rep_operations(self):
             logger_dt.debug("Apliying rep operations")

@@ -73,6 +73,7 @@ class ChordNode:
         self.file_storage = f'./databases/node_{self.ip}/files' 
         os.makedirs(self.file_storage, exist_ok=True)
         self.replication_lock = threading.Lock()
+        self.second_succ_replication_lock = threading.Lock()
 
         # Coordination
         self.leader = self.ref
@@ -127,6 +128,7 @@ class ChordNode:
                     del entry['second_pred']
                 self.data.insert(entry)
                 self.enqueue_replication_operation(entry, 'insertion', entry['key'])
+                self.enqueue_replication_operation(entry, 'insertion', entry['key'], True)
             except Exception as e:
                 logger.error(f'Error Absorbing pred rep data {e}')
 
@@ -136,6 +138,7 @@ class ChordNode:
                     del entry['second_pred']
                 self.data.insert(entry)
                 self.enqueue_replication_operation(entry, 'insertion', entry['key'])
+                self.enqueue_replication_operation(entry, 'insertion', entry['key'], True)
             except Exception as e:
                 logger.error(f'Error Absorbing sec pred rep data {e}')
 
@@ -214,8 +217,9 @@ class ChordNode:
             # threading.Thread(target=self.enqueue_replication_operation, args=(record, 'insertion', key), daemon=True).start()
             logger.debug(f'enqueue replication operation thread started')
             self.enqueue_replication_operation(record, 'insertion', key)
+            logger.debug(f'Done Replicating on successor')
             self.enqueue_replication_operation(record, 'insertion', key, True)
-            logger.debug('Done enqueue rep')
+            logger.debug(f'Done Replicating')
             
             # Optionally respond to the callback if provided
             if callback:
@@ -573,6 +577,7 @@ class ChordNode:
             logger_stab.info('===STABILIZING===')
             try:
                 logger_stab.info(f'Current successor is {self.succ.ip}')
+                logger_stab.info(f'Current second successor is {self.sec_succ.ip}')
                 if self.pred:
                     logger_stab.info(f'Current predecessor is: {self.pred.ip}')
                 else:
