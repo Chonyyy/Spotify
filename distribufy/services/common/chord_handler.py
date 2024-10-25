@@ -33,10 +33,10 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):
         response = None
 
         if self.path == '/store-data':
-            t = threading.Thread(target=self.handle_store_data, args=(self.post_data,), daemon=True)
-            t.start()
+            # t = threading.Thread(target=self.handle_store_data, args=(self.post_data,), daemon=True)
+            # t.start()
             # t.join()
-            # response = self.handle_store_data(self.post_data)
+            response = self.handle_store_data(self.post_data)
             self.send_json_response(response)
         elif self.path == '/request_data':
             response = self.handle_request_data(self.post_data)
@@ -70,9 +70,15 @@ class ChordNodeRequestHandler(BaseHTTPRequestHandler):
             response = self.server.node.find_pred(self.post_data['id'], self.post_data['origin'])
             self.send_json_response(response)
         elif self.path == '/closest_preceding_finger':
+            # t = threading.Thread(target=self.handle_closest_preceding_finger, args=(self.post_data['id'],), daemon=True)
+            # t.start()
             response = self.server.node.closest_preceding_finger(self.post_data['id'])
             self.send_json_response(response)
         
+    def handle_closest_preceding_finger(self, id):
+            response = self.server.node.closest_preceding_finger(id)
+            self.send_json_response(response)
+
     def do_GET(self):
         """Handle GET requests."""
         logger_rh.debug(f'Request path {self.path}')

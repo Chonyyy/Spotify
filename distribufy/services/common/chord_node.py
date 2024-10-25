@@ -4,6 +4,7 @@ import time
 import logging
 import os
 from http.server import HTTPServer
+from socketserver import ThreadingMixIn
 from services.common.my_orm import JSONDatabase
 from services.common.utils import get_sha_repr
 from services.common.node_reference import ChordNodeReference
@@ -34,6 +35,9 @@ chord_handlers = {
     'storage_service': 'class',
     'chord_testing': 'class',
 }
+
+class ThreadingSimpleServer(ThreadingMixIn, HTTPServer):
+    pass
 
 #region ChordNode
 class ChordNode:
@@ -88,19 +92,22 @@ class ChordNode:
         # Condicionar la inicialización del HTTPServer
         if role == 'chord_testing':  # Solo inicializa httpd si no es clase hija
             server_address = (self.ip, self.port)
-            self.httpd = HTTPServer(server_address, ChordNodeRequestHandler)
+            # self.httpd = HTTPServer(server_address, ChordNodeRequestHandler)
+            self.httpd = ThreadingSimpleServer(server_address, ChordNodeRequestHandler)
             self.httpd.node = self
         
         elif role == 'music_service':
             logger.info("Initialize as music service")
             server_address = (self.ip, self.port)
-            self.httpd = HTTPServer(server_address, MusicNodePresentation)
+            # self.httpd = HTTPServer(server_address, MusicNodePresentation)
+            self.httpd = ThreadingSimpleServer(server_address, MusicNodePresentation)
             self.httpd.node = self
 
         elif role == 'storage_service':
             logger.info("Initialize as music service")
             server_address = (self.ip, self.port)
-            self.httpd = HTTPServer(server_address, StorageRequestHandler)
+            # self.httpd = HTTPServer(server_address, StorageRequestHandler)
+            self.httpd = ThreadingSimpleServer(server_address, StorageRequestHandler)
             self.httpd.node = self
 
         logger.info(f'node_addr: {ip}:{port} {self.id}')
@@ -234,20 +241,6 @@ class ChordNode:
             t.start()
             # t.join()
         logger.debug(f'Leaving store data {key}')
-
-    def send_requested_data(self, source_id):
-        requested_data = self.data.query(
-            'key', 
-            ' ', 
-            lambda key: 
-             (self.id > source_id and ((int(key) < source_id) or (int(key) > self.id))) or 
-             (self.id <= source_id and int(key) < source_id and int(key) > self.id))
-        for entry in requested_data:
-            self.data.delete('key', entry['key'])
-            if 'source' in entry:
-                del entry['source']#FIXME Delete these from second succ
-        logger.debug(f'Sending {requested_data} to node {source_id}')
-        return requested_data
 
     def get_data(self, key):
         logger_dt.info(f'Getting item by key {key}')
@@ -446,9 +439,9 @@ class ChordNode:
     
     #region Chord logic
 
-    def _inbetween(self, k: int, start: int, end: int) -> bool:
+    def _inbetween(self, k: int, start: int, end: int, origin: str = "unkown") -> bool:
         """Check if k is in the interval (start, end]."""
-        logger.debug(f'Inbetween (k = {k}, start = {start}, end = {end})')
+        logger.debug(f'Inbetween (k = {k}, start = {start}, end = {end}) {origin}')
         if int(start) < int(end):
             logger.debug(f'Inbetween result 1-{int(start) < int(k) <= int(end)}')
             return int(start) < int(k) <= int(end)
@@ -456,7 +449,7 @@ class ChordNode:
             logger.debug(f'Inbetween result 2-{int(start) > int(k) or int(k) <= int(end)}')
             return int(start) < int(k) or int(k) <= int(end)
 
-    def find_succ(self, id: int, origin = None) -> 'ChordNodeReference':
+    def find_succ(self, id: int, origin = "unknown") -> 'ChordNodeReference':
         """Find successor of a given id."""
         if origin:
             logger.debug(f'find succ origin: {origin}')
@@ -465,28 +458,29 @@ class ChordNode:
             return node.succ
         return node.succ(origin)  # Return successor of that node
 
-    def find_pred(self, id: int, origin = None) -> 'ChordNodeReference':
+    def find_pred(self, id: int, origin = "unknown") -> 'ChordNodeReference':
         """Find predecessor of a given id."""
+        self.finger[0] = self.succ.id
         if origin:
             logger.debug(f'find pred origin: {origin}')
         node = self
-        if self._inbetween(id, node.id, node.succ.id):
+        if self._inbetween(id, node.id, node.succ.id, origin):
             logger.debug(f'Pred found {node.id}{origin}')
             return node
-        node = node.closest_preceding_finger(id)
-        logger.debug(f'closest preceding finger found {node.id}{origin}')
+        node = node.closest_preceding_finger(id, origin)
+        logger.debug(f'initial closest preceding finger found {node.id}{origin}')
 
-        while not self._inbetween(id, node.id, node.succ(origin).id):
-            node = node.closest_preceding_finger(id)
+        while not self._inbetween(id, node.id, node.succ(origin).id, origin):
+            node = node.closest_preceding_finger(id, origin)
             logger.debug(f'closest preceding finger found {node.id}{origin}')
         logger.debug(f'Pred found {node.id}{origin}')
         return node
 
-    def closest_preceding_finger(self, id: int) -> 'ChordNodeReference':
+    def closest_preceding_finger(self, id: int, origin:str = "unknown") -> 'ChordNodeReference':
         """Find the closest preceding finger for a given id."""
         for i in range(self.m - 1, -1, -1):
             # print(i) TODO: Why ?
-            if self.finger[i] and self._inbetween(self.finger[i].id, self.id, id):
+            if self.finger[i] and self._inbetween(self.finger[i].id, self.id, id, origin):
                 return self.finger[i]
         return self.ref
 
@@ -559,11 +553,14 @@ class ChordNode:
         self.succ.notify(self.ref)
 
         time.sleep(8) #To wait a bit for the ring to stabilize
-        data_from_succ = self.succ.request_data(self.id)
-        threading.Thread(target=self.request_data_store, args=(data_from_succ,), daemon=True).start()
+        # data_from_succ = self.succ.request_data(self.id)
+        # threading.Thread(target=self.request_data_store, args=(data_from_succ,), daemon=True).start()
+        threading.Thread(target=self.request_data_store, daemon=True).start()
         self.start_election()
 
-    def request_data_store(self, data_from_succ):
+    # def request_data_store(self, data_from_succ):
+    def request_data_store(self):
+        data_from_succ = self.succ.request_data(self.id)
         logger.debug(f'Requested data from succ {len(data_from_succ)}')
         for record in data_from_succ:
             logger.info(record)
@@ -575,6 +572,20 @@ class ChordNode:
             self.enqueue_replication_operation(record, 'insertion', record['key'], True)
             time.sleep(0.5)
             logger.debug('Done enqueue rep request_data')
+
+    def send_requested_data(self, source_id):
+        requested_data = self.data.query(
+            'key', 
+            ' ', 
+            lambda key: 
+             (self.id > source_id and ((int(key) < source_id) or (int(key) > self.id))) or 
+             (self.id <= source_id and int(key) < source_id and int(key) > self.id))
+        for entry in requested_data:
+            self.data.delete('key', entry['key'])
+            if 'source' in entry:
+                del entry['source']#FIXME Delete these from second succ
+        logger.debug(f'Sending {requested_data} to node {source_id}')
+        return requested_data
 
     def stabilize(self):
         """Regularly check and stabilize the Chord structure."""
@@ -589,7 +600,7 @@ class ChordNode:
                     logger_stab.info('Current predecessor is None')
                     
                 x = self.succ.pred('stabilize')
-                if x and x.id != self.id and self._inbetween(x.id, self.id, self.succ.id):
+                if x and x.id != self.id and self._inbetween(x.id, self.id, self.succ.id, "stabilize"):
                     self.have_to_replicate = True
                     logger.debug(f'Droped old succs dbs succ:{self.succ.ip}, sec_succ:{self.sec_succ}')
                     self.succ = x
@@ -645,7 +656,7 @@ class ChordNode:
 
     def notify(self, node: 'ChordNodeReference'):
         """Notify the node of a change."""
-        if node.id != self.id and (not self.pred or self._inbetween(node.id, self.pred.id, self.id)):
+        if node.id != self.id and (not self.pred or self._inbetween(node.id, self.pred.id, self.id, "notify")):
             self.pred = node
 
     def fix_fingers(self):
@@ -668,13 +679,15 @@ class ChordNode:
                 self.next = (self.next - 1)
                 if self.next < 0:
                     logger_ff.info('Finished Finger Table Iteration')
+                    print('===| FINISHED FINGER TABLE ITERATION |===')
                     self.next = self.m -1
                     # self.print_finger_table()
+                logger_ff.debug(f'Fix fingers iteration {self.next}')
                 self.finger[self.next] = self.find_succ((self.id + 2**self.next) % 2**self.m, 'fix_fingers')
             except Exception as e:
                 logger_ff.error(f"Error in fix_fingers: {e}")
             logger_ff.info('===Finger Table Updating Done===')
-            time.sleep(1)
+            time.sleep(0.8)
 
     def check_predecessor(self):
         """Periodically check if predecessor is alive."""

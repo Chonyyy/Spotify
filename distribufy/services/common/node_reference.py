@@ -157,7 +157,7 @@ class ChordNodeReference:
         """Iterate trough all nodes getting all song informations"""
         response = self._send_request('/iterate-songs', {'origin': origin_id})
 
-    def closest_preceding_finger(self, id: int) -> 'ChordNodeReference':
+    def closest_preceding_finger(self, id: int, origin = "unknown") -> 'ChordNodeReference':
         """Find the closest preceding finger for a given id."""
         response = self._send_request('/closest_preceding_finger', {'id': id})
         return ChordNodeReference(response['id'], response['ip'], self.port)
