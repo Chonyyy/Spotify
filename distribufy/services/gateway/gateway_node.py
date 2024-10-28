@@ -421,15 +421,19 @@ class Gateway(ChordNode):
         payload = {key: post_data[key] for key in fields}
         payload['total_size'] = 10
         payload['key_fields'] = ['title']
-        music_service.store_song_data(payload)
+        try:
+            music_service.store_song_data(payload)
+        except Exception as e:
+            logger_gw.debug(f'Song storing resulted in error. File already exists ?')
 
         # Find an available UDP port to receive the file
         listening_socket, listening_port = self._create_udp_socket()
         writing_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         client_addr = (post_data['client_ip'], post_data['client_port'])
+        chunk_num = post_data['chunk_num']
 
         # Spawn a new thread to receive the data asynchronously
-        threading.Thread(target=self._receive_file_data, args=(listening_socket, writing_socket, post_data['title'], client_addr), daemon=True).start()
+        threading.Thread(target=self._receive_file_data, args=(listening_socket, writing_socket, post_data['title'], client_addr, chunk_num), daemon=True).start()
 
         # Return the IP and port where the data can be sent
         return {"ip": self.ip, "port": listening_port}
@@ -447,7 +451,7 @@ class Gateway(ChordNode):
         logger_gw.info(f"Listening socket created at {self.ip}:{port}")
         return udp_socket, port
 
-    def _receive_file_data(self, listen_socket, writing_socket, song_title: str, client_addr: tuple[str,str]):
+    def _receive_file_data(self, listen_socket, writing_socket, song_title: str, client_addr: tuple[str,str], chunk_number: int = 0):
         """
         Receive file data over the UDP socket and send it to storage_services.
         Args:
@@ -459,7 +463,7 @@ class Gateway(ChordNode):
         try:
             logger_gw.info(f"Listening for file data on UDP socket for file ID: {song_title}")
             start = 0
-            chunk_num = 0
+            chunk_num = chunk_number
             while True:
                 #[ ]: Reading from socket
                 data, addr = listen_socket.recvfrom(chunk_size)  # Buffer size of 1024 bytes
@@ -467,12 +471,15 @@ class Gateway(ChordNode):
                     break
                 logger_gw.info(f"Received {len(data)} bytes from {addr} via UDP")
                 logger_gw.debug(f'Storing chunk {song_title + str(chunk_num)} and id {get_sha_repr(song_title + str(chunk_num))}')
-                storage_node.send_store_data({
-                    'value':song_title + str(chunk_num),
-                    'start': start,
-                    'ends': start + 50000,
-                    'data': base64.b64encode(data).decode('utf-8'),
-                },False, ['value'])#FIXME: Handle if the node crashes
+                try: 
+                    storage_node.send_store_data({
+                        'value':song_title + str(chunk_num),
+                        'start': start,
+                        'ends': start + 50000,
+                        'data': base64.b64encode(data).decode('utf-8'),
+                    },False, ['value'])#FIXME: Handle if the node crashes
+                except Exception as e:
+                    print(f'Error Storing chunk {e}')
                 start += len(data)
                 chunk_num += 1
 
